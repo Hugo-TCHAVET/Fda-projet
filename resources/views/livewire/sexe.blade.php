@@ -28,15 +28,20 @@
                 datasets: [{
                     label: 'Nombre d\'inscriptions par sexe',
                     data: sexeCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    backgroundColor:  'rgba(255, 206, 86, 0.8)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    barPercentage: 0.3,
+                    categoryPercentage: 0.4
                 }]
             },
             options: {
                 scales: {
                     y: {
                         beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
                         // ... autres options d'échelle pour l'axe y
                     }
                 }

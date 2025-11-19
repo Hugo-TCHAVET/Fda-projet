@@ -1,4 +1,5 @@
 @extends('Commun.Admin')
 @section('contenu')
-@livewire('demande-approuve')
+@livewire('post-appui')
+@livewireScripts
 @endsection

@@ -28,7 +28,7 @@
                 datasets: [{
                     label: 'Pourcentage de demandes par département',
                     data: departementPercentages,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    backgroundColor: 'rgba(105, 1, 105, 0.8)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }]

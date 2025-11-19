@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="Admin/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="Admin/assets/img/favicon.png">
+  <!-- <link rel="icon" type="image/png" href="Admin/assets/img/favicon.png"> -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     FDA
@@ -33,22 +33,33 @@
     .step.active {
       display: block;
     }
-    .sidebar {
-    background-color: #006400; /* Dark Green */
-}
 
+    .sidebar[data-color="rgb(27, 58, 94)"]:after,
+    .off-canvas-sidebar[data-color="rgb(27, 58, 94)"]:after {
+      background: rgb(27, 58, 94);
+    }
+
+    .sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]),
+    .off-canvas-sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]) {
+      color: rgb(27, 58, 94);
+    }
+
+    .sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]) i,
+    .off-canvas-sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]) i {
+      color: rgb(27, 58, 94);
+    }
   </style>
 </head>
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="greenfor">
+    <div class="sidebar" data-color="rgb(27, 58, 94)">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo">
         <a href="{{ route('home') }}" class="simple-text logo-mini">
-         
+
         </a>
         <a href="{{ route('home') }}" class="simple-text logo-normal">
           <p style="font-size: 40px;font-weight: bold">FDA</p>
@@ -108,33 +119,20 @@
             </a>
           </li>
           @endif
-         
-          
-          <li class="{{ request()->routeIs('statistique.service') ? 'active' : '' }}">
-            <a href="{{ route('statistique.service') }}">
-              <i class="now-ui-icons users_single-02"></i>
-              <p>Statistique/Service</p>
+          @if (Auth::user()->email == 'sese@gmail.com' || Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
+          <li class="{{ request()->routeIs('statistiques.admin') ? 'active' : '' }}">
+            <a href="{{ route('statistiques.admin') }}">
+              <i class="now-ui-icons business_chart-bar-32"></i>
+              <p>Statistiques</p>
             </a>
           </li>
-          <li class="{{ request()->routeIs('statistique.sexe') ? 'active' : '' }}">
-            <a href="{{ route('statistique.sexe') }}">
-              <i class="now-ui-icons design_bullet-list-67"></i>
-              <p>Statistique/Sexe</p>
+          <li class="{{ request()->routeIs('post-appui') ? 'active' : '' }}">
+            <a href="{{ route('post-appui') }}">
+              <i class="now-ui-icons business_money-coins"></i>
+              <p>Post appui</p>
             </a>
           </li>
-          <li class="{{ request()->routeIs('statistique.departement') ? 'active' : '' }}">
-            <a href="{{ route('statistique.departement') }}">
-              <i class="now-ui-icons text_caps-small"></i>
-              <p>Statistique/Département</p>
-            </a>
-          </li>
-          <li class="{{ request()->routeIs('statistique.demandeur') ? 'active' : '' }}">
-            <a href="{{ route('statistique.demandeur') }}">
-              <i class="now-ui-icons users_single-02"></i>
-              <p>Statistique/Type Demandeur</p>
-            </a>
-          </li>
-          
+          @endif
         </ul>
       </div>
 
@@ -175,32 +173,32 @@
 
   <script>
     $(document).ready(function() {
-    // Initialisation
-    var currentStep = 1;
+      // Initialisation
+      var currentStep = 1;
 
-    // Fonction pour afficher la prochaine étape
-    function showNextStep() {
-      $('#step' + currentStep).removeClass('active');
-      currentStep++;
-      $('#step' + currentStep).addClass('active');
-    }
+      // Fonction pour afficher la prochaine étape
+      function showNextStep() {
+        $('#step' + currentStep).removeClass('active');
+        currentStep++;
+        $('#step' + currentStep).addClass('active');
+      }
 
-    // Fonction pour afficher l'étape précédente
-    function showPrevStep() {
-      $('#step' + currentStep).removeClass('active');
-      currentStep--;
-      $('#step' + currentStep).addClass('active');
-    }
+      // Fonction pour afficher l'étape précédente
+      function showPrevStep() {
+        $('#step' + currentStep).removeClass('active');
+        currentStep--;
+        $('#step' + currentStep).addClass('active');
+      }
 
-    // Écouteurs d'événements pour les boutons "Suivant" et "Précédent"
-    $('.next-step').click(function() {
-      showNextStep();
+      // Écouteurs d'événements pour les boutons "Suivant" et "Précédent"
+      $('.next-step').click(function() {
+        showNextStep();
+      });
+
+      $('.prev-step').click(function() {
+        showPrevStep();
+      });
     });
-
-    $('.prev-step').click(function() {
-      showPrevStep();
-    });
-  });
   </script>
 
   @livewireScripts
