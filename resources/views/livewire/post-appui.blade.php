@@ -166,9 +166,7 @@
                                     <table class="table mt-4 mb-4">
                                         <thead class="text-primary text-center mb-4">
                                             <th style="font-weight: bold">Structure</th>
-                                            <th style="font-weight: bold">Email</th>
-                                            <th style="font-weight: bold">Contact</th>
-                                            <th style="font-weight: bold">Budget</th>
+                                            <th style="font-weight: bold">Budget demandé</th>
                                             <th style="font-weight: bold">Budget Attribué</th>
                                             <th style="font-weight: bold">Statut Rapport</th>
                                             <th style="font-weight: bold">Action</th>
@@ -177,10 +175,8 @@
                                             @forelse ($demandes as $demande)
                                             <tr>
                                                 <td class="text-center">{{ $demande->structure }}</td>
-                                                <td class="text-center">{{ $demande->email }}</td>
-                                                <td class="text-center">{{ $demande->contact }}</td>
                                                 <td class="text-center">{{ number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
-                                                <td class="text-center bg-warning">{{ number_format($demande->buget_prevu, 0, ',', ' ') }} FCFA</td>
+                                                <td class="text-center">{{ number_format($demande->buget_prevu, 0, ',', ' ') }} FCFA</td>
                                                 <td class="text-center">
                                                     @if ($demande->rapport_depose)
                                                     <span class="btn btn-success btn-sm">Rapport déposé</span>
@@ -189,11 +185,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('demande.show', $demande->id) }}" id="tooltip"
-                                                        class="btn btn-primary mb-2">
-                                                        <span class="tooltiptext">Visualiser</span>
-                                                        <i class="now-ui-icons gestures_tap-01"></i>
-                                                    </a>
+
                                                     <button wire:click="edit({{ $demande->id }})" id="tooltip"
                                                         class="btn btn-success mb-2">
                                                         <span class="tooltiptext">Déposer/Éditer rapport</span>
@@ -210,7 +202,9 @@
                                             @endforelse
                                         </tbody>
                                     </table>
-                                    {{ $demandes->links() }}
+                                    <div class="d-flex justify-content-center pagination">
+                                        {{ $demandes->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -251,5 +245,25 @@
         button#tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
+        }
+
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .pagination .page-link {
+            color: #2c2c54;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #2c2c54;
+            border-color: #2c2c54;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #f8f9fa;
+            color: #2c2c54;
         }
     </style>

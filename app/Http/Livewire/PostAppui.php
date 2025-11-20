@@ -11,7 +11,9 @@ class PostAppui extends Component
 {
     use WithPagination;
     use LivewireAlert;
+    protected $paginationTheme = 'bootstrap';
 
+    protected $listeners = ['refreshComponent' => '$refresh'];
     // Propriétés pour le formulaire modal
     public $demandeId;
     public $structure;

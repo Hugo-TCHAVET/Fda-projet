@@ -49,6 +49,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 Route::get('/service', [ClientController::class, 'index'])->name('client.service');
 Route::get('/formulaire', [ClientController::class, 'Formulaire'])->name('client.formulaire');
 Route::get('/suivre_demande', [ClientController::class, 'SuivreDemande'])->name('client.demande');
+Route::post('/demande/store', [ClientController::class, 'store'])->name('demande.store');
+Route::get('/demande/modifier/{id}', [ClientController::class, 'modifier'])->name('demande.modifier');
+Route::put('/demande/update/{id}', [ClientController::class, 'update'])->name('demande.update');
 Route::get('/contact', [ClientController::class, 'Contact'])->name('client.contact');
 Route::get('/A_propos', [ClientController::class, 'About'])->name('client.about');
 Route::post('/recherche_demande', [ClientController::class, 'RechercheDemande'])->name('recherche-demande');

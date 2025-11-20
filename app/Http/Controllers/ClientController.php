@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
+use Exception;
+use FFI\Exception as FFIException;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -34,6 +37,17 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
+        if (!$request->has('localisations') && $request->filled(['departement', 'commune', 'lieux', 'homme_touche'])) {
+            $request->merge([
+                'localisations' => [[
+                    'departement_id' => $request->input('departement'),
+                    'commune_id' => $request->input('commune'),
+                    'lieux' => $request->input('lieux'),
+                    'homme_touche' => $request->input('homme_touche'),
+                ]],
+            ]);
+        }
+
         try {
             // Validation des données principales
             $validated = $request->validate([
@@ -58,6 +72,10 @@ class ClientController extends Controller
                 'debut_activite' => 'required|date',
                 'fin_activite' => 'required|date|after:debut_activite',
                 'dure_activite' => 'required|integer',
+                'departement' => 'nullable|exists:departements,id',
+                'commune' => 'nullable|exists:communes,id',
+                'lieux' => 'nullable|string',
+                'homme_touche' => 'nullable|integer|min:0',
                 'budget' => 'required|numeric',
                 'piece' => 'required|file|mimes:pdf|max:204800',
                 'localisations' => 'required|array|min:1',
@@ -99,18 +117,21 @@ class ClientController extends Controller
                 $demandePayload['homme_touche'] = (string) ($firstLocalisation['homme_touche'] ?? '0');
             }
 
-            // Création de la demande
-            $demande = Demande::create($demandePayload);
+            DB::transaction(function () use ($request, $demandePayload) {
+                $demande = Demande::create($demandePayload);
 
-            // Création des localisations
-            foreach ($request->input('localisations') as $localisation) {
-                $demande->localisations()->create($localisation);
-            }
-
+                collect($request->input('localisations', []))
+                    ->filter(function ($localisation) {
+                        return !empty($localisation['departement_id']) && !empty($localisation['commune_id']);
+                    })
+                    ->each(function ($localisation) use ($demande) {
+                        $demande->localisations()->create($localisation);
+                    });
+            });
 
             return redirect()->back()->with('success', 'Votre demande a été envoyée avec succès!');
         } catch (\Exception $e) {
-            \Log::error('Erreur lors de la création de la demande: ' . $e->getMessage());
+            Log::error('Erreur lors de la création de la demande: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer.');
         }
     }

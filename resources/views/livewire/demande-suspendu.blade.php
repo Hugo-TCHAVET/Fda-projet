@@ -132,12 +132,15 @@
                       </td>
 
                       <td class="text-center">
+                        {{$demande->ifu}}
+                      </td>
+
+                      <td>
                         {{$demande->budget}}
                       </td>
                       <td class="text-center">
                         {{$demande->debut_activite}}
                       </td>
-
                       <td class="text-center">
 
 

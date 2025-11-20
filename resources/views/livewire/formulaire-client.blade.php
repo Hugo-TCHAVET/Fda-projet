@@ -11,26 +11,26 @@
                 <div class="row mt-1">
 
 
-                    <div class="col-lg- mt-5 mt-lg-0">
+                    <div class="col-lg-12 mt-5 mt-lg-0">
 
-                        <form method="post" class="php-email-form mt-4" enctype="multipart/form-data">
+                        <form wire:submit.prevent="store" class="php-email-form mt-4" enctype="multipart/form-data">
                             @csrf
                             @if ($formStep == 1)
 
                             <div class="row mb-2">
                                 <div class="text-center mb-4">
-                                    <h2 style="font-weight: bold">Information sur </h2>
+                                    <h2 style="font-weight: bold">Informations sur la structure</h2>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for=""  style="font-weight: bold">Structure Demandeur</label>
+                                    <label for="" style="font-weight: bold">Structure Demandeur</label>
                                     <input type="text" name="structure" class="form-control" id=""
                                         wire:model.lazy="structure">
                                     @error('structure') <span class="error text-danger">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for=""  style="font-weight: bold">Service</label>
+                                    <label for="" style="font-weight: bold">Service</label>
                                     <select name="service" id="" class="form-control" wire:model.lazy="service">
-                                        <option value="" selected>Choisisez un service</option>
+                                        <option value="" selected>Choisissez un service</option>
                                         <option value="Assistance">Demande Assistance</option>
                                         <option value="Formation">Demande Formation</option>
                                         <option value="Financier">Appui Financier</option>
@@ -42,9 +42,9 @@
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-6 form-group">
-                                    <label for=""  style="font-weight: bold">Type Demandeur</label>
+                                    <label for="" style="font-weight: bold">Type Demandeur</label>
                                     <select name="sexe" id="" class="form-control" wire:model.lazy="type_demande">
-                                        <option value="" selected>Choisisez le Type </option>
+                                        <option value="" selected>Choisissez le type</option>
                                         <option value="professionnel">Organisations professionnelles d’artisans</option>
                                         <option value="structure">Associations/Structures formelles intervenant dans le
                                             secteur de l’artisanat</option>
@@ -58,13 +58,13 @@
 
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for=""  style="font-weight: bold">Branche</label>
+                                    <label for="" style="font-weight: bold">Branche</label>
                                     <select name="branche" id="" class="form-control" wire:model.lazy="branche">
-                                        <option value="" selected>Choisisez une branche</option>
+                                        <option value="" selected>Choisissez une branche</option>
                                         @forelse ($branches as $branche )
                                         <option value="{{$branche->id}}">{{$branche->nom}}</option>
                                         @empty
-                                        <option value="Masculin">Pas de branche</option>
+                                        <option value="" disabled>Pas de branche</option>
                                         @endforelse
 
 
@@ -73,26 +73,26 @@
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for=""  style="font-weight: bold">Corps Métier</label>
+                                    <label for="" style="font-weight: bold">Corps Métier</label>
                                     <select name="corps" id="" class="form-control" wire:model.lazy="corps">
-                                        <option value="" selected>Choisisez un corps de metier</option>
+                                        <option value="" selected>Choisissez un corps de métier</option>
                                         @forelse ($corp as $corps )
                                         <option value="{{$corps->id}}">{{$corps->nom}}</option>
                                         @empty
-                                        <option value="Masculin">Pas de corps de métier</option>
+                                        <option value="" disabled>Pas de corps de métier</option>
                                         @endforelse
                                     </select>
 
 
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for=""  style="font-weight: bold">Metier</label>
+                                    <label for="" style="font-weight: bold">Metier</label>
                                     <select name="metier" id="" class="form-control" wire:model.lazy="metier">
-                                        <option value="" selected>Choisisez un métier</option>
+                                        <option value="" selected>Choisissez un métier</option>
                                         @forelse ($metiers as $metier )
                                         <option value="{{$metier->id}}">{{$metier->nom}}</option>
                                         @empty
-                                        <option value="Masculin">Pas de corps de métier</option>
+                                        <option value="" disabled>Pas de métier</option>
                                         @endforelse
                                     </select>
 
@@ -106,16 +106,16 @@
                             <div class="row mb-2">
 
                                 <div class="text-center mb-4">
-                                    <h2 style="font-weight: bold">Informations personnelle</h2>
+                                    <h2 style="font-weight: bold">Informations personnelles</h2>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for=""  style="font-weight: bold">Nom</label>
+                                    <label for="" style="font-weight: bold">Nom</label>
                                     <input type="text" name="nom" class="form-control" id="" wire:model.lazy="nom">
                                     @error('nom') <span class="error text-danger">{{ $message }}</span> @enderror
 
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for=""  style="font-weight: bold">Prenom</label>
+                                    <label for="" style="font-weight: bold">Prenom</label>
                                     <input type="text" class="form-control" name="prenom" id=""
                                         wire:model.lazy="prenom">
                                     @error('prenom') <span class="error text-danger">{{ $message }}</span> @enderror
@@ -124,15 +124,15 @@
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-6 form-group">
-                                    <label for=""  style="font-weight: bold">Email</label>
+                                    <label for="" style="font-weight: bold">Email</label>
                                     <input type="email" name="name" class="form-control" id="" wire:model.lazy="email">
                                     @error('email') <span class="error text-danger">{{ $message }}</span> @enderror
 
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for=""  style="font-weight: bold">Sexe</label>
+                                    <label for="" style="font-weight: bold">Sexe</label>
                                     <select name="sexe" id="" class="form-control" wire:model.lazy="sexe">
-                                        <option value="" selected>Choisisez le sexe</option>
+                                        <option value="" selected>Choisissez le sexe</option>
                                         <option value="Masculin">Masculin</option>
                                         <option value="Feminin">Féminin</option>
 
@@ -161,7 +161,7 @@
                             <div class="row mb-2">
 
                                 <div class=" text-center mb-4">
-                                    <h2 style="font-weight: bold">Information sur le projet</h2>
+                                    <h2 style="font-weight: bold">Informations sur le projet</h2>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="" style="font-weight: bold">Titre de l'activité</label>
@@ -183,7 +183,7 @@
                             <div class="row mb-2">
                                 <div class="col-md-6 form-group">
                                     <label for="" style="font-weight: bold">Date debut </label>
-                                    <input type="date" name="debut_activite" min="{{$date}}"  class="form-control" id=""
+                                    <input type="date" name="debut_activite" min="{{$date}}" class="form-control" id=""
                                         wire:model.lazy="debut_activite">
                                     @error('debut_activite') <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -210,11 +210,11 @@
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
                                     <label for="" style="font-weight: bold">Département</label>
                                     <select name="departement" id="" class="form-control" wire:model.lazy="departement">
-                                        <option value="" selected>Choisisez un département</option>
+                                        <option value="" selected>Choisissez un département</option>
                                         @forelse ($departements as $departement )
                                         <option value="{{$departement->id}}">{{$departement->nom}}</option>
                                         @empty
-                                        <option value="Masculin">Pas de département</option>
+                                        <option value="" disabled>Pas de département</option>
                                         @endforelse
 
 
@@ -229,11 +229,11 @@
                                 <div class="col-md-6 form-group">
                                     <label for="" style="font-weight: bold">Commune </label>
                                     <select name="commune" id="" class="form-control" wire:model.lazy="commune">
-                                        <option value="" selected>Choisisez une commune</option>
+                                        <option value="" selected>Choisissez une commune</option>
                                         @forelse ($communes as $commune )
                                         <option value="{{$commune->id}}">{{$commune->nom}}</option>
                                         @empty
-                                        <option value="Masculin">Pas de commune</option>
+                                        <option value="" disabled>Pas de commune</option>
                                         @endforelse
 
                                     </select>
@@ -291,31 +291,27 @@
                             @endif
 
                             @if ($formStep == 1)
-                            <div class="text-center"><button type="submit" class="bg-success"
+                            <div class="text-center"><button type="button" class="bg-success"
                                     wire:click="nextStep1">Suivant</button></div>
 
                             @elseif ($formStep == 2)
                             <div class="text-center">
-                                <button type="submit" class="bg-primary" wire:click="prevStep">Précédent</button>
-                                <button type="submit" class="bg-success" wire:click="nextStep2">Suivant</button>
+                                <button type="button" class="bg-primary" wire:click="prevStep">Précédent</button>
+                                <button type="button" class="bg-success" wire:click="nextStep2">Suivant</button>
                             </div>
                             @elseif ($formStep == 3)
                             <div class="text-center">
-                                <button type="submit" class="bg-primary" wire:click="prevStep">Précédent</button>
-                                <button type="submit" class="bg-success" wire:click="nextStep3">Suivant</button>
+                                <button type="button" class="bg-primary" wire:click="prevStep">Précédent</button>
+                                <button type="button" class="bg-success" wire:click="nextStep3">Suivant</button>
                             </div>
                             @elseif ($formStep == 4)
                             <div class="text-center">
-                                <button type="submit" class="bg-primary" wire:click="prevStep">Précédent</button>
-                                <button type="submit" id="sendButton" class="bg-success" wire:click="store">Envoyer</button>
+                                <button type="button" class="bg-primary" wire:click="prevStep">Précédent</button>
+                                <button type="submit" id="sendButton" class="bg-success" wire:loading.attr="disabled">Envoyer</button>
                             </div>
-                            <div id="loadingAnimation" class="loading-animation" style="display: none;"></div>
+                            <div id="loadingAnimation" class="loading-animation" wire:loading.flex wire:target="store"></div>
 
                             @endif
-
-
-
-
 
                         </form>
 
@@ -324,50 +320,28 @@
                 </div>
 
             </div>
-        </section><!-- End Contact Section -->
-
-
+        </section>
     </main>
-
 </div>
 
 
 <style>
     .loading-animation {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #22a6b3;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    transform: translate(-50%, -50%);
-}
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #22a6b3;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+    }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
 </style>
-
-
-<script>
-    document.getElementById('sendButton').addEventListener('click', function() {
-    // Afficher l'animation
-    document.getElementById('loadingAnimation').style.display = 'block';
-
-    // Désactiver le bouton pour éviter les clics répétés
-    this.disabled = true;
-
-    // Simuler une attente pour une opération (par exemple, un appel AJAX)
-    // Vous pouvez supprimer ou ajuster ce timeout selon vos besoins
-    setTimeout(function() {
-        // Masquer l'animation après un délai (par exemple, après la fin de l'opération)
-        document.getElementById('loadingAnimation').style.display = 'none';
-        document.getElementById('sendButton').disabled = false;
-    }, 1000); // Ajustez ce délai selon votre besoin
-});
-
-</script>

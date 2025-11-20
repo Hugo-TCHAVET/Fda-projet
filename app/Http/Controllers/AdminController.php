@@ -158,7 +158,7 @@ class AdminController extends Controller
                     $demande->update([
                         'buget_prevu' => $validatedData['buget_prevu'],
                         'valide' => 2,
-                        'statuts' => "Approuver",
+                        'statuts' => "Approuvé",
                     ]);
                     Alert::toast('Budget enrégistré avec succès', 'success')->position('top-end')->timerProgressBar();
                     return redirect()->route('demande.verifier');
@@ -249,9 +249,7 @@ class AdminController extends Controller
             ->selectRaw("
                 braches.id,
                 braches.nom AS nom_branche,
-                COALESCE(SUM(demandes.homme_touche), 0) AS total_hommes,
-                COALESCE(SUM(demandes.femme_touche), 0) AS total_femmes,
-                COALESCE(SUM(demandes.homme_touche + demandes.femme_touche), 0) AS effectif_total
+                COALESCE(SUM(demandes.homme_touche), 0) AS effectif_total
             ")
             // TODO: appliquer un filtre sur le statut des demandes lorsqu’on saura lequel utiliser
             ->groupBy('braches.id', 'braches.nom')

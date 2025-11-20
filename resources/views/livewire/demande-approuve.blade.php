@@ -130,7 +130,7 @@
                       <td class="text-center">
                         {{$demande->budget}} FCFA
                       </td>
-                      <td class="text-center bg-warning">
+                      <td class="text-center">
                         {{$demande->buget_prevu}} FCFA
                       </td>
 
