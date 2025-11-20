@@ -42,6 +42,7 @@
                                                             wire:model="type_demande">
                                                     </div>
                                                 </div>
+
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 pr-1">
@@ -91,13 +92,7 @@
                                                             wire:model="prenom" readonly>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 pl-1">
-                                                    <div class="form-group">
-                                                        <label>Email</label>
-                                                        <input type="email" class="form-control" wire:model="email"
-                                                            readonly>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4 pr-1">
@@ -343,7 +338,3 @@
         </div>
     </div>
 </div>
-
-
-
-

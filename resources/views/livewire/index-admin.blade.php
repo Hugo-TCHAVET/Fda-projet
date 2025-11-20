@@ -22,16 +22,7 @@
           <span class="navbar-toggler-bar navbar-kebab"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
-          <form class="mr-4">
-            <div class="input-group no-border">
-              <input type="text" value="" class="form-control" placeholder="Rechercher...">
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <i class="now-ui-icons ui-1_zoom-bold"></i>
-                </div>
-              </div>
-            </div>
-          </form>
+
           <ul class="navbar-nav">
             <li class="mr-3">
               @if (Auth::user()->email == 'spea@gmail.com')
@@ -44,7 +35,10 @@
               <h2 style="font-weight: bold">DAF</h2>
               @elseif (Auth::user()->email == 'do@gmail.com')
               <h2 style="font-weight: bold">DO</h2>
+
+
               @endif
+
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -169,3 +163,130 @@
 
 
 </div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('bigDashboardChart').getContext("2d");
+
+    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke.addColorStop(0, '#80b6f4');
+    gradientStroke.addColorStop(1, '#FFFFFF');
+
+    var gradientFill = ctx.createLinearGradient(0, 200, 0, 50);
+    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+    gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.24)");
+
+    var monthlyData = @json($monthlyData);
+
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+        datasets: [{
+          label: "Formation",
+          borderColor: '#80b6f4',
+          pointBorderColor: '#FFF',
+          pointBackgroundColor: '#80b6f4',
+          pointHoverBackgroundColor: '#80b6f4',
+          pointHoverBorderColor: '#80b6f4',
+          pointBorderWidth: 2,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 1,
+          pointRadius: 4,
+          fill: true,
+          backgroundColor: gradientFill,
+          borderWidth: 2,
+          data: monthlyData.formation
+        }, {
+          label: "Assistance",
+          borderColor: '#18ce0f',
+          pointBorderColor: '#FFF',
+          pointBackgroundColor: '#18ce0f',
+          pointHoverBackgroundColor: '#18ce0f',
+          pointHoverBorderColor: '#18ce0f',
+          pointBorderWidth: 2,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 1,
+          pointRadius: 4,
+          fill: true,
+          backgroundColor: gradientFill,
+          borderWidth: 2,
+          data: monthlyData.promotion
+        }, {
+          label: "Financier",
+          borderColor: '#f96332',
+          pointBorderColor: '#FFF',
+          pointBackgroundColor: '#f96332',
+          pointHoverBackgroundColor: '#f96332',
+          pointHoverBorderColor: '#f96332',
+          pointBorderWidth: 2,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 1,
+          pointRadius: 4,
+          fill: true,
+          backgroundColor: gradientFill,
+          borderWidth: 2,
+          data: monthlyData.financier
+        }]
+      },
+      options: {
+        layout: {
+          padding: {
+            left: 20,
+            right: 20,
+            top: 0,
+            bottom: 0
+          }
+        },
+        maintainAspectRatio: false,
+        tooltips: {
+          backgroundColor: '#fff',
+          titleFontColor: '#333',
+          bodyFontColor: '#666',
+          bodySpacing: 4,
+          xPadding: 12,
+          mode: "nearest",
+          intersect: 0,
+          position: "nearest"
+        },
+        legend: {
+          position: "bottom",
+          fillStyle: "#FFF",
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              fontColor: "rgba(255,255,255,0.4)",
+              fontStyle: "bold",
+              beginAtZero: true,
+              maxTicksLimit: 5,
+              padding: 10
+            },
+            gridLines: {
+              drawTicks: true,
+              drawBorder: false,
+              display: true,
+              color: "rgba(255,255,255,0.1)",
+              zeroLineColor: "transparent"
+            }
+
+          }],
+          xAxes: [{
+            gridLines: {
+              zeroLineColor: "transparent",
+              display: false,
+
+            },
+            ticks: {
+              padding: 10,
+              fontColor: "rgba(255,255,255,0.4)",
+              fontStyle: "bold"
+            }
+          }]
+        }
+      }
+    });
+  });
+</script>

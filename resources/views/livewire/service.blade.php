@@ -1,15 +1,15 @@
 {{-- resources/views/livewire/service.blade.php --}}
 <div>
-    <div >
+    <div>
         <canvas id="serviceChart"></canvas>
     </div>
     <style>
         #departementChart {
-            margin-right: 100px; 
+            margin-right: 100px;
         }
 
         body {
-            padding-left: 300px; 
+            padding-left: 300px;
         }
     </style>
 
@@ -17,8 +17,12 @@
 
     <script>
         var serviceData = @json($data);
-        var serviceLabels = serviceData.map(function(item) { return item.service; });
-        var serviceCounts = serviceData.map(function(item) { return item.count; });
+        var serviceLabels = serviceData.map(function(item) {
+            return item.service;
+        });
+        var serviceCounts = serviceData.map(function(item) {
+            return item.count;
+        });
 
         var serviceCtx = document.getElementById('serviceChart').getContext('2d');
 

@@ -2,11 +2,13 @@
 <div>
     <style>
         #typeDemandeurChart {
-            margin-right: 250px; /* Ajustez la valeur en fonction de la largeur de votre barre de navigation */
+            margin-right: 250px;
+            /* Ajustez la valeur en fonction de la largeur de votre barre de navigation */
         }
 
         body {
-            padding-left: 250px; /* Ajustez la valeur en fonction de la largeur de votre barre de navigation */
+            padding-left: 250px;
+            /* Ajustez la valeur en fonction de la largeur de votre barre de navigation */
         }
     </style>
 
@@ -18,8 +20,12 @@
 
     <script>
         var typeDemandeurData = @json($data);
-        var typeDemandeurLabels = typeDemandeurData.map(function(item) { return item.type_demande; });
-        var typeDemandeurPercentages = typeDemandeurData.map(function(item) { return item.percentage; });
+        var typeDemandeurLabels = typeDemandeurData.map(function(item) {
+            return item.type_demande;
+        });
+        var typeDemandeurPercentages = typeDemandeurData.map(function(item) {
+            return item.percentage;
+        });
 
         var typeDemandeurCtx = document.getElementById('typeDemandeurChart').getContext('2d');
 

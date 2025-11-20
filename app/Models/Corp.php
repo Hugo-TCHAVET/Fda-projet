@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Corp extends Model
 {
     use HasFactory;
-    protected $guarded =[];
+    protected $guarded = [];
 
     public function brache()
     {
-        return $this->belongTo(Brache::class);
+        return $this->belongsTo(Brache::class, 'branche_id');
     }
 
     public function metiers()
     {
         return $this->hasMany(Metier::class);
     }
-
-    
 }

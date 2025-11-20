@@ -10,10 +10,16 @@ class Demande extends Model
 {
     use HasFactory;
 
-    protected $guarded =[];
+    protected $guarded = [];
 
-    
-    public function branche(){
+
+    public function branche()
+    {
         return $this->belongsTo(Brache::class);
+    }
+
+    public function localisations()
+    {
+        return $this->hasMany(DemandeLocalisation::class);
     }
 }

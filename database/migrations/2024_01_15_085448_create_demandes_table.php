@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('sexe');
-            $table->string('email');
             $table->string('ifu');
             $table->string('contact');
             $table->string('titre_activite');
@@ -49,6 +48,27 @@ return new class extends Migration
             $table->string('rejeter')->default(0);
             $table->string('message')->nullable();
             $table->timestamps();
+        });
+    }
+
+    /**
+     * Migration pour la table pivot demande_localisations
+     */
+    public function up_demande_localisations()
+    {
+        Schema::create('demande_localisations', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('demande_id');
+            $table->unsignedBigInteger('departement_id');
+            $table->unsignedBigInteger('commune_id');
+            $table->string('lieux');
+            $table->integer('homme_touche');
+            $table->integer('femme_touche');
+            $table->timestamps();
+
+            $table->foreign('demande_id')->references('id')->on('demandes')->onDelete('cascade');
+            $table->foreign('departement_id')->references('id')->on('departements')->onDelete('cascade');
+            $table->foreign('commune_id')->references('id')->on('communes')->onDelete('cascade');
         });
     }
 

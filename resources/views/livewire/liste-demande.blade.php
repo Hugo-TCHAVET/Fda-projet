@@ -1,5 +1,3 @@
-
-
 <div>
 
 
@@ -24,7 +22,7 @@
           <span class="navbar-toggler-bar navbar-kebab"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
-         
+
           <ul class="navbar-nav">
             <li class="mr-3">
               @if (Auth::user()->email == 'spea@gmail.com')
@@ -37,7 +35,7 @@
               <h2 style="font-weight: bold">DAF</h2>
               @elseif (Auth::user()->email == 'do@gmail.com')
               <h2 style="font-weight: bold">DO</h2>
-            
+
 
               @endif
 
@@ -75,12 +73,12 @@
     <div class="content">
       <div class="row">
         <div class="col-md-12">
-          
+
           <div class="card">
-         
+
             <div class="card-body">
 
-             
+
               <div class="table-responsive mt-4 mb-4">
                 <table class="table mt-4 mb-4">
                   <thead class=" text-primary text-center mb-4">
@@ -88,14 +86,11 @@
                     <th style="font-weight: bold">
                       Structure
                     </th>
-                    
-                    <th style="font-weight: bold">
-                      Email
-                    </th>
+
                     <th style="font-weight: bold">
                       Contact
                     </th>
-                   
+
                     <th style="font-weight: bold">
                       Budget
                     </th>
@@ -107,13 +102,13 @@
                       Statut
                     </th>
                     @if (Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
-                        
+
                     @else
                     <th style="font-weight: bold">
                       Action
                     </th>
                     @endif
-                   
+
 
                   </thead>
 
@@ -126,14 +121,11 @@
                       <td class="text-center">
                         {{$demande->structure}}
                       </td>
-                     
-                      <td class="text-center">
-                        {{$demande->email}}
-                      </td>
+
                       <td class="text-center">
                         {{$demande->contact}}
                       </td>
-                      
+
                       <td class="text-center">
                         {{$demande->budget}}
                       </td>
@@ -150,38 +142,38 @@
 
                       </td>
                       @if (Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
-                        
+
                       @else
                       <td class="text-center">
-                        
-                              <a href="{{route('demande.show',$demande->id)}}"  id="tooltip" class="btn btn-primary mb-2"> 
-                                 <span class="tooltiptext">Visualiser</span>
-                                <i class="now-ui-icons gestures_tap-01"></i>
-                              </a>
-                             
-                            
-                             
-                            <a class="btn btn-success mb-2" href="#" id="tooltip" wire:click="Transmetre(({{$demande->id}}))">
-                              <span class="tooltiptext">Transmettre</span>
-                              <i class="now-ui-icons ui-1_send"></i> </a>
-                                 
-                            @if ($demande->message != null)
 
-                            @else
-                            
-                              <a href="{{route('demande.message',$demande->id)}}" id="tooltip"  class="btn btn-info mb-2" >
-                                <span class="tooltiptext">Suspendre</span>
+                        <a href="{{route('demande.show',$demande->id)}}" id="tooltip" class="btn btn-primary mb-2">
+                          <span class="tooltiptext">Visualiser</span>
+                          <i class="now-ui-icons gestures_tap-01"></i>
+                        </a>
 
-                                <i class="now-ui-icons media-1_button-pause"></i> 
-                              </a>
-                           
-                            @endif
 
-                     
+
+                        <a class="btn btn-success mb-2" href="#" id="tooltip" wire:click="Transmetre(({{$demande->id}}))">
+                          <span class="tooltiptext">Transmettre</span>
+                          <i class="now-ui-icons ui-1_send"></i> </a>
+
+                        @if ($demande->message != null)
+
+                        @else
+
+                        <a href="{{route('demande.message',$demande->id)}}" id="tooltip" class="btn btn-info mb-2">
+                          <span class="tooltiptext">Suspendre</span>
+
+                          <i class="now-ui-icons media-1_button-pause"></i>
+                        </a>
+
+                        @endif
+
+
 
                       </td>
                       @endif
-                      
+
                     </tr>
                     @empty
 
@@ -192,7 +184,7 @@
 
                     @endforelse
                   </tbody>
-                 
+
                 </table>
                 {{$demandes->links()}}
               </div>
@@ -216,30 +208,31 @@
 
 <style>
   a#tooltip {
-      position: relative;
-      display: inline-block;
-   
+    position: relative;
+    display: inline-block;
+
   }
 
   a#tooltip .tooltiptext {
-      visibility: hidden;
-      width: 120px;
-      background-color: black;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 5px 0;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%; /* Position au-dessus du lien */
-      left: 50%;
-      margin-left: -60px;
-      opacity: 0;
-      transition: opacity 0.3s;
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    /* Position au-dessus du lien */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
   }
 
   a#tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-  }
-   </style>
+    visibility: visible;
+    opacity: 1;
+  }
+</style>

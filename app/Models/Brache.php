@@ -10,16 +10,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Brache extends Model
 {
     use HasFactory;
-    protected $guarded =[];
+    protected $guarded = [];
 
     public function corps()
     {
-        return $this->hasMany(Corp::class);
+        return $this->hasMany(Corp::class, 'branche_id');
     }
 
     public function metiers()
     {
-        return $this->hasMany(Metier::class);
+        return $this->hasMany(Metier::class, 'branche_id');
     }
 
     public function demandes()

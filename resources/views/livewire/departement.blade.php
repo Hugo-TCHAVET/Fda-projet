@@ -4,11 +4,11 @@
     </div>
     <style>
         #departementChart {
-            margin-right: 100px; 
+            margin-right: 100px;
         }
 
         body {
-            padding-left: 300px; 
+            padding-left: 300px;
         }
     </style>
 
@@ -16,8 +16,12 @@
 
     <script>
         var departementData = @json($data);
-        var departementLabels = departementData.map(function(item) { return item.nom_departement; }); 
-        var departementPercentages = departementData.map(function(item) { return item.percentage; });
+        var departementLabels = departementData.map(function(item) {
+            return item.nom_departement;
+        });
+        var departementPercentages = departementData.map(function(item) {
+            return item.percentage;
+        });
 
         var departementCtx = document.getElementById('departementChart').getContext('2d');
 

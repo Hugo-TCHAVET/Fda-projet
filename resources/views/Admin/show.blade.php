@@ -112,7 +112,7 @@
                                         <div class="form-group">
                                             <label style="font-weight: bold">Branche</label>
                                             <input type="text" class="form-control" disabled=""
-                                            value="{{ $branche ? $branche->nom : 'pas de branche' }}" >
+                                                value="{{ $branche ? $branche->nom : 'pas de branche' }}">
                                         </div>
                                     </div>
 
@@ -123,14 +123,14 @@
                                     <div class="col-md-6 pr-1">
                                         <div class="form-group">
                                             <label style="font-weight: bold">Corps du Métier</label>
-                                            <input type="text" class="form-control" disabled="" value="{{ $corps ? $corps->nom : 'pas de corps' }}"  >
+                                            <input type="text" class="form-control" disabled="" value="{{ $corps ? $corps->nom : 'pas de corps' }}">
                                         </div>
                                     </div>
                                     <div class="col-md-6 px-1">
                                         <div class="form-group">
                                             <label style="font-weight: bold">Métier</label>
                                             <input type="text" class="form-control" disabled=""
-                                            value="{{ $metier ? $metier->nom : 'pas de métier' }}" >
+                                                value="{{ $metier ? $metier->nom : 'pas de métier' }}">
                                         </div>
                                     </div>
                                 </div>
@@ -161,24 +161,6 @@
                                             <label style="font-weight: bold">Prenoms du demandeur</label>
                                             <input type="text" class="form-control" disabled=""
                                                 value="{{$demande->prenom}}">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-1">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1" style="font-weight: bold">Email du demandeur
-                                            </label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$demande->email}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 px-1">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold">Sexe</label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$demande->sexe}}">
                                         </div>
                                     </div>
 
@@ -233,7 +215,7 @@
                                 <div class="row">
                                     <div class="col-md-6 pr-1">
                                         <div class="form-group">
-                                            <label  style="font-weight: bold">Date du debut 
+                                            <label style="font-weight: bold">Date du debut
                                             </label>
                                             <input type="text" class="form-control" disabled=""
                                                 value="{{$demande->debut_activite}}">
@@ -258,100 +240,89 @@
                                                 value="{{$demande->dure_activite}} Jours">
                                         </div>
                                     </div>
-                                    <div class="col-md-6 px-1">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold">Departement</label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$departement->nom}}">
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="row">
 
-                                    <div class="col-md-6 pr-1">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold">Commune</label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$commune->nom}}">
+                                    @if ($demande->buget_prevu != 0)
+                                    <div class="row">
+                                        <div class="col-md-6 pr-1">
+                                            <div class="form-group">
+                                                <label style="font-weight: bold">Budget
+                                                </label>
+                                                <input type="text" class="form-control" disabled=""
+                                                    value="{{$demande->budget}} cfa">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 px-1">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold">Lieux d'exécution</label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$demande->lieux}}">
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 pr-1">
-                                        <div class="form-group">
-                                            <label  style="font-weight: bold">Personne touchées ( Hommes )
-                                            </label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$demande->homme_touche}}">
+                                        <div class="col-md-6 px-1">
+                                            <div class="form-group">
+                                                <label style="font-weight: bold">Budget prevue
+                                                </label>
+                                                <input type="text" class="form-control" disabled=""
+                                                    value="{{$demande->buget_prevu}} cfa">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 px-1">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold">Personne touchées ( Femmes )</label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$demande->femme_touche}}">
-                                        </div>
+
+
                                     </div>
 
-                                </div>
-                                @if ($demande->buget_prevu != 0)
-                                <div class="row">
-                                    <div class="col-md-6 pr-1">
+                                    @else
+
+
+
+                                    <div class="col-md-12 pr-1">
                                         <div class="form-group">
-                                            <label  style="font-weight: bold">Budget
+                                            <label style="font-weight: bold">Budget
                                             </label>
                                             <input type="text" class="form-control" disabled=""
                                                 value="{{$demande->budget}} cfa">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 px-1">
-                                        <div class="form-group">
-                                            <label  style="font-weight: bold">Budget prevue
-                                            </label>
-                                            <input type="text" class="form-control" disabled=""
-                                                value="{{$demande->buget_prevu}} cfa">
-                                        </div>
+                                    @endif
+
+
+                                    <div class="d-flex justify-content-center items-center">
+                                        <a href="{{route('demande.piece',$demande->id)}} " class="btn btn-success">Télécharger le fichier</a>
                                     </div>
-                                   
 
-                                </div>
-
-                                @else
-                                    
-
-
-                                <div class="col-md-12 pr-1">
-                                    <div class="form-group">
-                                        <label  style="font-weight: bold">Budget
-                                        </label>
-                                        <input type="text" class="form-control" disabled=""
-                                            value="{{$demande->budget}} cfa">
+                                    <div class="card-header">
+                                        <h5 class="title">Localisations du projet</h5>
                                     </div>
-                                </div>
-                                
-                                @endif
-                                
+                                    @if(isset($localisations) && count($localisations))
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Département</th>
+                                                    <th>Commune</th>
+                                                    <th>Lieu d'exécution</th>
+                                                    <th>Hommes touchés</th>
+                                                    <th>Femmes touchées</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($localisations as $loc)
+                                                <tr>
+                                                    <td>{{ $loc->departement ? $loc->departement->nom : '' }}</td>
+                                                    <td>{{ $loc->commune ? $loc->commune->nom : '' }}</td>
+                                                    <td>{{ $loc->lieux }}</td>
+                                                    <td>{{ $loc->homme_touche }}</td>
+                                                    <td>{{ $loc->femme_touche }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @else
+                                    <p>Aucune localisation enregistrée pour cette demande.</p>
+                                    @endif
 
-                                <div class="d-flex justify-content-center items-center">
-                                    <a href="{{route('demande.piece',$demande->id)}} " class="btn btn-success">Télécharger le fichier</a>
-                                </div>
+                                    <div>
+                                        <button type="button"
+                                            class="btn btn-secondary prev-step">Précédent</button>
+                                    </div>
 
-                                <div>
-                                    <button type="button"
-                                        class="btn btn-secondary prev-step">Précédent</button>
                                 </div>
-
-                            </div>
 
                         </form>
                     </div>
@@ -360,7 +331,7 @@
 
         </div>
     </div>
-    
+
     @include('Admin.footer')
 </div>
 </div>

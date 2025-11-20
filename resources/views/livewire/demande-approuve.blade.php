@@ -45,7 +45,6 @@
               @elseif (Auth::user()->email == 'do@gmail.com')
               <h2 style="font-weight: bold">DO</h2>
 
-
               @endif
 
             </li>
@@ -54,7 +53,6 @@
                 aria-haspopup="true" aria-expanded="false">
                 <i class="now-ui-icons users_single-02"></i>
                 <p>
-
                 </p>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -95,9 +93,7 @@
                       Structure
                     </th>
 
-                    <th style="font-weight: bold">
-                      Email
-                    </th>
+
                     <th style="font-weight: bold">
                       Contact
                     </th>
@@ -126,10 +122,6 @@
 
                       <td class="text-center">
                         {{$demande->structure}}
-                      </td>
-
-                      <td class="text-center">
-                        {{$demande->email}}
                       </td>
                       <td class="text-center">
                         {{$demande->contact}}

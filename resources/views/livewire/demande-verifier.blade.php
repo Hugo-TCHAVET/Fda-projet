@@ -44,7 +44,7 @@
               <h2 style="font-weight: bold">DAF</h2>
               @elseif (Auth::user()->email == 'do@gmail.com')
               <h2 style="font-weight: bold">DO</h2>
-            
+
 
               @endif
 
@@ -83,10 +83,10 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            
+
             <div class="card-body">
 
-             
+
 
               <div class="table-responsive mt-4 mb-4">
                 <table class="table mt-4 mb-4">
@@ -95,14 +95,11 @@
                     <th style="font-weight: bold">
                       Structure
                     </th>
-                    
-                    <th style="font-weight: bold">
-                      Email
-                    </th style="font-weight: bold">
+
                     <th style="font-weight: bold">
                       Contact
                     </th>
-                   
+
                     <th style="font-weight: bold">
                       Budget
                     </th>
@@ -129,12 +126,9 @@
                         {{$demande->structure}}
                       </td>
                       <td class="text-center">
-                        {{$demande->email}}
-                      </td>
-                      <td class="text-center">
                         {{$demande->contact}}
                       </td>
-                      
+
                       <td class="text-center">
                         {{$demande->budget}}
                       </td>
@@ -151,29 +145,29 @@
 
                       </td>
                       <td class="text-center">
-                     
-                        <a href="{{route('demande.show',$demande->id)}}"  id="tooltip" class="btn btn-primary mb-2"> 
-                          <span class="tooltiptext">Visualiser</span>
-                         <i class="now-ui-icons gestures_tap-01"></i>
-                       </a>
 
-                           
-                              <a href="{{route('demande.budget',$demande->id)}}"  id="tooltip"
-                                class="btn btn-success mb-2" >
-                                <span class="tooltiptext">Valider</span>
-                                <i class="now-ui-icons ui-1_check"></i> 
-                              </a>
-                            
-                              <a href="{{route('demande.pdf',$demande->id)}}" class="btn btn-primary mb-2" id="tooltip">
-                                <span class="tooltiptext">Imprimer en PDF</span>
-                                <i class="now-ui-icons files_paper"></i> 
-                            </a>
-                            
-                              <a href="{{route('demande.delete',$demande->id)}}" id="tooltip" class="btn btn-danger mb-2" >
-                                <span class="tooltiptext">Rejéter</span>
-                                <i class="now-ui-icons ui-1_simple-remove"></i> 
-                              </a>
-                          
+                        <a href="{{route('demande.show',$demande->id)}}" id="tooltip" class="btn btn-primary mb-2">
+                          <span class="tooltiptext">Visualiser</span>
+                          <i class="now-ui-icons gestures_tap-01"></i>
+                        </a>
+
+
+                        <a href="{{route('demande.budget',$demande->id)}}" id="tooltip"
+                          class="btn btn-success mb-2">
+                          <span class="tooltiptext">Valider</span>
+                          <i class="now-ui-icons ui-1_check"></i>
+                        </a>
+
+                        <a href="{{route('demande.pdf',$demande->id)}}" class="btn btn-primary mb-2" id="tooltip">
+                          <span class="tooltiptext">Imprimer en PDF</span>
+                          <i class="now-ui-icons files_paper"></i>
+                        </a>
+
+                        <a href="{{route('demande.delete',$demande->id)}}" id="tooltip" class="btn btn-danger mb-2">
+                          <span class="tooltiptext">Rejéter</span>
+                          <i class="now-ui-icons ui-1_simple-remove"></i>
+                        </a>
+
 
                       </td>
                     </tr>
@@ -211,31 +205,31 @@
 
 <style>
   a#tooltip {
-      position: relative;
-      display: inline-block;
-   
+    position: relative;
+    display: inline-block;
+
   }
 
   a#tooltip .tooltiptext {
-      visibility: hidden;
-      width: 120px;
-      background-color: black;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 5px 0;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%; /* Position au-dessus du lien */
-      left: 50%;
-      margin-left: -60px;
-      opacity: 0;
-      transition: opacity 0.3s;
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    /* Position au-dessus du lien */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
   }
 
   a#tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-  }
-
-   </style>
+    visibility: visible;
+    opacity: 1;
+  }
+</style>

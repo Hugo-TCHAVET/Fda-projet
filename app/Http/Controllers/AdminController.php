@@ -53,7 +53,8 @@ class AdminController extends Controller
         $metier = Metier::where('id', $demande->metier)->first();
         $departement = Departement::where('id', $demande->departement)->first();
         $commune = Commune::where('id', $demande->commune)->first();
-        return view('Admin.show', compact('demande', 'branche', 'corps', 'metier', 'commune', 'departement'));
+        $localisations = $demande->localisations()->with(['departement', 'commune'])->get();
+        return view('Admin.show', compact('demande', 'branche', 'corps', 'metier', 'commune', 'departement', 'localisations'));
     }
 
 
@@ -179,6 +180,11 @@ class AdminController extends Controller
     public function generatePdfForDemande($id)
     {
         $demande = Demande::find($id);
+        $branche = Brache::where('id', $demande->branche)->first();
+        $corps = Corp::where('id', $demande->corps)->first();
+        $metier = Metier::where('id', $demande->metier)->first();
+        $departement = Departement::where('id', $demande->departement)->first();
+        $commune = Commune::where('id', $demande->commune)->first();
         if ($demande) {
 
 
@@ -264,5 +270,82 @@ class AdminController extends Controller
     public function postAppui()
     {
         return view('Statistique.post-appui');
+    }
+    public function storeDemande(Request $request)
+    {
+        $validated = $request->validate([
+            'structure' => 'required',
+            'service' => 'required',
+            'type_demande' => 'required',
+            'branche' => 'nullable',
+            'corps' => 'nullable',
+            'metier' => 'nullable',
+            'nom' => 'required',
+            'prenom' => 'required',
+            'sexe' => 'required',
+            'email' => 'required|email',
+            'ifu' => 'required|integer',
+            'contact' => 'required|integer',
+            'titre_activite' => 'required',
+            'obejectif_activite' => 'required',
+            'debut_activite' => 'required',
+            'fin_activite' => 'required',
+            'dure_activite' => 'required',
+            'budget' => 'required',
+            'localisations' => 'required|array|min:1',
+            'localisations.*.departement_id' => 'required|exists:departements,id',
+            'localisations.*.commune_id' => 'required|exists:communes,id',
+            'localisations.*.lieux' => 'required|string',
+            'localisations.*.homme_touche' => 'required|integer',
+            'localisations.*.femme_touche' => 'required|integer',
+        ]);
+
+        $demande = Demande::create($request->except('localisations'));
+
+        foreach ($request->localisations as $loc) {
+            $demande->localisations()->create($loc);
+        }
+
+        Alert::toast('Demande enregistrée avec succès !', 'success')->position('top-end')->timerProgressBar();
+        return redirect()->route('liste.demande');
+    }
+
+    public function updateDemande(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'structure' => 'required',
+            'service' => 'required',
+            'type_demande' => 'required',
+            'branche' => 'nullable',
+            'corps' => 'nullable',
+            'metier' => 'nullable',
+            'nom' => 'required',
+            'prenom' => 'required',
+            'sexe' => 'required',
+            'email' => 'required|email',
+            'ifu' => 'required|integer',
+            'contact' => 'required|integer',
+            'titre_activite' => 'required',
+            'obejectif_activite' => 'required',
+            'debut_activite' => 'required',
+            'fin_activite' => 'required',
+            'dure_activite' => 'required',
+            'budget' => 'required',
+            'localisations' => 'required|array|min:1',
+            'localisations.*.departement_id' => 'required|exists:departements,id',
+            'localisations.*.commune_id' => 'required|exists:communes,id',
+            'localisations.*.lieux' => 'required|string',
+            'localisations.*.homme_touche' => 'required|integer',
+            'localisations.*.femme_touche' => 'required|integer',
+        ]);
+
+        $demande = Demande::findOrFail($id);
+        $demande->update($request->except('localisations'));
+        $demande->localisations()->delete();
+        foreach ($request->localisations as $loc) {
+            $demande->localisations()->create($loc);
+        }
+        Alert::toast('Demande modifiée avec succès !', 'success')->position('top-end')->timerProgressBar();
+        return redirect()->route('liste.demande');
     }
 }

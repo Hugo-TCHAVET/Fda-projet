@@ -1,4 +1,4 @@
 @extends('Commun.Client')
 @section('contenu')
-    @livewire('formulaire-client')
+@livewire('formulaire-client')
 @endsection
