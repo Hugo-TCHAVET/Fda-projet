@@ -15,6 +15,9 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class DemandeSuspendu extends Component
 {
     use LivewireAlert;
+    protected $paginationTheme = 'bootstrap';
+
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
 
 

@@ -180,31 +180,33 @@ class AdminController extends Controller
     public function generatePdfForDemande($id)
     {
         $demande = Demande::find($id);
-        $branche = Brache::where('id', $demande->branche)->first();
-        $corps = Corp::where('id', $demande->corps)->first();
-        $metier = Metier::where('id', $demande->metier)->first();
-        $departement = Departement::where('id', $demande->departement)->first();
-        $commune = Commune::where('id', $demande->commune)->first();
-        if ($demande) {
 
-
-
-            $dompdf = new Dompdf();
-
-            // Charger la vue avec les données
-            $view = view('Admin.pdf')->with(['demande' => $demande])->render();
-
-            // Générer le PDF
-            $dompdf->loadHtml($view);
-            $dompdf->render();
-
-            // Renvoyer le PDF en réponse
-            return new Response(
-                $dompdf->stream('demande_' . $demande->structure . '.pdf'),
-                200,
-                ['Content-Type' => 'application/pdf']
-            );
+        if (!$demande) {
+            Alert::toast('Demande introuvable', 'error')->position('top-end')->timerProgressBar();
+            return redirect()->back();
         }
+
+        $branche = $demande->branche ? Brache::where('id', $demande->branche)->first() : null;
+        $corps = $demande->corps ? Corp::where('id', $demande->corps)->first() : null;
+        $metier = $demande->metier ? Metier::where('id', $demande->metier)->first() : null;
+        $departement = $demande->departement ? Departement::where('id', $demande->departement)->first() : null;
+        $commune = $demande->commune ? Commune::where('id', $demande->commune)->first() : null;
+
+        $dompdf = new Dompdf();
+
+        // Charger la vue avec les données
+        $view = view('Admin.pdf', compact('demande', 'branche', 'corps', 'metier', 'departement', 'commune'))->render();
+
+        // Générer le PDF
+        $dompdf->loadHtml($view);
+        $dompdf->render();
+
+        // Renvoyer le PDF en réponse
+        return new Response(
+            $dompdf->stream('demande_' . $demande->structure . '.pdf'),
+            200,
+            ['Content-Type' => 'application/pdf']
+        );
     }
 
     public function statistiques()

@@ -1,30 +1,216 @@
 @extends('Commun.Client')
 
 @section('contenu')
+<!-- Import Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif !important;
+        background-color: #f0f2f5;
+    }
+
+    /* Container du formulaire style 'Card' */
+    .form-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        padding: 40px;
+        margin-top: 30px;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .form-title h2 {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    /* Stepper (Barre de progression) */
+    .stepper-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .stepper-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #e9ecef;
+        z-index: 0;
+    }
+
+    .stepper-item {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        width: 20%;
+    }
+
+    .stepper-item .step-counter {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #e9ecef;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .stepper-item.active .step-counter {
+        border-color: #22a6b3;
+        background: #22a6b3;
+        color: #fff;
+        box-shadow: 0 0 0 4px rgba(34, 166, 179, 0.2);
+    }
+
+    .stepper-item.completed .step-counter {
+        background: #22a6b3;
+        border-color: #22a6b3;
+        color: #fff;
+    }
+
+    .stepper-item .step-name {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .stepper-item.active .step-name {
+        color: #22a6b3;
+        font-weight: 700;
+    }
+
+    /* Champs de formulaire */
+    .form-group label {
+        font-weight: 500;
+        color: #34495e;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+        padding: 12px 15px;
+        font-size: 14px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        background-color: #fcfcfc;
+    }
+
+    .form-control:focus {
+        border-color: #22a6b3;
+        box-shadow: 0 0 0 4px rgba(34, 166, 179, 0.1);
+        background-color: #fff;
+    }
+
+    /* Boutons */
+    .btn-nav {
+        padding: 10px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 1px;
+        border: none;
+    }
+
+    .btn-prev {
+        background: #e9ecef;
+        color: #495057;
+    }
+
+    .btn-prev:hover {
+        background: #dee2e6;
+    }
+
+    .btn-next {
+        background: #22a6b3;
+        color: white;
+        box-shadow: 0 4px 10px rgba(34, 166, 179, 0.3);
+    }
+
+    .btn-next:hover {
+        background: #1b8a94;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .localisation-block {
+        background: #f8f9fa;
+        border: 1px dashed #ced4da !important;
+        border-radius: 12px !important;
+        transition: all 0.3s;
+    }
+
+    .localisation-block:hover {
+        background: #fff;
+        border-color: #22a6b3 !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Masquer les étapes sauf la première */
+    .form-step {
+        display: none;
+        animation: fadeIn 0.5s;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
 <main id="main">
-    <section id="contact" class="contact">
+    <section id="contact" class="section py-5">
         <div class="container">
-            <div class="section-title mb-4">
+
+            <div class="text-center mb-4 form-title" data-aos="fade-up">
                 <h2>Formulaire de Demande</h2>
+                <p class="text-muted">Veuillez remplir les informations ci-dessous avec précision.</p>
             </div>
 
+            <!-- Affichage des alertes -->
             @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
+            <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+                <i class="bx bx-check-circle me-2"></i> {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             @endif
 
             @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+                <i class="bx bx-error-circle me-2"></i> {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             @endif
 
             @if($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <ul class="mb-0">
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+                <ul class="mb-0 ps-3">
                     @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                     @endforeach
@@ -33,237 +219,258 @@
             </div>
             @endif
 
-            <div class="row mt-1">
-                <div class="col-lg-12 mt-5 mt-lg-0">
-                    <form method="POST" action="{{ route('demande.store') }}" class="mt-4" enctype="multipart/form-data" id="demandeForm">
-                        @csrf
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
 
-                        <!-- Étape 1: Informations de base -->
-                        <div id="step1" class="form-step">
-                            <div class="row mb-2">
-                                <div class="text-center mb-4">
-                                    <h2 style="font-weight: bold">Information sur la structure</h2>
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label for="structure" style="font-weight: bold">Structure Demandeur</label>
-                                    <input type="text" name="structure" class="form-control" id="structure" value="{{ old('structure') }}" required>
-                                    @error('structure') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="service" style="font-weight: bold">Service</label>
-                                    <select name="service" id="service" class="form-control" required>
-                                        <option value="">Choisissez un service</option>
-                                        <option value="Assistance" {{ old('service') == 'Assistance' ? 'selected' : '' }}>Activités de Promotion</option>
-                                        <option value="Formation" {{ old('service') == 'Formation' ? 'selected' : '' }}>Formation / Renforcement de capacités</option>
-                                    </select>
-                                    @error('service') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
+                    <!-- Card Formulaire -->
+                    <div class="form-card" data-aos="fade-up" data-aos-delay="100">
+
+                        <!-- Stepper -->
+                        <div class="stepper-wrapper">
+                            <div class="stepper-item active" id="stepper1">
+                                <div class="step-counter">1</div>
+                                <div class="step-name">Structure</div>
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="type_demande" style="font-weight: bold">Type Demandeur</label>
-                                    <select name="type_demande" id="type_demande" class="form-control" required>
-                                        <option value="">Choisissez le Type</option>
-                                        <option value="professionnel" {{ old('type_demande') == 'professionnel' ? 'selected' : '' }}>Association / Organisations professionnelles d’artisans</option>
-                                        <option value="structure" {{ old('type_demande') == 'structure' ? 'selected' : '' }}>Structures formelles</option>
-                                        <option value="ONG" {{ old('type_demande') == 'ONG' ? 'selected' : '' }}>Organisations Non Gouvernementales (ONG)</option>
-                                    </select>
-                                    @error('type_demande') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="branche" style="font-weight: bold">Branche</label>
-                                    <select name="branche" id="branche" class="form-control" nullable>
-                                        <option value="">Choisissez une branche</option>
-                                        @forelse ($branches as $branche)
-                                        <option value="{{ $branche->id }}" {{ old('branche') == $branche->id ? 'selected' : '' }}>{{ $branche->nom }}</option>
-                                        @empty
-                                        <option value="">Pas de branche</option>
-                                        @endforelse
-                                    </select>
-                                </div>
+                            <div class="stepper-item" id="stepper2">
+                                <div class="step-counter">2</div>
+                                <div class="step-name">Personnel</div>
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="corps" style="font-weight: bold">Corps Métier</label>
-                                    <select name="corps" id="corps" class="form-control" nullable>
-                                        <option value="">Choisissez d'abord une branche</option>
-                                    </select>
-                                    <input type="hidden" name="corps_nom" id="corps_nom">
-                                </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="metier" style="font-weight: bold">Métier</label>
-                                    <select name="metier" id="metier" class="form-control" nullable>
-                                        <option value="">Choisissez d'abord un corps de métier</option>
-                                    </select>
-                                </div>
+                            <div class="stepper-item" id="stepper3">
+                                <div class="step-counter">3</div>
+                                <div class="step-name">Projet</div>
                             </div>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-success" onclick="nextStep(2)">Suivant</button>
+                            <div class="stepper-item" id="stepper4">
+                                <div class="step-counter">4</div>
+                                <div class="step-name">Lieux</div>
+                            </div>
+                            <div class="stepper-item" id="stepper5">
+                                <div class="step-counter">5</div>
+                                <div class="step-name">Fichier</div>
                             </div>
                         </div>
 
-                        <!-- Étape 2: Informations personnelles -->
-                        <div id="step2" class="form-step" style="display: none;">
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="nom" style="font-weight: bold">Nom</label>
-                                    <input type="text" name="nom" class="form-control" id="nom" value="{{ old('nom') }}" required>
-                                    @error('nom') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="prenom" style="font-weight: bold">Prénom</label>
-                                    <input type="text" name="prenom" class="form-control" id="prenom" value="{{ old('prenom') }}" required>
-                                    @error('prenom') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="sexe" style="font-weight: bold">Sexe</label>
-                                    <select name="sexe" id="sexe" class="form-control" required>
-                                        <option value="">Choisissez le sexe</option>
-                                        <option value="Masculin" {{ old('sexe') == 'Masculin' ? 'selected' : '' }}>Masculin</option>
-                                        <option value="Féminin" {{ old('sexe') == 'Féminin' ? 'selected' : '' }}>Féminin</option>
-                                    </select>
-                                    @error('sexe') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="ifu" style="font-weight: bold">IFU</label>
-                                    <input type="text"
-                                        pattern="[0-9]*"
-                                        name="ifu"
-                                        class="form-control"
-                                        id="ifu"
-                                        value="{{ old('ifu') }}"
-                                        required
-                                        maxlength="13"
-                                        minlength="13">
-                                    @error('ifu') <span class="error text-danger" id="ifu-laravel-error">{{ $message }}</span> @enderror
-                                    <span class="error text-danger" id="ifu-custom-error" style="display:none;"></span>
-                                </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="contact" style="font-weight: bold">Contact</label>
-                                    <input type="number" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" required>
-                                    @error('contact') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-primary" onclick="prevStep(1)">Précédent</button>
-                                <button type="button" class="btn btn-success" onclick="nextStep(3)">Suivant</button>
-                            </div>
-                        </div>
+                        <form method="POST" action="{{ route('demande.store') }}" class="mt-4" enctype="multipart/form-data" id="demandeForm">
+                            @csrf
 
-                        <!-- Étape 3: Informations sur l'activité -->
-                        <div id="step3" class="form-step" style="display: none;">
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="titre_activite" style="font-weight: bold">Titre de l'activité</label>
-                                    <input type="text" name="titre_activite" class="form-control" id="titre_activite" value="{{ old('titre_activite') }}" required>
-                                    @error('titre_activite') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <label for="obejectif_activite" style="font-weight: bold">Objectif de l'activité</label>
-                                    <textarea name="obejectif_activite" class="form-control" id="obejectif_activite" rows="3" required>{{ old('obejectif_activite') }}</textarea>
-                                    @error('obejectif_activite') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-4 form-group">
-                                    <label for="debut_activite" style="font-weight: bold">Début de l'activité</label>
-                                    <input type="date" name="debut_activite" class="form-control" id="debut_activite" value="{{ old('debut_activite') }}" required>
-                                    @error('debut_activite') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label for="fin_activite" style="font-weight: bold">Fin de l'activité</label>
-                                    <input type="date" name="fin_activite" class="form-control" id="fin_activite" value="{{ old('fin_activite') }}" required>
-                                    @error('fin_activite') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label for="dure_activite" style="font-weight: bold">Durée (jours)</label>
-                                    <input type="number" name="dure_activite" class="form-control" id="dure_activite" value="{{ old('dure_activite') }}" readonly>
-                                    @error('dure_activite') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="budget" style="font-weight: bold">Budget estimé</label>
-                                    <input type="number" name="budget" class="form-control" id="budget" value="{{ old('budget') }}" required>
-                                    @error('budget') <span class="error text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-primary" onclick="prevStep(2)">Précédent</button>
-                                <button type="button" class="btn btn-success" onclick="nextStep(4)">Suivant</button>
-                            </div>
-                        </div>
+                            <!-- Étape 1: Informations de base -->
+                            <div id="step1" class="form-step active">
+                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Informations sur la structure</h4>
 
-                        <!-- Étape 4: Localisations -->
-                        <div id="step4" class="form-step" style="display: none;">
-                            <hr>
-                            <h5 class="mb-3">Localisations du projet</h5>
-                            <div id="localisations-container">
-                                <div class="localisation-block mb-3 p-3" style="background:#f8f9fa; border:2px solid #e0e0e0; border-radius:8px; position:relative;">
-                                    <div class="row">
-                                        <div class="col-md-3 form-group">
-                                            <label>Département</label>
-                                            <select name="localisations[0][departement_id]" class="form-control departement-select" required>
-                                                <option value="">Choisir un département</option>
-                                                @foreach($departements as $departement)
-                                                <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>Commune</label>
-                                            <select name="localisations[0][commune_id]" class="form-control commune-select" required>
-                                                <option value="">Choisir une commune</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2 form-group">
-                                            <label>Lieu d'exécution</label>
-                                            <input type="text" name="localisations[0][lieux]" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-2 form-group">
-                                            <label>Effectif Prévu </label>
-                                            <input type="number" name="localisations[0][homme_touche]" class="form-control" required>
-                                        </div>
-
+                                <div class="row g-4">
+                                    <div class="col-md-6 form-group">
+                                        <label for="structure">Structure Demandeur <span class="text-danger">*</span></label>
+                                        <input type="text" name="structure" class="form-control" id="structure" value="{{ old('structure') }}" placeholder="Nom de la structure" required>
+                                        @error('structure') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="service">Service <span class="text-danger">*</span></label>
+                                        <select name="service" id="service" class="form-control" required>
+                                            <option value="">Choisissez un service</option>
+                                            <option value="Assistance" {{ old('service') == 'Assistance' ? 'selected' : '' }}>Activités de Promotion</option>
+                                            <option value="Formation" {{ old('service') == 'Formation' ? 'selected' : '' }}>Formation / Renforcement de capacités</option>
+                                        </select>
+                                        @error('service') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="type_demande">Type Demandeur <span class="text-danger">*</span></label>
+                                        <select name="type_demande" id="type_demande" class="form-control" required>
+                                            <option value="">Choisissez le Type</option>
+                                            <option value="professionnel" {{ old('type_demande') == 'professionnel' ? 'selected' : '' }}>Association / Organisations professionnelles</option>
+                                            <option value="structure" {{ old('type_demande') == 'structure' ? 'selected' : '' }}>Structures formelles</option>
+                                            <option value="ONG" {{ old('type_demande') == 'ONG' ? 'selected' : '' }}>Organisations Non Gouvernementales (ONG)</option>
+                                        </select>
+                                        @error('type_demande') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="branche">Branche</label>
+                                        <select name="branche" id="branche" class="form-control">
+                                            <option value="">Choisissez une branche</option>
+                                            @forelse ($branches as $branche)
+                                            <option value="{{ $branche->id }}" {{ old('branche') == $branche->id ? 'selected' : '' }}>{{ $branche->nom }}</option>
+                                            @empty
+                                            <option value="">Pas de branche</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="corps">Corps Métier</label>
+                                        <select name="corps" id="corps" class="form-control">
+                                            <option value="">Choisissez d'abord une branche</option>
+                                        </select>
+                                        <input type="hidden" name="corps_nom" id="corps_nom">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="metier">Métier</label>
+                                        <select name="metier" id="metier" class="form-control">
+                                            <option value="">Choisissez d'abord un corps de métier</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-2 text-end">
-                                <button type="button" class="btn btn-success" onclick="addLocalisation()">
-                                    <i class="bi bi-plus-circle"></i> Ajouter une localisation
-                                </button>
-                            </div>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-primary" onclick="prevStep(3)">Précédent</button>
-                                <button type="button" class="btn btn-success" onclick="nextStep(5)">Suivant</button>
-                            </div>
-                        </div>
-
-                        <!-- Étape 5: Fichier -->
-                        <div id="step5" class="form-step" style="display: none;">
-                            <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <label for="piece" style="font-weight: bold">Fichier</label>
-                                    <input type="file" class="form-control" name="piece" id="piece" accept=".pdf" required>
-                                    @error('piece') <span class="error text-danger">{{ $message }}</span> @enderror
+                                <div class="text-end mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-next btn-nav" onclick="nextStep(2)">Suivant <i class="bx bx-right-arrow-alt"></i></button>
                                 </div>
                             </div>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-primary" onclick="prevStep(4)">Précédent</button>
-                                <button type="submit" class="btn btn-success" id="sendButton">Envoyer</button>
-                            </div>
-                            <!-- Overlay de chargement lors de la soumission -->
-                            <div id="loadingOverlay" class="loading-overlay">
-                                <div class="loading-spinner"></div>
-                                <div class="loading-text">Envoi en cours...</div>
+
+                            <!-- Étape 2: Informations personnelles -->
+                            <div id="step2" class="form-step">
+                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Informations personnelles</h4>
+
+                                <div class="row g-4">
+                                    <div class="col-md-6 form-group">
+                                        <label for="nom">Nom <span class="text-danger">*</span></label>
+                                        <input type="text" name="nom" class="form-control" id="nom" value="{{ old('nom') }}" placeholder="Votre nom" required>
+                                        @error('nom') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="prenom">Prénom <span class="text-danger">*</span></label>
+                                        <input type="text" name="prenom" class="form-control" id="prenom" value="{{ old('prenom') }}" placeholder="Votre prénom" required>
+                                        @error('prenom') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="sexe">Sexe <span class="text-danger">*</span></label>
+                                        <select name="sexe" id="sexe" class="form-control" required>
+                                            <option value="">Choisissez le sexe</option>
+                                            <option value="Masculin" {{ old('sexe') == 'Masculin' ? 'selected' : '' }}>Masculin</option>
+                                            <option value="Féminin" {{ old('sexe') == 'Féminin' ? 'selected' : '' }}>Féminin</option>
+                                        </select>
+                                        @error('sexe') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="ifu">IFU (13 chiffres) <span class="text-danger">*</span></label>
+                                        <input type="text" pattern="[0-9]*" name="ifu" class="form-control" id="ifu" value="{{ old('ifu') }}" maxlength="13" minlength="13" placeholder="Ex: 1234567890123" required>
+                                        @error('ifu') <span class="text-danger small mt-1" id="ifu-laravel-error">{{ $message }}</span> @enderror
+                                        <span class="text-danger small mt-1" id="ifu-custom-error" style="display:none;"></span>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="contact">Contact <span class="text-danger">*</span></label>
+                                        <input type="number" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Téléphone" required>
+                                        @error('contact') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-prev btn-nav" onclick="prevStep(1)"><i class="bx bx-left-arrow-alt"></i> Précédent</button>
+                                    <button type="button" class="btn btn-next btn-nav" onclick="nextStep(3)">Suivant <i class="bx bx-right-arrow-alt"></i></button>
+                                </div>
                             </div>
 
-                        </div>
-                    </form>
+                            <!-- Étape 3: Informations sur l'activité -->
+                            <div id="step3" class="form-step">
+                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Détails du Projet</h4>
+
+                                <div class="row g-4">
+                                    <div class="col-md-6 form-group">
+                                        <label for="titre_activite">Titre de l'activité <span class="text-danger">*</span></label>
+                                        <input type="text" name="titre_activite" class="form-control" id="titre_activite" value="{{ old('titre_activite') }}" placeholder="Intitulé du projet" required>
+                                        @error('titre_activite') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="obejectif_activite">Objectif de l'activité <span class="text-danger">*</span></label>
+                                        <textarea name="obejectif_activite" class="form-control" id="obejectif_activite" rows="1" placeholder="Objectifs..." required>{{ old('obejectif_activite') }}</textarea>
+                                        @error('obejectif_activite') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="debut_activite">Date Début <span class="text-danger">*</span></label>
+                                        <input type="date" name="debut_activite" class="form-control" id="debut_activite" value="{{ old('debut_activite') }}" required>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="fin_activite">Date Fin <span class="text-danger">*</span></label>
+                                        <input type="date" name="fin_activite" class="form-control" id="fin_activite" value="{{ old('fin_activite') }}" required>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="dure_activite">Durée (jours)</label>
+                                        <input type="number" name="dure_activite" class="form-control bg-light" id="dure_activite" value="{{ old('dure_activite') }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="budget">Budget estimé (FCFA) <span class="text-danger">*</span></label>
+                                        <input type="number" name="budget" class="form-control" id="budget" value="{{ old('budget') }}" placeholder="Montant" required>
+                                        @error('budget') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-prev btn-nav" onclick="prevStep(2)"><i class="bx bx-left-arrow-alt"></i> Précédent</button>
+                                    <button type="button" class="btn btn-next btn-nav" onclick="nextStep(4)">Suivant <i class="bx bx-right-arrow-alt"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Étape 4: Localisations -->
+                            <div id="step4" class="form-step">
+                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Localisations du projet</h4>
+                                <p class="text-muted text-center mb-4 small">Ajoutez les zones d'intervention de votre projet</p>
+
+                                <div id="localisations-container">
+                                    <div class="localisation-block mb-3 p-3">
+                                        <div class="row g-3">
+                                            <div class="col-md-3 form-group">
+                                                <label>Département <span class="text-danger">*</span></label>
+                                                <select name="localisations[0][departement_id]" class="form-control departement-select" required>
+                                                    <option value="">Choisir...</option>
+                                                    @foreach($departements as $departement)
+                                                    <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Commune <span class="text-danger">*</span></label>
+                                                <select name="localisations[0][commune_id]" class="form-control commune-select" required>
+                                                    <option value="">Choisir...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Lieu d'exécution <span class="text-danger">*</span></label>
+                                                <input type="text" name="localisations[0][lieux]" class="form-control" placeholder="Lieu précis" required>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Effectif Prévu <span class="text-danger">*</span></label>
+                                                <input type="number" name="localisations[0][homme_touche]" class="form-control" placeholder="Nombre" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 text-end">
+                                    <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3" onclick="addLocalisation()">
+                                        <i class="bx bx-plus"></i> Ajouter une localisation
+                                    </button>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-prev btn-nav" onclick="prevStep(3)"><i class="bx bx-left-arrow-alt"></i> Précédent</button>
+                                    <button type="button" class="btn btn-next btn-nav" onclick="nextStep(5)">Suivant <i class="bx bx-right-arrow-alt"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Étape 5: Fichier -->
+                            <div id="step5" class="form-step">
+                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Pièces Justificatives</h4>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8">
+                                        <div class="p-5 border border-2 border-dashed rounded-3 text-center bg-light mb-3 position-relative">
+                                            <i class="bx bx-cloud-upload display-4 text-muted mb-3"></i>
+                                            <label for="piece" class="form-label d-block h5 text-dark">Joindre le fichier du projet</label>
+                                            <p class="text-muted small">Format PDF accepté uniquement (Max 20Mo)</p>
+                                            <input type="file" class="form-control mt-3" name="piece" id="piece" accept=".pdf" required>
+                                            @error('piece') <span class="text-danger small mt-1 d-block">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-prev btn-nav" onclick="prevStep(4)"><i class="bx bx-left-arrow-alt"></i> Précédent</button>
+                                    <button type="submit" class="btn btn-next btn-nav bg-success border-success" id="sendButton">
+                                        Envoyer ma demande <i class="bx bx-send"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Overlay de chargement -->
+                                <div id="loadingOverlay" class="loading-overlay">
+                                    <div class="loading-spinner"></div>
+                                    <div class="loading-text">Traitement en cours...</div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -271,51 +478,33 @@
 </main>
 
 <style>
-    .form-step {
-        display: none;
-    }
-
-    .form-step.active {
-        display: block;
-    }
-
-    .loading-animation {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 50px;
-        height: 50px;
-        border: 5px solid rgba(0, 0, 0, 0.1);
-        border-left-color: #22a6b3;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        transform: translate(-50%, -50%);
-    }
-
     .loading-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.9);
         display: none;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         z-index: 2000;
+        backdrop-filter: blur(5px);
     }
 
     .loading-overlay .loading-spinner {
         width: 60px;
         height: 60px;
-        border: 6px solid rgba(0, 0, 0, 0.1);
-        border-top-color: #0d6efd;
+        border: 5px solid rgba(34, 166, 179, 0.1);
+        border-top-color: #22a6b3;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-        margin-bottom: 12px;
+        margin-bottom: 15px;
     }
 
     .loading-overlay .loading-text {
         font-weight: 600;
-        color: #0d6efd;
+        color: #2c3e50;
+        font-size: 16px;
+        letter-spacing: 0.5px;
     }
 
     @keyframes spin {
@@ -327,6 +516,18 @@
 
 <script>
     let localisationIndex = 1;
+
+    function updateStepper(step) {
+        // Reset all steps
+        for (let i = 1; i <= 5; i++) {
+            const stepperItem = document.getElementById(`stepper${i}`);
+            if (stepperItem) {
+                stepperItem.classList.remove('active', 'completed');
+                if (i < step) stepperItem.classList.add('completed');
+                if (i === step) stepperItem.classList.add('active');
+            }
+        }
+    }
 
     function nextStep(step) {
         // Valider l'étape actuelle
@@ -345,65 +546,82 @@
         });
 
         if (!isValid) {
-            alert('Veuillez remplir tous les champs obligatoires');
+            // Petit shake effect ou alerte douce
+            alert('Veuillez remplir tous les champs obligatoires marqués par *');
             return;
         }
 
         // Masquer l'étape actuelle
-        document.getElementById(`step${currentStep}`).style.display = 'none';
-        // Afficher la nouvelle étape
-        document.getElementById(`step${step}`).style.display = 'block';
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        setTimeout(() => {
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            // Afficher la nouvelle étape
+            const nextStepEl = document.getElementById(`step${step}`);
+            nextStepEl.style.display = 'block';
+            setTimeout(() => nextStepEl.classList.add('active'), 50);
+        }, 0); // Changement immédiat pour éviter le flash, animation via CSS
+
+        updateStepper(step);
+        window.scrollTo({
+            top: 100,
+            behavior: 'smooth'
+        });
     }
 
     function prevStep(step) {
-        // Masquer l'étape actuelle
         const currentStep = step + 1;
+        document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById(`step${currentStep}`).style.display = 'none';
-        // Afficher l'étape précédente
-        document.getElementById(`step${step}`).style.display = 'block';
+
+        const prevStepEl = document.getElementById(`step${step}`);
+        prevStepEl.style.display = 'block';
+        setTimeout(() => prevStepEl.classList.add('active'), 50);
+
+        updateStepper(step);
+        window.scrollTo({
+            top: 100,
+            behavior: 'smooth'
+        });
     }
 
     function addLocalisation() {
         const container = document.getElementById('localisations-container');
         const newBlock = document.createElement('div');
         newBlock.className = 'localisation-block mb-3 p-3';
-        newBlock.style.cssText = 'background:#f8f9fa; border:2px solid #e0e0e0; border-radius:8px; position:relative;';
 
         newBlock.innerHTML = `
-        <div class="row">
+        <div class="row g-3 position-relative">
             <div class="col-md-3 form-group">
-                <label>Département</label>
+                <label>Département <span class="text-danger">*</span></label>
                 <select name="localisations[${localisationIndex}][departement_id]" class="form-control departement-select" required>
-                    <option value="">Choisir un département</option>
+                    <option value="">Choisir...</option>
                     @foreach($departements as $departement)
                         <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-3 form-group">
-                <label>Commune</label>
+                <label>Commune <span class="text-danger">*</span></label>
                 <select name="localisations[${localisationIndex}][commune_id]" class="form-control commune-select" required>
-                    <option value="">Choisir une commune</option>
+                    <option value="">Choisir...</option>
                 </select>
             </div>
-            <div class="col-md-2 form-group">
-                <label>Lieu d'exécution</label>
-                <input type="text" name="localisations[${localisationIndex}][lieux]" class="form-control" required>
+            <div class="col-md-3 form-group">
+                <label>Lieu d'exécution <span class="text-danger">*</span></label>
+                <input type="text" name="localisations[${localisationIndex}][lieux]" class="form-control" placeholder="Lieu précis" required>
             </div>
-            <div class="col-md-2 form-group">
-                <label>Hommes touchés</label>
-                <input type="number" name="localisations[${localisationIndex}][homme_touche]" class="form-control" required>
+            <div class="col-md-3 form-group">
+                <label>Effectif Prévu <span class="text-danger">*</span></label>
+                <input type="number" name="localisations[${localisationIndex}][homme_touche]" class="form-control" placeholder="Nombre" required>
             </div>
-            <button type="button" class="btn btn-outline-danger position-absolute remove-localisation" style="top:10px; right:10px;" onclick="removeLocalisation(this)" title="Supprimer cette localisation">
-                <i class="bi bi-trash"></i>
+            <button type="button" class="btn btn-sm text-danger position-absolute top-0 end-0 mt-n2 me-n2" onclick="removeLocalisation(this)" title="Supprimer">
+                <i class="bx bx-x-circle fs-5"></i>
             </button>
         </div>
     `;
 
         container.appendChild(newBlock);
         localisationIndex++;
-
-        // Ajouter l'écouteur d'événement pour le nouveau bloc
         addEventListeners(newBlock);
     }
 
@@ -414,14 +632,14 @@
     function loadCommunes(departementSelect, communeSelect) {
         const departementId = departementSelect.value;
         if (!departementId) {
-            communeSelect.innerHTML = '<option value="">Choisir une commune</option>';
+            communeSelect.innerHTML = '<option value="">Choisir...</option>';
             return;
         }
 
         fetch(`/api/communes/${departementId}`)
             .then(response => response.json())
             .then(communes => {
-                communeSelect.innerHTML = '<option value="">Choisir une commune</option>';
+                communeSelect.innerHTML = '<option value="">Choisir...</option>';
                 communes.forEach(commune => {
                     const option = document.createElement('option');
                     option.value = commune.id;
@@ -450,17 +668,15 @@
         const corpsSelect = document.getElementById('corps');
         const metierSelect = document.getElementById('metier');
 
-        // Réinitialiser les champs dépendants
-        corpsSelect.innerHTML = '<option value="">Choisissez un corps de métier</option>';
+        corpsSelect.innerHTML = '<option value="">Choisissez d\'abord une branche</option>';
         metierSelect.innerHTML = '<option value="">Choisissez d\'abord un corps de métier</option>';
 
-        if (!brancheId) {
-            return;
-        }
+        if (!brancheId) return;
 
         fetch(`/api/corps/${brancheId}`)
             .then(response => response.json())
             .then(corps => {
+                corpsSelect.innerHTML = '<option value="">Choisissez un corps de métier</option>';
                 corps.forEach(corps => {
                     const option = document.createElement('option');
                     option.value = corps.id;
@@ -468,23 +684,17 @@
                     corpsSelect.appendChild(option);
                 });
             })
-            .catch(error => {
-                console.error('Erreur lors du chargement des corps de métier:', error);
-            });
+            .catch(error => console.error('Erreur corps:', error));
     }
 
     function loadMetiers() {
         const corpsId = document.getElementById('corps').value;
         const metierSelect = document.getElementById('metier');
 
-        // Réinitialiser le champ métier
         metierSelect.innerHTML = '<option value="">Choisissez un métier</option>';
 
-        if (!corpsId) {
-            return;
-        }
+        if (!corpsId) return;
 
-        // Charger les métiers liés au corps de métier sélectionné
         fetch(`/api/metiers/${corpsId}`)
             .then(response => response.json())
             .then(metiers => {
@@ -495,12 +705,9 @@
                     metierSelect.appendChild(option);
                 });
             })
-            .catch(error => {
-                console.error('Erreur lors du chargement des métiers:', error);
-            });
+            .catch(error => console.error('Erreur métiers:', error));
     }
 
-    // Calculer la durée automatiquement
     document.getElementById('debut_activite').addEventListener('change', calculateDuration);
     document.getElementById('fin_activite').addEventListener('change', calculateDuration);
 
@@ -517,18 +724,15 @@
         }
     }
 
-    // Ajouter les écouteurs d'événements pour le premier bloc
     document.addEventListener('DOMContentLoaded', function() {
         addEventListeners(document.getElementById('localisations-container'));
 
-        // Afficher la première étape
-        document.getElementById('step1').style.display = 'block';
+        // Initialisation du stepper
+        updateStepper(1);
 
-        // Ajouter les écouteurs pour les dépendances
         document.getElementById('branche').addEventListener('change', loadCorps);
         document.getElementById('corps').addEventListener('change', function() {
             loadMetiers();
-            // Mettre à jour le champ caché avec le nom du corps de métier
             const corpsSelect = document.getElementById('corps');
             const selectedOption = corpsSelect.options[corpsSelect.selectedIndex];
             if (selectedOption) {
@@ -536,10 +740,9 @@
             }
         });
 
-        // Charger les anciennes valeurs si elles existent
+        // Restaurer anciennes valeurs si validation échouée
         if ('{{ old("branche") }}') {
             loadCorps();
-            // Attendre que les corps soient chargés avant de charger les métiers
             setTimeout(() => {
                 if ('{{ old("corps") }}') {
                     document.getElementById('corps').value = '{{ old("corps") }}';
@@ -554,14 +757,12 @@
         }
     });
 
-    // Gestion de l'envoi du formulaire (ne désactive le bouton que si le formulaire est valide)
     const demandeForm = document.getElementById('demandeForm');
     const sendButton = document.getElementById('sendButton');
+
     demandeForm.addEventListener('submit', function(e) {
-        // Calculer la durée avant soumission
         calculateDuration();
 
-        // Si le formulaire est invalide, aller automatiquement à l'étape concernée
         if (!demandeForm.checkValidity()) {
             e.preventDefault();
             const firstInvalid = demandeForm.querySelector(':invalid');
@@ -569,16 +770,18 @@
                 const stepEl = firstInvalid.closest('.form-step');
                 if (stepEl && stepEl.id) {
                     const stepNum = parseInt(stepEl.id.replace('step', ''), 10);
-                    // Afficher uniquement l'étape contenant l'erreur
+                    // Aller à l'étape de l'erreur
                     for (let i = 1; i <= 5; i++) {
                         const el = document.getElementById(`step${i}`);
-                        if (el) el.style.display = (i === stepNum) ? 'block' : 'none';
+                        if (el) {
+                            el.style.display = (i === stepNum) ? 'block' : 'none';
+                            if (i === stepNum) el.classList.add('active');
+                            else el.classList.remove('active');
+                        }
                     }
+                    updateStepper(stepNum);
                 }
                 firstInvalid.classList.add('is-invalid');
-                try {
-                    firstInvalid.reportValidity();
-                } catch (_) {}
                 firstInvalid.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -591,39 +794,22 @@
         if (overlay) overlay.style.display = 'flex';
         sendButton.disabled = true;
     });
-</script>
-<script>
+
     document.getElementById('ifu').addEventListener('input', function() {
         const input = this;
         const errorSpan = document.getElementById('ifu-custom-error');
         const value = input.value.length;
 
-        // Réinitialiser le message d'erreur
         errorSpan.style.display = 'none';
         errorSpan.textContent = '';
+        input.classList.remove('is-invalid');
 
-        if (value > 0 && value < 13) {
-            // Moins de 13 chiffres
-            errorSpan.textContent = 'L\'IFU doit contenir exactement 13 chiffres. Vous en avez saisi ' + value + '.';
+        if (value > 0 && value !== 13) {
+            errorSpan.textContent = `L'IFU doit contenir 13 chiffres. Actuel: ${value}`;
             errorSpan.style.display = 'block';
-            input.setCustomValidity('Veuillez saisir exactement 13 chiffres.');
-        } else if (value > 13) {
-            // Plus de 13 chiffres (Bien que maxlength="13" le bloque)
-            errorSpan.textContent = 'L\'IFU ne peut pas contenir plus de 13 chiffres.';
-            errorSpan.style.display = 'block';
-            input.setCustomValidity('Veuillez saisir exactement 13 chiffres.');
+            input.setCustomValidity('Invalide');
         } else {
-            // Si la longueur est 13 ou vide, la validation est bonne pour le moment
             input.setCustomValidity('');
-        }
-    });
-
-    // Gérer la soumission du formulaire pour forcer la validation
-    document.querySelector('form').addEventListener('submit', function(event) {
-        const input = document.getElementById('ifu');
-        if (input.value.length !== 13) {
-            input.reportValidity(); // Affiche le message de validation
-            event.preventDefault(); // Empêche la soumission du formulaire
         }
     });
 </script>

@@ -15,9 +15,12 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class DemandeVerifier extends Component
 {
     use LivewireAlert;
-   
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
-   
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
+
 
     public $code;
     public $structure;
@@ -45,26 +48,26 @@ class DemandeVerifier extends Component
     public $budget;
     public $piece;
     public $buget_prevu;
-    
+
 
 
     protected function rules()
     {
         return [
             'buget_prevu' => 'required',
-           
+
         ];
     }
-    
 
-    
+
+
 
     ////////////////////////////////////////////////////////////////////////
     ///////////////////////////////Affichage des données///////////////////
     public function update(int $demandeId)
     {
         $demande = Demande::find($demandeId);
-    
+
         if ($demande) {
             $this->demande = $demande->id;
             $this->nom = $demande->nom;
@@ -90,47 +93,38 @@ class DemandeVerifier extends Component
             $this->budget = $demande->budget;
             $this->piece = $demande->piece;
             $this->buget_prevu = $demande->buget_prevu;
-            
-            if($demande->branche)
-            {
-              $branche = Brache::where('id', $demande->branche)->first();
-               if( $branche)
-               {
-                  $this->branche = $branche->nom;
-               }else{
-                  $this->branche = [];
-               }
-            
-              
-            }
-          
-          
-          
-            if($demande->corps)
-            {
-          $corps = Corp::where('id', $demande->corps)->first();
-          if( $corps)
-          {
-              $this->corps = $corps->nom;
-          }else{
-              $this->corps = [];
-          }
-            }  
 
-            if($demande->metier)
-            {
-          $metier = Metier::where('id', $demande->metier)->first();
-          if( $metier)
-          {
-              $this->metier = $metier->nom;
-          }else{
-              $this->metier =[];
-          }
+            if ($demande->branche) {
+                $branche = Brache::where('id', $demande->branche)->first();
+                if ($branche) {
+                    $this->branche = $branche->nom;
+                } else {
+                    $this->branche = [];
+                }
             }
-          
-      } else {
-          return redirect()->back();
-      }
+
+
+
+            if ($demande->corps) {
+                $corps = Corp::where('id', $demande->corps)->first();
+                if ($corps) {
+                    $this->corps = $corps->nom;
+                } else {
+                    $this->corps = [];
+                }
+            }
+
+            if ($demande->metier) {
+                $metier = Metier::where('id', $demande->metier)->first();
+                if ($metier) {
+                    $this->metier = $metier->nom;
+                } else {
+                    $this->metier = [];
+                }
+            }
+        } else {
+            return redirect()->back();
+        }
     }
 
 
@@ -140,22 +134,22 @@ class DemandeVerifier extends Component
 
     public function RejeterDemande(int $demandeId)
     {
-       
+
         $demande = Demande::find($demandeId);
 
         Notification::route('mail',  $demande->email)
-        ->notify(new RejetNotification($demande)); 
+            ->notify(new RejetNotification($demande));
 
         $demande->delete();
-        
+
         $this->dispatchBrowserEvent('fermer');
-       
+
         $this->alert('success', 'La demande a été Rejéter !', [
-          'position' => 'top-end',
-          'timer' => 5000,
-          'toast' => true,
-          'timerProgressBar' => true,
-         ]);
+            'position' => 'top-end',
+            'timer' => 5000,
+            'toast' => true,
+            'timerProgressBar' => true,
+        ]);
     }
 
 
@@ -166,7 +160,7 @@ class DemandeVerifier extends Component
 
 
 
-   /*  public function ValiderBudget(int $demandeId)
+    /*  public function ValiderBudget(int $demandeId)
     {
         $demande = Demande::find($demandeId);
     
@@ -221,12 +215,12 @@ class DemandeVerifier extends Component
     } */
 
 
-    
+
     public function render()
     {
-       
-           $demandes = Demande::where('valide',1)->paginate(6);
-        
-        return view('livewire.demande-verifier',compact('demandes'));
+
+        $demandes = Demande::where('valide', 1)->paginate(6);
+
+        return view('livewire.demande-verifier', compact('demandes'));
     }
 }

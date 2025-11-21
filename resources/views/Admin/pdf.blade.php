@@ -1,266 +1,265 @@
-<div>
-    <div>
-        <p>Nom: {{ $demande->nom }}</p>
-        <p>Prénom: {{ $demande->prenom }}</p>
-        <!-- Ajoutez les autres champs que vous souhaitez inclure dans le PDF -->
-    </div>
-</div>
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aperçu d'impression</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Détails de la Demande</title>
     <style>
+        @page {
+            margin: 0cm 0cm;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .logo-left,
-        .logo-right {
-            max-width: 100px;
-        }
-
-        .header-info {
-            text-align: center;
-        }
-
-        .table-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-
-        .period-info {
-            text-align: right;
+            font-family: 'DejaVu Sans', sans-serif;
             font-size: 12px;
+            margin-top: 3.5cm;
+            margin-left: 2cm;
+            margin-right: 2cm;
+            margin-bottom: 2cm;
+            color: #333;
+        }
+
+        header {
+            position: fixed;
+            top: 0cm;
+            left: 0cm;
+            right: 0cm;
+            height: 3cm;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #009879;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 0.5cm;
+        }
+
+        .header-content {
+            width: 100%;
+            text-align: center;
+        }
+
+        .header-content h2 {
+            margin: 5px;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #2c3e50;
+        }
+
+        .header-content p {
+            margin: 2px 0;
+            font-size: 10px;
+            color: #555;
+        }
+
+        h1.doc-title {
+            text-align: center;
+            color: #009879;
+            text-transform: uppercase;
+            font-size: 18px;
+            margin-top: 20px;
             margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .meta-info {
+            text-align: right;
+            font-size: 10px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            background-color: #009879;
+            color: white;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px 4px 0 0;
+            margin-bottom: 0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
         }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        table th,
+        table td {
+            padding: 10px 15px;
             text-align: left;
-            width: 50%;
-            /* Nouvelle règle pour répartir équitablement l'espace */
+            border: 1px solid #e0e0e0;
+            vertical-align: top;
         }
 
-        th {
-            background-color: #f2f2f2;
+        table tr:nth-of-type(even) {
+            background-color: #f3f3f3;
         }
 
-        /* Nouvelle règle pour centrer les deux logos */
-        .header-info p {
-            margin: 0;
-            /* Supprimez la marge par défaut */
+        table td.label {
+            font-weight: bold;
+            width: 35%;
+            background-color: #fdfdfd;
+            color: #444;
         }
 
-        .header-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
+        table td.value {
+            width: 65%;
+            color: #222;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 1cm;
+            left: 0cm;
+            right: 0cm;
+            height: 1.5cm;
+            background-color: #f8f9fa;
+            color: #777;
             text-align: center;
+            line-height: 1.5cm;
+            font-size: 9px;
+            border-top: 1px solid #e0e0e0;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <div>
-            <<<<<<< HEAD
-                <img src="path/to/left-logo.png" alt="Left Logo" class="logo-left">
-                =======
+    <header>
+        <div class="header-content">
+            <h2>République du Bénin</h2>
+            <p>Ministère des Petites et Moyennes Entreprises</p>
+            <p>et de la Promotion de l'Emploi</p>
+            <p>FDA</p>
+        </div>
+    </header>
 
-                >>>>>>> techne
-                <div class="header-info">
-                    <p>République du Bénin</p>
-                    <p>Ministère des petites et moyennes entreprises et de promotion de l'emploi</p>
-                </div>
+    <footer>
+        Généré le {{ date('d/m/Y à H:i') }} - FDA
+    </footer>
+
+    <main>
+        <h1 class="doc-title">Fiche Récapitulative de Demande d'Appui</h1>
+
+        <div class="meta-info">
+            <strong>Date de soumission :</strong> {{ $demande->created_at->format('d/m/Y H:i') }}
         </div>
 
-    </div>
-
-    <div class="table-title">
-        <p>ETAT RECAPITULATIF DES DEMANDES D'APPUIS</p>
-    </div>
-
-    <<<<<<< HEAD
-        <div class="period-info">
-        <p>Période: {{ $demande->created_at }}</p>
+        <!-- Informations Générales -->
+        <div class="section">
+            <div class="section-title">Informations Générales</div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="label">Nom de la structure</td>
+                        <td class="value">{{ $demande->structure }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Service</td>
+                        <td class="value">{{ $demande->service }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Type demandeur</td>
+                        <td class="value">{{ $demande->type_demande }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Branche</td>
+                        <td class="value">{{ $branche ? $branche->nom : 'Non spécifié' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Corps de Métier</td>
+                        <td class="value">{{ $corps ? $corps->nom : 'Non spécifié' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Métier</td>
+                        <td class="value">{{ $metier ? $metier->nom : 'Non spécifié' }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        =======
 
-        >>>>>>> techne
+        <!-- Informations Personnelles -->
+        <div class="section">
+            <div class="section-title">Informations Personnelles</div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="label">Nom & Prénom</td>
+                        <td class="value">{{ $demande->nom }} {{ $demande->prenom }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Sexe</td>
+                        <td class="value">{{ $demande->sexe }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Email</td>
+                        <td class="value">{{ $demande->email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Numéro IFU</td>
+                        <td class="value">{{ $demande->ifu }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Contact</td>
+                        <td class="value">{{ $demande->contact }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="2">Information Générale</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Nom de la structure:</td>
-                    <td>{{ $demande->structure }}</td>
-                </tr>
-                <tr>
-                    <td>Service:</td>
-                    <td>
-                        {{ $demande->service }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Type demandeur:</td>
-                    <td>
-                        <<<<<<< HEAD
-                            {{ $demande->type_demandeur }}======={{ $demande->type_demande }}>>>>>>> techne
-                    </td>
-                </tr>
-                <tr>
-                    <td>Branche:</td>
-                    <td>
-                        <<<<<<< HEAD
-                            {{ $demande->branche }}======={{ $branche ? $branche->nom : 'pas de branche' }}>>>>>>> techne
-                    </td>
-                </tr>
-                <tr>
-                    <td>Corps Metier:</td>
-                    <td>
-                        <<<<<<< HEAD
-                            {{ $demande->corps }}======={{ $corps ? $corps->nom : 'pas de corps' }}>>>>>>> techne
-                    </td>
-                </tr>
-                <tr>
-                    <td>Metier:</td>
-                    <td>
-                        <<<<<<< HEAD
-                            {{ $demande->metier }}======={{ $metier ? $metier->nom : 'pas de métier' }}>>>>>>> techne
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="2">Information personnelle</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Nom:</td>
-                    <td>{{ $demande->nom }}</td>
-                </tr>
-                <tr>
-                    <td>Prénom:</td>
-                    <td>{{ $demande->prenom }}</td>
-                </tr>
-                <tr>
-                    <td>Sexe:</td>
-                    <td>
-                        {{ $demande->sexe }}
-                    </td>
-                </tr>
-                <tr>
-                    <<<<<<< HEAD
-                        <td>Mail:</td>
-                        <td>{{ $demande->email }}</td>
-                </tr>
-                <tr>
-                    =======
-                    >>>>>>> techne
-                    <td>IFU:</td>
-                    <td>{{ $demande->ifu }}</td>
-                </tr>
-                <tr>
-                    <td>Contact:</td>
-                    <td>{{ $demande->contact }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="2">Information sur le projet</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Titre de l'activité:</td>
-                    <td>{{ $demande->titre_activite }}</td>
-                </tr>
-                <tr>
-                    <td>Objectif de l'activité:</td>
-                    <td>{{ $demande->obejectif_activite }}</textarea></td>
-                </tr>
-                <tr>
-                    <td>Date début d'exécution:</td>
-                    <td>{{ $demande->debut_activite }}</td>
-                </tr>
-                <tr>
-                    <td>Date fin d'exécution:</td>
-                    <td>{{ $demande->fin_activite }}</td>
-                </tr>
-                <tr>
-                    <td>Durée:</td>
-                    <td>{{ $demande->dure_activite }}</textarea></td>
-                </tr>
-                <tr>
-                    <td>Departement:</td>
-                    <<<<<<< HEAD
-                        <td>{{ $demande->departement }}</td>
-                </tr>
-                <tr>
-                    <td>Commune:</td>
-                    <td>{{ $demande->commune }}</td>
-                    =======
-                    <td>{{ $departement->nom }}</td>
-                </tr>
-                <tr>
-                    <td>Commune:</td>
-                    <td>{{ $commune->nom }}</td>
-                    >>>>>>> techne
-                </tr>
-                <tr>
-                    <td>Lieu d'exécution:</td>
-                    <td>{{ $demande->lieux }}</td>
-                </tr>
-                <tr>
-                    <td>Nombre de femme touchant:</td>
-                    <td>{{ $demande->femme_touche }}</td>
-                </tr>
-                <tr>
-                    <td>Nombre d'homme touchant:</td>
-                    <td>{{ $demande->homme_touche }}</td>
-                </tr>
-                <tr>
-                    <td>Budget prévisonnel:</td>
-                    <td>{{ $demande->buget_prevu }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-
+        <!-- Informations sur le Projet -->
+        <div class="section">
+            <div class="section-title">Détails du Projet</div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="label">Titre de l'activité</td>
+                        <td class="value">{{ $demande->titre_activite }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Objectif</td>
+                        <td class="value">{{ $demande->obejectif_activite }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Période d'exécution</td>
+                        <td class="value">Du {{ $demande->debut_activite }} au {{ $demande->fin_activite }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Durée</td>
+                        <td class="value">{{ $demande->dure_activite }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Localisation</td>
+                        <td class="value">
+                            {{ $departement ? $departement->nom : 'Dép. Inconnu' }} -
+                            {{ $commune ? $commune->nom : 'Com. Inconnue' }}
+                            <br>
+                            <small>Lieu précis : {{ $demande->lieux }}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Cibles</td>
+                        <td class="value">
+                            Femmes : {{ $demande->femme_touche }} <br>
+                            Hommes : {{ $demande->homme_touche }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Budget Prévisionnel</td>
+                        <td class="value" style="font-weight: bold; color: #009879;">{{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 
 </html>

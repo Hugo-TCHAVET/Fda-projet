@@ -24,8 +24,11 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class ListeDemande extends Component
 {
 
-  use LivewireAlert;
-  
+    use LivewireAlert;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
 
 
@@ -56,13 +59,13 @@ class ListeDemande extends Component
     public $piece;
     public $message;
     public $suspendre;
-    
-  
+
+
     protected function rules()
     {
         return [
             'message' => 'required',
-           
+
         ];
     }
 
@@ -71,7 +74,7 @@ class ListeDemande extends Component
     public function update(int $demandeId)
     {
         $demande = Demande::find($demandeId);
-    
+
         if ($demande) {
             $this->demande = $demande->id;
             $this->nom = $demande->nom;
@@ -100,96 +103,82 @@ class ListeDemande extends Component
 
 
 
-            if($demande->departement)
-            {
-              $departement = Departement::where('id',$demande->departement)->first();
-              $this->departement = $departement->nom;
-  
+            if ($demande->departement) {
+                $departement = Departement::where('id', $demande->departement)->first();
+                $this->departement = $departement->nom;
             }
-  
-  
-            if($demande->commune)
-            {
-              $commune = Commune::where('id',$demande->commune)->first();
-              $this->commune = $commune->nom;
-  
-            }
-            
-            if($demande->branche)
-            {
-              $branche = Brache::where('id', $demande->branche)->first();
-               if( $branche)
-               {
-                  $this->branche = $branche->nom;
-               }else{
-                  $this->branche = [];
-               }
-            
-              
-            }
-          
-          
-          
-            if($demande->corps)
-            {
-          $corps = Corp::where('id', $demande->corps)->first();
-          if( $corps)
-          {
-              $this->corps = $corps->nom;
-          }else{
-              $this->corps = [];
-          }
-            }  
 
-            if($demande->metier)
-            {
-          $metier = Metier::where('id', $demande->metier)->first();
-          if( $metier)
-          {
-              $this->metier = $metier->nom;
-          }else{
-              $this->metier =[];
-          }
+
+            if ($demande->commune) {
+                $commune = Commune::where('id', $demande->commune)->first();
+                $this->commune = $commune->nom;
             }
-          
-      } else {
-          return redirect()->back();
-      }
+
+            if ($demande->branche) {
+                $branche = Brache::where('id', $demande->branche)->first();
+                if ($branche) {
+                    $this->branche = $branche->nom;
+                } else {
+                    $this->branche = [];
+                }
+            }
+
+
+
+            if ($demande->corps) {
+                $corps = Corp::where('id', $demande->corps)->first();
+                if ($corps) {
+                    $this->corps = $corps->nom;
+                } else {
+                    $this->corps = [];
+                }
+            }
+
+            if ($demande->metier) {
+                $metier = Metier::where('id', $demande->metier)->first();
+                if ($metier) {
+                    $this->metier = $metier->nom;
+                } else {
+                    $this->metier = [];
+                }
+            }
+        } else {
+            return redirect()->back();
+        }
     }
 
-///////////////////////// Transmetre ///////////////////////////////////////
+    ///////////////////////// Transmetre ///////////////////////////////////////
     public function Transmetre(int $demandeId)
     {
-      $demande = Demande::find($demandeId);
+        $demande = Demande::find($demandeId);
 
-      $demande->update(['valide'=> 1,'statut'=>"En cours de traitement"]);
-      $this->alert('success', 'Votre demande a été envoyé avec succes!', [
-        'position' => 'top-end',
-        'timer' => 5000,
-        'toast' => true,
-        'timerProgressBar' => true,
-       ]);
-      
+        $demande->update(['valide' => 1, 'statut' => "En cours de traitement"]);
+        $this->alert('success', 'Votre demande a été envoyé avec succes!', [
+            'position' => 'top-end',
+            'timer' => 5000,
+            'toast' => true,
+            'timerProgressBar' => true,
+        ]);
     }
 
 
 
 
-//////////////////////////////Suspendre///////////////////////////////////////
+    //////////////////////////////Suspendre///////////////////////////////////////
     protected function validateDemande()
     {
         return $this->validate([
-           
+
             'message' => ['required'],
-           
-           
+
+
         ]);
     }
 
     public function Suspendre(int $demandeId)
     {
         $demande = Demande::find($demandeId);
-    
+
         if ($demande) {
             $this->demande = $demande->id;
             $this->code = $demande->code;
@@ -217,29 +206,26 @@ class ListeDemande extends Component
             $this->piece = $demande->piece;
             $this->message = $demande->message;
             $this->suspendre = $demande->suspendre;
-            
-              
-            
         } else {
             return redirect()->back();
         }
     }
 
 
-   
 
 
 
-    
+
+
 
     public function render()
     {
 
-           // dd($anneeActive);
-           $demandes = Demande::where('valide',0)
-           ->where('suspendre',0)
-           ->paginate(6);
-       
-        return view('livewire.liste-demande',compact('demandes'));
+        // dd($anneeActive);
+        $demandes = Demande::where('valide', 0)
+            ->where('suspendre', 0)
+            ->paginate(6);
+
+        return view('livewire.liste-demande', compact('demandes'));
     }
 }
