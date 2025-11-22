@@ -13,6 +13,7 @@
   /* On écrase ou complète les styles si nécessaire */
   body {
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
   }
 
   /* Animation personnalisée pour le curseur Typed si non incluse */
@@ -23,7 +24,7 @@
   }
 </style>
 
-<main id="main" class="relative w-full h-screen overflow-hidden font-sans">
+<main id="main" class="!ml-0 !pl-0 relative w-full h-screen overflow-hidden font-sans">
 
   <!-- 1. Image de fond immersive avec Overlay -->
   <div class="absolute inset-0 z-0">
@@ -42,27 +43,27 @@
     <div class="max-w-3xl" data-aos="fade-up" data-aos-duration="1000">
 
       <!-- Badge / Petit titre -->
-      <span class="inline-block py-1 px-3 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-sm font-semibold tracking-wider mb-6">
+      <span class="inline-block py-1 px-3 rounded-full  text-[#198754] border border-amber-500/30 text-sm font-semibold tracking-wider mb-6">
         RÉPUBLIQUE DU BÉNIN
       </span>
 
       <!-- Titre Principal -->
       <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6">
         Fonds de Développement <br />
-        de <span class="text-amber-500">l’Artisanat</span>
+        de <span class="text-[#198754]">l’Artisanat</span>
       </h1>
 
       <!-- Sous-titre avec l'effet Typed.js -->
       <p class="text-xl md:text-2xl text-gray-300 font-light mb-8 h-16 md:h-auto">
         Le FDA vous assiste sous trois formes : <br class="md:hidden" />
-        <span class="font-bold text-white border-b-4 border-amber-500 typed"
+        <span class="font-bold text-white border-b-4 border-[#198754] typed"
           data-typed-items="Formation., Promotion., Appui Financier."></span>
       </p>
 
       <!-- Boutons d'action (Call to Action) -->
       <div class="flex flex-col sm:flex-row gap-4 mt-8">
         <a href="{{ route('client.formulaire') }}"
-          class="group flex items-center justify-center px-8 py-4 text-lg font-bold text-slate-900 bg-amber-500 rounded-lg shadow-lg hover:bg-amber-400 transition-all duration-300 hover:-translate-y-1">
+          class="group flex items-center justify-center px-8 py-4 text-lg font-bold text-slate-900 bg-[#198754] rounded-lg shadow-lg hover:bg-amber-400 transition-all duration-300 hover:-translate-y-1">
           <span>Demander un appui</span>
           <!-- Petite flèche qui bouge au survol -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
