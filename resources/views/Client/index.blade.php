@@ -40,7 +40,7 @@
   <!-- 2. Contenu Principal -->
   <section class="relative z-10 flex flex-col justify-center h-full px-6 mx-auto max-w-7xl">
 
-    <div class="max-w-3xl" data-aos="fade-up" data-aos-duration="1000">
+    <div class="max-w-3xl pl-10" data-aos="fade-up" data-aos-duration="1000">
 
       <!-- Badge / Petit titre -->
       <span class="inline-block py-1 px-3 rounded-full  text-[#198754] border border-amber-500/30 text-sm font-semibold tracking-wider mb-6">
