@@ -87,6 +87,11 @@ class IndexAdmin extends Component
             ->count();
 
         $nbrepromotion = Demande::where('service', "Assistance")->count();
+
+        $totaldemandes = Demande::count();
+
+        $demandesapprouvees = Demande::where('valide', 2)->count();
+
         return view('livewire.index-admin', compact(
             'nbreformation',
             'ongfinancier',
@@ -100,7 +105,9 @@ class IndexAdmin extends Component
             'proformation',
             'nbrefinancier',
             'nbrepromotion',
-            'monthlyData'
+            'monthlyData',
+            'totaldemandes',
+            'demandesapprouvees'
         ));
     }
 }

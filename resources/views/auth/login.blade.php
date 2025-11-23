@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <h1 style="font-size: 24px; font-weight: bold;">FDA</h1>
+            <a href="/" style="font-size: 24px; font-weight: bold;">FDA</a>
         </x-slot>
 
         <x-validation-errors class="mb-4" />

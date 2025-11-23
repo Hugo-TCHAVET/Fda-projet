@@ -2,7 +2,7 @@
 
   <div class="main-panel" id="main-panel">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute">
+    <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute" style="background-color: #198754 !important;">
 
       <div class="container-fluid">
         <div class="navbar-wrapper">
@@ -62,7 +62,7 @@
       </div>
     </nav>
     <!-- End Navbar -->
-    <div class="panel-header panel-header-sm"></div>
+    <div style="background-color: #198754 !important; height: 17vh;"></div>
     <!-- <div class="content">
       <canvas id="bigDashboardChart"></canvas>
     </div> -->

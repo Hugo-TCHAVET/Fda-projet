@@ -34,26 +34,26 @@
       display: block;
     }
 
-    .sidebar[data-color="rgb(27, 58, 94)"]:after,
-    .off-canvas-sidebar[data-color="rgb(27, 58, 94)"]:after {
-      background: rgb(27, 58, 94);
+    .sidebar[data-color="#198754"]:after,
+    .off-canvas-sidebar[data-color="#198754"]:after {
+      background: #198754;
     }
 
-    .sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]),
-    .off-canvas-sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]) {
-      color: rgb(27, 58, 94);
+    .sidebar[data-color="#198754"] .nav li.active>a:not([data-toggle="collapse"]),
+    .off-canvas-sidebar[data-color="#198754"] .nav li.active>a:not([data-toggle="collapse"]) {
+      color: #198754;
     }
 
-    .sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]) i,
-    .off-canvas-sidebar[data-color="rgb(27, 58, 94)"] .nav li.active>a:not([data-toggle="collapse"]) i {
-      color: rgb(27, 58, 94);
+    .sidebar[data-color="#198754"] .nav li.active>a:not([data-toggle="collapse"]) i,
+    .off-canvas-sidebar[data-color="#198754"] .nav li.active>a:not([data-toggle="collapse"]) i {
+      color: #198754;
     }
   </style>
 </head>
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="rgb(27, 58, 94)">
+    <div class="sidebar" data-color="#198754">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
