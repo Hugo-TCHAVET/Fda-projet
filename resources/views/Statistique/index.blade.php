@@ -58,7 +58,7 @@
         </div>
     </nav>
     <!-- End Navbar -->
-    <div class="panel-header panel-header-sm">
+    <div style="height: 17vh; background-color: #198754;">
     </div>
     <div class="content">
 

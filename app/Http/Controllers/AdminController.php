@@ -159,6 +159,7 @@ class AdminController extends Controller
                         'buget_prevu' => $validatedData['buget_prevu'],
                         'valide' => 2,
                         'statuts' => "Approuvé",
+                        'date_approbation' => now(),
                     ]);
                     Alert::toast('Budget enrégistré avec succès', 'success')->position('top-end')->timerProgressBar();
                     return redirect()->route('demande.verifier');
@@ -310,42 +311,64 @@ class AdminController extends Controller
         return redirect()->route('liste.demande');
     }
 
+    public function edit($id)
+    {
+        $demande = Demande::findOrFail($id);
+        $branches = Brache::all();
+        $corp = Corp::all();
+        $metiers = Metier::all();
+        $departements = Departement::all();
+        $communes = Commune::all();
+        $localisations = $demande->localisations; // Relation avec les localisations
+
+        return view('Admin.edit', compact('demande', 'branches', 'corp', 'metiers', 'departements', 'communes', 'localisations'));
+    }
+
     public function updateDemande(Request $request, $id)
     {
         $validated = $request->validate([
-            'structure' => 'required',
-            'service' => 'required',
-            'type_demande' => 'required',
+            'structure' => 'required|string',
+            'service' => 'required|string',
+            'type_demande' => 'required|string',
             'branche' => 'nullable',
             'corps' => 'nullable',
             'metier' => 'nullable',
-            'nom' => 'required',
-            'prenom' => 'required',
-            'sexe' => 'required',
-            'email' => 'required|email',
-            'ifu' => 'required|integer',
-            'contact' => 'required|integer',
-            'titre_activite' => 'required',
-            'obejectif_activite' => 'required',
-            'debut_activite' => 'required',
-            'fin_activite' => 'required',
-            'dure_activite' => 'required',
-            'budget' => 'required',
-            'localisations' => 'required|array|min:1',
-            'localisations.*.departement_id' => 'required|exists:departements,id',
-            'localisations.*.commune_id' => 'required|exists:communes,id',
-            'localisations.*.lieux' => 'required|string',
-            'localisations.*.homme_touche' => 'required|integer',
-            'localisations.*.femme_touche' => 'required|integer',
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'sexe' => 'required|string',
+            'ifu' => 'required|string',
+            'contact' => 'nullable',
+            'titre_activite' => 'required|string',
+            'obejectif_activite' => 'required|string',
+            'debut_activite' => 'nullable|date',
+            'fin_activite' => 'nullable|date',
+            'dure_activite' => 'nullable',
+            'budget' => 'required|numeric',
+            'localisations' => 'nullable|array',
+            'localisations.*.departement_id' => 'nullable|exists:departements,id',
+            'localisations.*.commune_id' => 'nullable|exists:communes,id',
+            'localisations.*.lieux' => 'nullable|string',
+            'localisations.*.homme_touche' => 'nullable|integer',
+            'localisations.*.femme_touche' => 'nullable|integer',
         ]);
 
         $demande = Demande::findOrFail($id);
+
+        // Mise à jour des champs principaux
         $demande->update($request->except('localisations'));
-        $demande->localisations()->delete();
-        foreach ($request->localisations as $loc) {
-            $demande->localisations()->create($loc);
+
+        // Mise à jour des localisations
+        if ($request->has('localisations')) {
+            $demande->localisations()->delete();
+            // Filtrer les localisations vides avant de les créer
+            foreach ($request->localisations as $loc) {
+                if (!empty($loc['departement_id'])) { // On crée seulement si au moins le département est présent
+                    $demande->localisations()->create($loc);
+                }
+            }
         }
+
         Alert::toast('Demande modifiée avec succès !', 'success')->position('top-end')->timerProgressBar();
-        return redirect()->route('liste.demande');
+        return redirect()->back();
     }
 }

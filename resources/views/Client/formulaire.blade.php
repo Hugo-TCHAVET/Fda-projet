@@ -153,12 +153,41 @@
         border: 1px dashed #ced4da !important;
         border-radius: 12px !important;
         transition: all 0.3s;
+        position: relative;
     }
 
     .localisation-block:hover {
         background: #fff;
         border-color: #22a6b3 !important;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-remove-localisation {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        z-index: 10;
+    }
+
+    .btn-remove-localisation:hover {
+        background: #dc3545;
+        color: #fff;
+        transform: scale(1.1);
+    }
+
+    .btn-remove-localisation i {
+        font-size: 18px;
     }
 
     /* Masquer les étapes sauf la première */
@@ -342,9 +371,9 @@
                                         <span class="text-danger small mt-1" id="ifu-custom-error" style="display:none;"></span>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="contact">Contact <span class="text-danger">*</span></label>
-                                        <input type="text" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Ex: +2290167854592" required>
-                                        <div class="invalid-feedback">Ce champ est obligatoire</div>
+                                        <label for="contact">Contact </label>
+                                        <input type="text" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Ex: +2290167854592">
+
                                         @error('contact') <span class="text-danger small mt-1 d-block">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
@@ -370,12 +399,12 @@
                                         @error('obejectif_activite') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="col-md-4 form-group">
-                                        <label for="debut_activite">Date Début <span class="text-danger">*</span></label>
-                                        <input type="date" name="debut_activite" class="form-control" id="debut_activite" value="{{ old('debut_activite') }}" required>
+                                        <label for="debut_activite">Date Début</label>
+                                        <input type="date" name="debut_activite" class="form-control" id="debut_activite" value="{{ old('debut_activite') }}">
                                     </div>
                                     <div class="col-md-4 form-group">
-                                        <label for="fin_activite">Date Fin <span class="text-danger">*</span></label>
-                                        <input type="date" name="fin_activite" class="form-control" id="fin_activite" value="{{ old('fin_activite') }}" required>
+                                        <label for="fin_activite">Date Fin</label>
+                                        <input type="date" name="fin_activite" class="form-control" id="fin_activite" value="{{ old('fin_activite') }}">
                                     </div>
                                     <div class="col-md-4 form-group">
                                         <label for="dure_activite">Durée (jours)</label>
@@ -402,8 +431,8 @@
                                     <div class="localisation-block mb-3 p-3">
                                         <div class="row g-3">
                                             <div class="col-md-3 form-group">
-                                                <label>Département <span class="text-danger">*</span></label>
-                                                <select name="localisations[0][departement_id]" class="form-control departement-select" required>
+                                                <label>Département <small class="text-muted">(Optionnel)</small></label>
+                                                <select name="localisations[0][departement_id]" class="form-control departement-select">
                                                     <option value="">Choisir...</option>
                                                     @foreach($departements as $departement)
                                                     <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
@@ -411,18 +440,18 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 form-group">
-                                                <label>Commune <span class="text-danger">*</span></label>
-                                                <select name="localisations[0][commune_id]" class="form-control commune-select" required>
+                                                <label>Commune <small class="text-muted">(Optionnel)</small></label>
+                                                <select name="localisations[0][commune_id]" class="form-control commune-select">
                                                     <option value="">Choisir...</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3 form-group">
-                                                <label>Lieu d'exécution <span class="text-danger">*</span></label>
-                                                <input type="text" name="localisations[0][lieux]" class="form-control" placeholder="Lieu précis" required>
+                                                <label>Lieu d'exécution <small class="text-muted">(Optionnel)</small></label>
+                                                <input type="text" name="localisations[0][lieux]" class="form-control" placeholder="Lieu précis">
                                             </div>
                                             <div class="col-md-3 form-group">
-                                                <label>Effectif Prévu <span class="text-danger">*</span></label>
-                                                <input type="number" name="localisations[0][homme_touche]" class="form-control" placeholder="Nombre" required>
+                                                <label>Effectif Prévu <small class="text-muted">(Optionnel)</small></label>
+                                                <input type="number" name="localisations[0][homme_touche]" class="form-control" placeholder="Nombre">
                                             </div>
                                         </div>
                                     </div>
@@ -442,15 +471,15 @@
 
                             <!-- Étape 5: Fichier -->
                             <div id="step5" class="form-step">
-                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Pièces Justificatives</h4>
+                                <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Pièces Justificatives <small class="text-muted">(Optionnel)</small></h4>
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-8">
-                                        <div class="p-5 border border-2 border-dashed rounded-3 text-center bg-light mb-3 position-relative">
+                                        <div class="p-5 border-2 border-dashed rounded-3 text-center bg-light mb-3 position-relative">
                                             <i class="bx bx-cloud-upload display-4 text-muted mb-3"></i>
-                                            <label for="piece" class="form-label d-block h5 text-dark">Joindre le fichier du projet</label>
+                                            <label for="piece" class="form-label d-block h5 text-dark">Joindre le fichier du projet <small class="text-muted">(Optionnel)</small></label>
                                             <p class="text-muted small">Format PDF accepté uniquement (Max 20Mo)</p>
-                                            <input type="file" class="form-control mt-3" name="piece" id="piece" accept=".pdf" required>
+                                            <input type="file" class="form-control mt-3" name="piece" id="piece" accept=".pdf">
                                             @error('piece') <span class="text-danger small mt-1 d-block">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
@@ -600,10 +629,13 @@
         newBlock.className = 'localisation-block mb-3 p-3';
 
         newBlock.innerHTML = `
-        <div class="row g-3 position-relative">
+        <button type="button" class="btn-remove-localisation" onclick="removeLocalisation(this)" title="Supprimer cette localisation">
+            <i class="bx bx-trash"></i>
+        </button>
+        <div class="row g-3">
             <div class="col-md-3 form-group">
-                <label>Département <span class="text-danger">*</span></label>
-                <select name="localisations[${localisationIndex}][departement_id]" class="form-control departement-select" required>
+                <label>Département <small class="text-muted">(Optionnel)</small></label>
+                <select name="localisations[${localisationIndex}][departement_id]" class="form-control departement-select">
                     <option value="">Choisir...</option>
                     @foreach($departements as $departement)
                         <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
@@ -611,22 +643,19 @@
                 </select>
             </div>
             <div class="col-md-3 form-group">
-                <label>Commune <span class="text-danger">*</span></label>
-                <select name="localisations[${localisationIndex}][commune_id]" class="form-control commune-select" required>
+                <label>Commune <small class="text-muted">(Optionnel)</small></label>
+                <select name="localisations[${localisationIndex}][commune_id]" class="form-control commune-select">
                     <option value="">Choisir...</option>
                 </select>
             </div>
             <div class="col-md-3 form-group">
-                <label>Lieu d'exécution <span class="text-danger">*</span></label>
-                <input type="text" name="localisations[${localisationIndex}][lieux]" class="form-control" placeholder="Lieu précis" required>
+                <label>Lieu d'exécution <small class="text-muted">(Optionnel)</small></label>
+                <input type="text" name="localisations[${localisationIndex}][lieux]" class="form-control" placeholder="Lieu précis">
             </div>
             <div class="col-md-3 form-group">
-                <label>Effectif Prévu <span class="text-danger">*</span></label>
-                <input type="number" name="localisations[${localisationIndex}][homme_touche]" class="form-control" placeholder="Nombre" required>
+                <label>Effectif Prévu <small class="text-muted">(Optionnel)</small></label>
+                <input type="number" name="localisations[${localisationIndex}][homme_touche]" class="form-control" placeholder="Nombre">
             </div>
-            <button type="button" class="btn btn-sm text-danger position-absolute top-0 end-0 mt-n2 me-n2" onclick="removeLocalisation(this)" title="Supprimer">
-                <i class="bx bx-x-circle fs-5"></i>
-            </button>
         </div>
     `;
 
@@ -728,7 +757,7 @@
         if (debut && fin) {
             const debutDate = new Date(debut);
             const finDate = new Date(fin);
-            const diffTime = Math.abs(finDate - debutDate);
+            const diffTime = Math.abs(finDate - debutDate + 1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             document.getElementById('dure_activite').value = diffDays;
         }

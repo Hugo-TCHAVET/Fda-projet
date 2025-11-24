@@ -374,16 +374,16 @@
                                         @error('ifu') <span class="error-message">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label-custom">Contact <span class="text-danger">*</span></label>
+                                        <label class="form-label-custom">Contact</label>
                                         <div class="input-group">
-                                            <span class="input-group-text">+229</span>
+
                                             <input type="text"
                                                 class="form-control @error('contact') is-invalid @enderror"
                                                 wire:model="contact"
                                                 placeholder="97123456"
                                                 maxlength="8">
                                         </div>
-                                        <small class="input-hint">8 chiffres (Ex: 01/21/41/97/98...)</small>
+
                                         @error('contact') <span class="error-message">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
@@ -415,7 +415,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label-custom">Date début <span class="text-danger">*</span></label>
+                                        <label class="form-label-custom">Date début</label>
                                         <input type="date"
                                             class="form-control @error('debut_activite') is-invalid @enderror"
                                             min="{{$date}}"
@@ -423,7 +423,7 @@
                                         @error('debut_activite') <span class="error-message">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label-custom">Date fin <span class="text-danger">*</span></label>
+                                        <label class="form-label-custom">Date fin</label>
                                         <input type="date"
                                             class="form-control @error('fin_activite') is-invalid @enderror"
                                             min="{{$debut_activite}}"
@@ -441,7 +441,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label-custom">Département <span class="text-danger">*</span></label>
+                                        <label class="form-label-custom">Département <small class="text-muted">(Optionnel)</small></label>
                                         <select class="form-control @error('departement') is-invalid @enderror" wire:model="departement">
                                             <option value="">Choisir...</option>
                                             @forelse ($departements as $departement)
@@ -454,7 +454,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label-custom">Commune <span class="text-danger">*</span></label>
+                                        <label class="form-label-custom">Commune <small class="text-muted">(Optionnel)</small></label>
                                         <select class="form-control @error('commune') is-invalid @enderror" wire:model="commune">
                                             <option value="">Choisir...</option>
                                             @forelse ($communes as $commune)
@@ -467,7 +467,7 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <label class="form-label-custom">Lieu d'exécution (Précis) <span class="text-danger">*</span></label>
+                                        <label class="form-label-custom">Lieu d'exécution (Précis) <small class="text-muted">(Optionnel)</small></label>
                                         <input type="text"
                                             class="form-control @error('lieux') is-invalid @enderror"
                                             wire:model="lieux"
@@ -509,14 +509,14 @@
                                 @if ($formStep == 4)
                                 <div class="section-header">
                                     <h3>Documents</h3>
-                                    <p>Joindre les pièces justificatives</p>
+                                    <p>Joindre les pièces justificatives <small class="text-muted">(Optionnel)</small></p>
                                 </div>
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-8">
                                         <div class="p-4 border border-dashed rounded text-center @error('piece') border-danger @else bg-light @enderror">
                                             <i class="bx bx-cloud-upload display-4 text-muted mb-3"></i>
-                                            <label class="form-label-custom d-block">Fichier du projet <span class="text-danger">*</span></label>
+                                            <label class="form-label-custom d-block">Fichier du projet <small class="text-muted">(Optionnel)</small></label>
                                             <input type="file"
                                                 class="form-control @error('piece') is-invalid @enderror"
                                                 wire:model="piece"

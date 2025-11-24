@@ -1,5 +1,5 @@
 <div>
-    <div>
+    <div style="height: 250px; padding: 10px">
         <canvas id="sexeChart"></canvas>
     </div>
     <style>
@@ -17,7 +17,7 @@
     <script>
         var sexeData = @json($data);
         var sexeLabels = sexeData.map(function(item) {
-            return item.sexe === 1 ? 'Masculin' : 'Féminin';
+            return item.sexe === 'Masculin' ? 'Masculin' : 'Féminin';
         });
         var sexeCounts = sexeData.map(function(item) {
             return item.count;

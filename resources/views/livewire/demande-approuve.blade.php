@@ -63,7 +63,7 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="panel-header panel-header-sm">
+    <div style="height: 17vh; background-color: #198754;">
     </div>
 
     <div class="content">
@@ -81,8 +81,9 @@
                     <tr>
                       <th>Structure</th>
                       <th>Contact</th>
-                      <th>Budget Demandé</th>
-                      <th>Budget Attribué</th>
+                      <th>Budget de l'activité</th>
+                      <th>Budget attribué</th>
+                      <th>Date d'approbation</th>
                       <th>Statut</th>
                       <th class="text-center">Actions</th>
                     </tr>
@@ -101,6 +102,11 @@
                       </td>
                       <td style="font-weight: bold; color: #009879;">
                         {{ $demande->buget_prevu }} FCFA
+                      </td>
+                      <td>
+                        <span style="font-weight: 500; color: #666;">
+                          {{ $demande->date_approbation ? \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y H:i') : 'N/A' }}
+                        </span>
                       </td>
                       <td>
                         <span class="status-badge status-approved">
@@ -123,7 +129,7 @@
                     </tr>
                     @empty
                     <tr>
-                      <td colspan="6" class="text-center py-5">
+                      <td colspan="7" class="text-center py-5">
                         <div style="display: flex; flex-direction: column; align-items: center; color: #888;">
                           <i class="now-ui-icons files_box" style="font-size: 32px; margin-bottom: 10px;"></i>
                           <p style="font-size: 16px;">Aucune demande trouvée</p>

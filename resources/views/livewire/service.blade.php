@@ -1,6 +1,6 @@
 {{-- resources/views/livewire/service.blade.php --}}
 <div>
-    <div>
+    <div style="height: 250px; padding: 10px">
         <canvas id="serviceChart"></canvas>
     </div>
     <style>

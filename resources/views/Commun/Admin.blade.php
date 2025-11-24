@@ -83,7 +83,7 @@
           <li class="{{ request()->routeIs('demande.suspendu') ? 'active' : '' }}">
             <a href="{{ route('demande.suspendu') }}">
               <i class="now-ui-icons location_map-big"></i>
-              <p>Demande suspendus</p>
+              <p>Demande rejetée</p>
             </a>
           </li>
           @elseif (Auth::user()->email == 'sese@gmail.com')

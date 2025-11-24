@@ -75,20 +75,18 @@ class FormulaireClient extends Component
         'titre_activite.min' => 'Le titre doit contenir au moins 5 caractères',
         'obejectif_activite.required' => 'L\'objectif est obligatoire',
         'obejectif_activite.min' => 'L\'objectif doit contenir au moins 20 caractères',
-        'debut_activite.required' => 'La date de début est obligatoire',
         'debut_activite.after_or_equal' => 'La date ne peut pas être dans le passé',
-        'fin_activite.required' => 'La date de fin est obligatoire',
         'fin_activite.after' => 'La date de fin doit être après la date de début',
-        'departement.required' => 'Veuillez sélectionner un département',
-        'commune.required' => 'Veuillez sélectionner une commune',
-        'lieux.required' => 'Le lieu d\'exécution est obligatoire',
+        'departement.exists' => 'Le département sélectionné est invalide',
+        'commune.exists' => 'La commune sélectionnée est invalide',
+        'lieux.min' => 'Le lieu d\'exécution doit contenir au moins 5 caractères',
         'homme_touche.integer' => 'Valeur invalide',
         'femme_touche.integer' => 'Valeur invalide',
         'budget.required' => 'Le budget est obligatoire',
         'budget.numeric' => 'Le budget doit être un nombre',
         'budget.min' => 'Le budget doit être supérieur à 0',
 
-        'piece.required' => 'Le document est obligatoire',
+        'piece.nullable' => 'Le document est facultatif',
         'piece.mimes' => 'Formats acceptés: PDF, JPG, PNG',
         'piece.max' => 'Taille maximale: 5 Mo',
     ];
@@ -129,18 +127,18 @@ class FormulaireClient extends Component
             'email' => 'required|email|max:255',
             'sexe' => 'required|in:Masculin,Feminin',
             'ifu' => 'required|digits:13',
-            'contact' => 'required|digits:8|regex:/^(01|21|41|51|52|53|54|56|57|58|59|61|62|63|64|65|66|67|68|69|90|91|94|95|96|97|98|99)\d{6}$/',
+            'contact' => 'nullable',
             'titre_activite' => 'required|string|min:5|max:255',
             'obejectif_activite' => 'required|string|min:20|max:1000',
-            'debut_activite' => 'required|date|after_or_equal:today',
-            'fin_activite' => 'required|date|after:debut_activite',
-            'departement' => 'required|exists:departements,id',
-            'commune' => 'required|exists:communes,id',
-            'lieux' => 'required|string|min:5|max:255',
+            'debut_activite' => 'nullable|date|after_or_equal:today',
+            'fin_activite' => 'nullable|date|after:debut_activite',
+            'departement' => 'nullable|exists:departements,id',
+            'commune' => 'nullable|exists:communes,id',
+            'lieux' => 'nullable|string|min:5|max:255',
             'homme_touche' => 'nullable|integer|min:0',
             'femme_touche' => 'nullable|integer|min:0',
             'budget' => 'required|numeric|min:1',
-            'piece' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'piece' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ];
 
         return $rules;
@@ -168,7 +166,7 @@ class FormulaireClient extends Component
             'email' => 'required|email|max:255',
             'sexe' => 'required|in:Masculin,Feminin',
             'ifu' => 'required|digits:13',
-            'contact' => 'required|digits:8|regex:/^(01|21|41|51|52|53|54|56|57|58|59|61|62|63|64|65|66|67|68|69|90|91|94|95|96|97|98|99)\d{6}$/',
+            'contact' => 'nullable',
         ]);
 
         $this->formStep++;
@@ -179,11 +177,11 @@ class FormulaireClient extends Component
         $this->validate([
             'titre_activite' => 'required|string|min:5|max:255',
             'obejectif_activite' => 'required|string|min:20|max:1000',
-            'debut_activite' => 'required|date|after_or_equal:today',
-            'fin_activite' => 'required|date|after:debut_activite',
-            'departement' => 'required|exists:departements,id',
-            'commune' => 'required|exists:communes,id',
-            'lieux' => 'required|string|min:5|max:255',
+            'debut_activite' => 'nullable|date|after_or_equal:today',
+            'fin_activite' => 'nullable|date|after:debut_activite',
+            'departement' => 'nullable|exists:departements,id',
+            'commune' => 'nullable|exists:communes,id',
+            'lieux' => 'nullable|string|min:5|max:255',
             'homme_touche' => 'nullable|integer|min:0',
             'femme_touche' => 'nullable|integer|min:0',
             'budget' => 'required|numeric|min:1',
@@ -195,7 +193,7 @@ class FormulaireClient extends Component
     public function store()
     {
         $this->validate([
-            'piece' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'piece' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $faker = Faker::create();
@@ -210,19 +208,17 @@ class FormulaireClient extends Component
                 $validated['piece'] = $filePath;
             }
 
-            $validated['contact'] = '+229' . $validated['contact'];
-
             Demande::create($validated);
 
             $this->alert('success', 'Votre demande a été envoyée avec succès!', [
                 'position' => 'top-end',
-                'timer' => 5000,
+                'timer' => 500,
                 'toast' => true,
                 'timerProgressBar' => true,
             ]);
 
-            Notification::route('mail', $validated['email'])
-                ->notify(new EnvoieNotification((object)$validated));
+            // Notification::route('mail', $validated['email'])
+            //     ->notify(new EnvoieNotification((object)$validated));
 
             $this->reset();
             $this->resetValidation();
@@ -250,19 +246,19 @@ class FormulaireClient extends Component
             'sexe' => 'required|in:Masculin,Feminin',
             'email' => 'required|email|max:255',
             'ifu' => 'required|digits:13',
-            'contact' => 'required|digits:8|regex:/^(01|21|41|51|52|53|54|56|57|58|59|61|62|63|64|65|66|67|68|69|90|91|94|95|96|97|98|99)\d{6}$/',
+            'contact' => 'nullable|digits:8|regex:/^(01|21|41|51|52|53|54|56|57|58|59|61|62|63|64|65|66|67|68|69|90|91|94|95|96|97|98|99)\d{6}$/',
             'titre_activite' => 'required|string|min:5|max:255',
             'obejectif_activite' => 'required|string|min:20|max:1000',
-            'debut_activite' => 'required|date|after_or_equal:today',
-            'fin_activite' => 'required|date|after:debut_activite',
-            'dure_activite' => 'required|integer|min:1',
-            'departement' => 'required|exists:departements,id',
-            'commune' => 'required|exists:communes,id',
-            'lieux' => 'required|string|min:5|max:255',
+            'debut_activite' => 'nullable|date|after_or_equal:today',
+            'fin_activite' => 'nullable|date|after:debut_activite',
+            'dure_activite' => 'nullable|integer|min:1',
+            'departement' => 'nullable|exists:departements,id',
+            'commune' => 'nullable|exists:communes,id',
+            'lieux' => 'nullable|string|min:5|max:255',
             'homme_touche' => 'nullable|integer|min:0',
             'femme_touche' => 'nullable|integer|min:0',
             'budget' => 'required|numeric|min:1',
-            'piece' => 'required',
+            'piece' => 'nullable',
         ]);
     }
 
@@ -278,8 +274,8 @@ class FormulaireClient extends Component
             $debut = Carbon::parse($this->debut_activite);
             $fin = Carbon::parse($this->fin_activite);
 
-            if ($fin->greaterThan($debut)) {
-                $this->dure_activite = $debut->diffInDays($fin);
+            if ($fin->greaterThanOrEqualTo($debut)) {
+                $this->dure_activite = $debut->diffInDays($fin) + 1;
             }
         } else {
             $this->dure_activite = null;

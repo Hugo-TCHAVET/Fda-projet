@@ -130,6 +130,7 @@ class DemandeApprouve extends Component
 
         $demandes = Demande::where('valide', 2)
             ->where('buget_prevu', '!=', null)
+            ->orderBy('date_approbation', 'desc')
             ->paginate(6);
 
         return view('livewire.demande-approuve', compact('demandes'));

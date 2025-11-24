@@ -1,5 +1,5 @@
 <div>
-    <div>
+    <div style="height: 250px; padding: 10px">
         <canvas id="departementChart"></canvas>
     </div>
     <style>

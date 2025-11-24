@@ -61,7 +61,7 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="panel-header panel-header-sm"></div>
+    <div style="height: 17vh; background-color: #198754;"></div>
 
     <div class="content">
       <div class="row">
@@ -103,6 +103,12 @@
                         <div class="action-buttons">
                           <a href="{{route('demande.show',$demande->id)}}" class="btn-action btn-view" title="Visualiser">
                             <i class="now-ui-icons gestures_tap-01"></i>
+                          </a>
+
+                          <a href="{{route('demande.edit',$demande->id)}}" class="btn-action btn-edit" title="Modifier">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                            </svg>
                           </a>
 
                           <button wire:click="Transmetre({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
@@ -269,6 +275,17 @@
 
     .btn-view:hover {
       background-color: #009879;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-edit {
+      color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .btn-edit:hover {
+      background-color: #6c757d;
       color: #fff;
       transform: translateY(-2px);
     }

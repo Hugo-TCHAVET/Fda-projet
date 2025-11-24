@@ -110,7 +110,7 @@
         </nav>
         <!-- End Navbar -->
 
-        <div class="panel-header panel-header-sm"></div>
+        <div style="height: 17vh; background-color: #198754;"></div>
 
         <div class="content">
             <!-- Cartes de statistiques -->
@@ -217,7 +217,22 @@
 
     <style>
         /* Application de la police Poppins Globalement */
-        body, .main-panel, h1, h2, h3, h4, h5, h6, p, span, a, div, table, button, input, label {
+        body,
+        .main-panel,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        span,
+        a,
+        div,
+        table,
+        button,
+        input,
+        label {
             font-family: 'Poppins', sans-serif !important;
         }
 
@@ -259,7 +274,8 @@
             font-weight: bold;
         }
 
-        .styled-table th, .styled-table td {
+        .styled-table th,
+        .styled-table td {
             padding: 15px 20px;
         }
 
@@ -326,7 +342,15 @@
             cursor: pointer;
         }
 
-        .btn-edit { color: #f39c12; border-color: #f39c12; }
-        .btn-edit:hover { background-color: #f39c12; color: #fff; transform: translateY(-2px); }
+        .btn-edit {
+            color: #f39c12;
+            border-color: #f39c12;
+        }
+
+        .btn-edit:hover {
+            background-color: #f39c12;
+            color: #fff;
+            transform: translateY(-2px);
+        }
     </style>
 </div>

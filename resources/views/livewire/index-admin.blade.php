@@ -1,4 +1,101 @@
 <div>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .font-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .dashboard-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      border: none;
+      height: 100%;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-icon-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-blue {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      color: #1976d2;
+    }
+
+    .icon-green {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      color: #388e3c;
+    }
+
+    .card-title-custom {
+      font-size: 16px;
+      font-weight: 500;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
+    .card-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .stat-list {
+      padding-top: 20px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .stat-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .stat-label {
+      color: #6c757d;
+      display: flex;
+      align-items: center;
+    }
+
+    .stat-label i {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+
+    .stat-count {
+      font-weight: 600;
+      color: #2c3e50;
+      background: #f8f9fa;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+  </style>
 
   <div class="main-panel" id="main-panel">
     <!-- Navbar -->
@@ -13,7 +110,7 @@
               <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <a class="navbar-brand" href="#pablo">Tableau de Bord</a>
+          <a class="navbar-brand text-white font-poppins" href="#pablo" style="font-weight: 600;">Tableau de Bord</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
           aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,24 +121,21 @@
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
 
           <ul class="navbar-nav">
-            <li class="mr-3">
+            <li class="mr-3 text-white">
               @if (Auth::user()->email == 'spea@gmail.com')
-              <h2 style="font-weight: bold">SPEA</h2>
+              <h2 class="mb-0" style="font-weight: bold; color: white;">SPEA</h2>
               @elseif (Auth::user()->email == 'sese@gmail.com')
-              <h2 style="font-weight: bold">SESE</h2>
+              <h2 class="mb-0" style="font-weight: bold; color: white;">SESE</h2>
               @elseif (Auth::user()->email == 'dg@gmail.com')
-              <h2 style="font-weight: bold">DG</h2>
+              <h2 class="mb-0" style="font-weight: bold; color: white;">DG</h2>
               @elseif (Auth::user()->email == 'daf@gmail.com')
-              <h2 style="font-weight: bold">DAF</h2>
+              <h2 class="mb-0" style="font-weight: bold; color: white;">DAF</h2>
               @elseif (Auth::user()->email == 'do@gmail.com')
-              <h2 style="font-weight: bold">DO</h2>
-
-
+              <h2 class="mb-0" style="font-weight: bold; color: white;">DO</h2>
               @endif
-
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+              <a class="nav-link dropdown-toggle text-white" id="navbarDropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="now-ui-icons users_single-02"></i>
                 <p></p>
@@ -63,97 +157,100 @@
     </nav>
     <!-- End Navbar -->
     <div style="background-color: #198754 !important; height: 17vh;"></div>
-    <!-- <div class="content">
-      <canvas id="bigDashboardChart"></canvas>
-    </div> -->
-    <div class="content mt-5">
-      <div class="row p-4 ">
-        <div class="col-lg-4">
-          <div class="card card-chart ">
-            <div class="card-header">
-              <h1 class="card-category"></h1>
-              <h4 class="card-title">Total demandes de formation</h4>
-              <div class="dropdown">
 
-                <i class="now-ui-icons education_agenda-bookmark text-primary" style="font-size: 390%"></i>
+    <div class="content mt-5 font-poppins">
+      <div class="row p-4">
 
-
+        <!-- Carte Formation -->
+        <div class="col-lg-4 mb-4">
+          <div class="dashboard-card p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title-custom">Formation</h5>
+                <h2 class="card-value">{{$nbreformation}}</h2>
+              </div>
+              <div class="card-icon-wrapper icon-blue">
+                <i class='bx bx-book-bookmark'></i>
               </div>
             </div>
-            <div class="card-body">
-              <div class="chart-area">
-                <div class="chart-area ml-4">
-                  <h1>{{$nbreformation}} </h1>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <div class="stats">
-                <div class="stats">
-                  <p style="font-weight: bold">Professionnel : {{$proformation}} </p>
-                  <p style="font-weight: bold">Structure : {{$strformation}} </p>
-                  <p style="font-weight: bold">ONG : {{$ongformation}} </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="card card-chart">
-            <div class="card-header">
-              <h5 class="card-category"></h5>
-              <h4 class="card-title">Total demandes de promotion</h4>
-              <div class="dropdown">
 
-                <i class="now-ui-icons education_paper text-success" style="font-size: 390%"></i>
-
-
+            <div class="stat-list">
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                <span class="stat-count">{{$proformation}}</span>
               </div>
-            </div>
-            <div class="card-body">
-              <div class="chart-area">
-                <div class="chart-area ml-4">
-                  <h1>{{$nbrepromotion}} </h1>
-                </div>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                <span class="stat-count">{{$strformation}}</span>
               </div>
-            </div>
-            <div class="card-footer">
-              <div class="stats">
-                <p style="font-weight: bold">Professionnel : {{$propromotion}} </p>
-                <p style="font-weight: bold">Structure : {{$strpromotion}} </p>
-                <p style="font-weight: bold">ONG : {{$ongpromotion}} </p>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-world'></i> ONG</span>
+                <span class="stat-count">{{$ongformation}}</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 ">
-          <div class="card card-chart">
-            <div class="card-header">
-              <h5 class="card-category"></h5>
-              <h4 class="card-title">Total demandes de Financement</h4>
-              <div class="dropdown">
 
-                <i class="now-ui-icons business_money-coins text-warning" style="font-size: 390%"></i>
-
-
+        <!-- Carte Assistance/Promotion -->
+        <div class="col-lg-4 mb-4">
+          <div class="dashboard-card p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title-custom">Assistance & Promotion</h5>
+                <h2 class="card-value">{{$nbrepromotion}}</h2>
+              </div>
+              <div class="card-icon-wrapper icon-green">
+                <i class='bx bx-line-chart'></i>
               </div>
             </div>
-            <div class="card-body">
-              <div class="chart-area ml-4">
-                <h1>{{$nbrefinancier}} </h1>
+
+            <div class="stat-list">
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                <span class="stat-count">{{$propromotion}}</span>
               </div>
-            </div>
-            <div class="card-footer">
-              <div class="stats">
-                <div class="stats">
-                  <p style="font-weight: bold">Professionnel : {{$profinancier}} </p>
-                  <p style="font-weight: bold">Structure : {{$strfinancier}} </p>
-                  <p style="font-weight: bold">ONG : {{$ongfinancier}} </p>
-                </div>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                <span class="stat-count">{{$strpromotion}}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-world'></i> ONG</span>
+                <span class="stat-count">{{$ongpromotion}}</span>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Carte Financement (Masquée comme dans l'original mais stylisée si décommentée) -->
+        <!-- 
+        <div class="col-lg-4 mb-4">
+          <div class="dashboard-card p-4">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h5 class="card-title-custom">Financement</h5>
+                    <h2 class="card-value">{{$nbrefinancier}}</h2>
+                </div>
+                <div class="card-icon-wrapper" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); color: #f57c00;">
+                    <i class='bx bx-coin-stack'></i>
+                </div>
+            </div>
+            <div class="stat-list">
+                <div class="stat-item">
+                    <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                    <span class="stat-count">{{$profinancier}}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                    <span class="stat-count">{{$strfinancier}}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label"><i class='bx bx-world'></i> ONG</span>
+                    <span class="stat-count">{{$ongfinancier}}</span>
+                </div>
+            </div>
+          </div>
+        </div> 
+        -->
 
       </div>
 

@@ -61,7 +61,7 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="panel-header panel-header-sm"></div>
+    <div style="height: 17vh; background-color: #198754;"></div>
 
     <div class="content">
       <div class="row">
@@ -78,8 +78,8 @@
                     <tr>
                       <th>Structure</th>
                       <th>Contact</th>
-                      <th>Budget</th>
-                      <th>Date Début</th>
+                      <th>Budget de l'activité</th>
+                      <th>IFU</th>
                       <th>Statut</th>
                       <th class="text-center">Actions</th>
                     </tr>
@@ -90,7 +90,7 @@
                       <td style="font-weight: 500; color: #333;">{{$demande->structure}}</td>
                       <td>{{$demande->contact}}</td>
                       <td style="font-weight: bold;">{{$demande->budget}}</td>
-                      <td>{{$demande->debut_activite}}</td>
+                      <td>{{$demande->ifu}}</td>
                       <td>
                         <span class="status-badge status-info">
                           {{$demande->statut}}

@@ -33,6 +33,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/suspendre/{id}', [AdminController::class, 'updateMessage'])->name('demande.suspendre');
     Route::get('/delete/{id}', [AdminController::class, 'delete'])->name('demande.delete');
 
+    Route::get('/edit_demande/{id}', [AdminController::class, 'edit'])->name('demande.edit');
+    Route::put('/update_demande/{id}', [AdminController::class, 'updateDemande'])->name('update.demande');
+
     Route::get('/budget_demande/{id}', [AdminController::class, 'Budget'])->name('demande.budget');
     Route::post('/budget/{id}', [AdminController::class, 'updateBudget'])->name('demande.prixbudget');
     Route::get('/pdf/{id}', [AdminController::class, 'generatePdfForDemande'])->name('demande.pdf');
