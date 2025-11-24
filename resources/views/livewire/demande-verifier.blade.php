@@ -102,7 +102,7 @@
                             <i class="now-ui-icons gestures_tap-01"></i>
                           </a>
 
-                          <a href="{{route('demande.budget',$demande->id)}}" class="btn-action btn-check" title="Valider">
+                          <a href="{{route('demande.budget',$demande->id)}}" class="btn-action btn-view" title="Valider">
                             <i class="now-ui-icons ui-1_check"></i>
                           </a>
 
@@ -143,7 +143,20 @@
 
   <style>
     /* Application de la police Poppins Globalement */
-    body, .main-panel, h1, h2, h3, h4, h5, h6, p, span, a, div, table, button {
+    body,
+    .main-panel,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    a,
+    div,
+    table,
+    button {
       font-family: 'Poppins', sans-serif !important;
     }
 
@@ -185,7 +198,8 @@
       font-weight: bold;
     }
 
-    .styled-table th, .styled-table td {
+    .styled-table th,
+    .styled-table td {
       padding: 15px 20px;
     }
 
@@ -246,16 +260,48 @@
       cursor: pointer;
     }
 
-    .btn-view { color: #009879; border-color: #009879; }
-    .btn-view:hover { background-color: #009879; color: #fff; transform: translateY(-2px); }
+    .btn-view {
+      color: #009879;
+      border-color: #009879;
+    }
 
-    .btn-check { color: #27ae60; border-color: #27ae60; }
-    .btn-check:hover { background-color: #27ae60; color: #fff; transform: translateY(-2px); }
+    .btn-view:hover {
+      background-color: #009879;
+      color: #fff;
+      transform: translateY(-2px);
+    }
 
-    .btn-pdf { color: #e74c3c; border-color: #e74c3c; }
-    .btn-pdf:hover { background-color: #e74c3c; color: #fff; transform: translateY(-2px); }
+    .btn-check {
+      color: #27ae60;
+      border-color: #27ae60;
+    }
 
-    .btn-delete { color: #c0392b; border-color: #c0392b; }
-    .btn-delete:hover { background-color: #c0392b; color: #fff; transform: translateY(-2px); }
+    .btn-check:hover {
+      background-color: #27ae60;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-pdf {
+      color: #e74c3c;
+      border-color: #e74c3c;
+    }
+
+    .btn-pdf:hover {
+      background-color: #e74c3c;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-delete {
+      color: #c0392b;
+      border-color: #c0392b;
+    }
+
+    .btn-delete:hover {
+      background-color: #c0392b;
+      color: #fff;
+      transform: translateY(-2px);
+    }
   </style>
 </div>

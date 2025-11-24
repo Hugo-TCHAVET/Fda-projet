@@ -343,8 +343,9 @@
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="contact">Contact <span class="text-danger">*</span></label>
-                                        <input type="number" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Téléphone" required>
-                                        @error('contact') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                        <input type="text" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Ex: +2290167854592" required>
+                                        <div class="invalid-feedback">Ce champ est obligatoire</div>
+                                        @error('contact') <span class="text-danger small mt-1 d-block">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-4 pt-3 border-top">
@@ -537,17 +538,26 @@
 
         let isValid = true;
         inputs.forEach(input => {
+            // Récupérer ou créer le conteneur de message d'erreur
+            let errorDiv = input.parentNode.querySelector('.invalid-feedback');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'invalid-feedback';
+                errorDiv.textContent = 'Ce champ est obligatoire';
+                input.parentNode.appendChild(errorDiv);
+            }
+
             if (!input.value.trim()) {
                 input.classList.add('is-invalid');
+                errorDiv.style.display = 'block';
                 isValid = false;
             } else {
                 input.classList.remove('is-invalid');
+                errorDiv.style.display = 'none';
             }
         });
 
         if (!isValid) {
-            // Petit shake effect ou alerte douce
-            alert('Veuillez remplir tous les champs obligatoires marqués par *');
             return;
         }
 
