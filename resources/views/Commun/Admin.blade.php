@@ -120,6 +120,12 @@
               <p>Post appui</p>
             </a>
           </li>
+          <li class="{{ request()->routeIs('demande.archivee') ? 'active' : '' }}">
+            <a href="{{ route('demande.archivee') }}">
+              <i class="now-ui-icons files_box"></i>
+              <p>Dossiers d'appui archivés</p>
+            </a>
+          </li>
           @endif
         </ul>
       </div>

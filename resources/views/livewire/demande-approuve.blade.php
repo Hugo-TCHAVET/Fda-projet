@@ -124,6 +124,11 @@
                             class="btn-action btn-pdf" title="Imprimer en PDF">
                             <i class="now-ui-icons files_paper"></i>
                           </a>
+
+                          <button wire:click="openArchiveModal({{ $demande->id }})"
+                            class="btn-action btn-archive" title="Archiver">
+                            <i class="now-ui-icons files_box"></i>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -152,6 +157,61 @@
     </div>
     @include('Admin.footer')
   </div>
+
+  <!-- Modal d'archivage -->
+  @if ($showModalArchive)
+  <div class="modal fade show" style="display: block;" tabindex="-1" aria-labelledby="archiveModalLabel"
+    aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="modal-header" style="border-bottom: 1px solid #eee; padding: 20px;">
+          <h5 class="modal-title" id="archiveModalLabel" style="font-weight: 600; color: #2c3e50;">
+            <i class="now-ui-icons files_box" style="margin-right: 8px;"></i>
+            Archiver la demande
+          </h5>
+          <button type="button" class="btn-close" wire:click="closeArchiveModal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="padding: 20px;">
+          <form wire:submit.prevent="archiver">
+            <div class="mb-3">
+              <h6 style="color: #009879; font-weight: 600;">{{ $structureArchive }}</h6>
+              <p style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                Veuillez renseigner l'année d'exercice pour archiver cette demande.
+              </p>
+            </div>
+            <div class="form-group mb-3">
+              <label style="font-size: 0.9em; color: #555; font-weight: 500;">
+                Année d'exercice <span class="text-danger">*</span>
+              </label>
+              <input type="number"
+                class="form-control @error('annee_exercice') is-invalid @enderror"
+                wire:model.defer="annee_exercice"
+                min="2000"
+                max="{{ date('Y') + 1 }}"
+                placeholder="{{ date('Y') }}"
+                style="border-radius: 8px; padding: 10px; border: 1px solid #ddd;">
+              @error('annee_exercice')
+              <div class="invalid-feedback" style="display: block;">{{ $message }}</div>
+              @enderror
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px;">
+              <button type="button" class="btn btn-secondary" wire:click="closeArchiveModal"
+                style="border-radius: 8px; padding: 8px 20px;">
+                Annuler
+              </button>
+              <button type="submit" class="btn btn-primary"
+                style="background-color: #009879; border: none; border-radius: 8px; padding: 8px 20px;">
+                <i class="now-ui-icons files_box" style="margin-right: 5px;"></i>
+                Archiver
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+  @endif
 
   <style>
     /* Application de la police Poppins Globalement */
@@ -290,6 +350,20 @@
 
     .btn-pdf:hover {
       background-color: #e74c3c;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-archive {
+      background-color: #fff;
+      color: #6c757d;
+      border: 1px solid #6c757d;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-archive:hover {
+      background-color: #6c757d;
       color: #fff;
       transform: translateY(-2px);
     }

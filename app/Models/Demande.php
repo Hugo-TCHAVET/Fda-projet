@@ -15,6 +15,9 @@ class Demande extends Model
     protected $casts = [
         'date_transmission' => 'datetime',
         'date_depot_rapport' => 'datetime',
+        'date_approbation' => 'datetime',
+        'date_archivage' => 'datetime',
+        'archivee' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

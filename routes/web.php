@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::get('/telecharger_piece/{id}', [AdminController::class, 'telecharger'])->name('demande.piece');
     Route::get('/demande_approuve', [AdminController::class, 'DemandeApprouve'])->name('demande.approve');
+    Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');
     Route::get('/demande_suspendu', [AdminController::class, 'DemandeSuspendu'])->name('demande.suspendu');
     Route::get('/demande_verifier', [AdminController::class, 'DemandeVerifier'])->name('demande.verifier');
 

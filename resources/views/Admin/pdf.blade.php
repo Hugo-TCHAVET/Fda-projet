@@ -28,19 +28,24 @@
             background-color: #f8f9fa;
             border-bottom: 2px solid #009879;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding-top: 0.5cm;
+            padding: 0.3cm 1cm;
+        }
+
+        .header-logo {
+            max-width: 60px;
+            max-height: 60px;
+            margin-bottom: 5px;
         }
 
         .header-content {
-            width: 100%;
             text-align: center;
         }
 
         .header-content h2 {
-            margin: 5px;
+            margin: 5px 0;
             font-size: 14px;
             text-transform: uppercase;
             color: #2c3e50;
@@ -134,11 +139,12 @@
 <body>
 
     <header>
+        @if(!empty($logoBase64))
+        <img src="{{ $logoBase64 }}" alt="Logo FDA" class="header-logo">
+        @endif
         <div class="header-content">
             <h2>République du Bénin</h2>
-            <p>Ministère des Petites et Moyennes Entreprises</p>
-            <p>et de la Promotion de l'Emploi</p>
-            <p>FDA</p>
+            <p>Fonds de Développement de l'Artisanat</p>
         </div>
     </header>
 
@@ -199,10 +205,7 @@
                         <td class="label">Sexe</td>
                         <td class="value">{{ $demande->sexe }}</td>
                     </tr>
-                    <tr>
-                        <td class="label">Email</td>
-                        <td class="value">{{ $demande->email }}</td>
-                    </tr>
+
                     <tr>
                         <td class="label">Numéro IFU</td>
                         <td class="value">{{ $demande->ifu }}</td>
@@ -248,8 +251,7 @@
                     <tr>
                         <td class="label">Cibles</td>
                         <td class="value">
-                            Femmes : {{ $demande->femme_touche }} <br>
-                            Hommes : {{ $demande->homme_touche }}
+                            Personnes : {{ $demande->homme_touche }}
                         </td>
                     </tr>
                     <tr>

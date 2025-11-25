@@ -12,15 +12,19 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class DemandeApprouve extends Component
 {
-
-
-
     use WithPagination;
+    use LivewireAlert;
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
+    // Propriétés pour le modal d'archivage
+    public $showModalArchive = false;
+    public $demandeIdArchive;
+    public $structureArchive;
+    public $annee_exercice;
 
+    public $demande;
     public $code;
     public $structure;
     public $service;
@@ -55,6 +59,23 @@ class DemandeApprouve extends Component
         return [
             'buget_prevu' => 'required',
 
+        ];
+    }
+
+    protected function rulesArchive()
+    {
+        return [
+            'annee_exercice' => 'required|integer|min:2000|max:' . (date('Y') + 1),
+        ];
+    }
+
+    protected function messagesArchive()
+    {
+        return [
+            'annee_exercice.required' => 'L\'année d\'exercice est requise.',
+            'annee_exercice.integer' => 'L\'année doit être un nombre entier.',
+            'annee_exercice.min' => 'L\'année doit être supérieure ou égale à 2000.',
+            'annee_exercice.max' => 'L\'année ne peut pas être supérieure à ' . (date('Y') + 1) . '.',
         ];
     }
 
@@ -125,11 +146,82 @@ class DemandeApprouve extends Component
             return redirect()->back();
         }
     }
+
+    /**
+     * Ouvre le modal d'archivage
+     */
+    public function openArchiveModal(int $demandeId)
+    {
+        $demande = Demande::find($demandeId);
+
+        if ($demande) {
+            $this->demandeIdArchive = $demande->id;
+            $this->structureArchive = $demande->structure;
+            $this->annee_exercice = date('Y'); // Année par défaut
+            $this->showModalArchive = true;
+        } else {
+            $this->alert('error', 'Demande introuvable.');
+        }
+    }
+
+    /**
+     * Ferme le modal d'archivage
+     */
+    public function closeArchiveModal()
+    {
+        $this->showModalArchive = false;
+        $this->reset(['demandeIdArchive', 'structureArchive', 'annee_exercice']);
+        $this->resetValidation();
+    }
+
+    /**
+     * Archive la demande
+     */
+    public function archiver()
+    {
+        $this->validate($this->rulesArchive(), $this->messagesArchive());
+
+        try {
+            $demande = Demande::find($this->demandeIdArchive);
+
+            if ($demande) {
+                $demande->update([
+                    'archivee' => true,
+                    'annee_exercice' => $this->annee_exercice,
+                    'date_archivage' => now(),
+                ]);
+
+                // Fermer le modal d'abord
+                $this->showModalArchive = false;
+
+                // Réinitialiser les propriétés
+                $this->reset(['demandeIdArchive', 'structureArchive', 'annee_exercice']);
+                $this->resetValidation();
+
+                // Réinitialiser la pagination
+                $this->resetPage();
+
+                // Afficher le message de succès
+                $this->alert('success', 'Demande archivée avec succès !', [
+                    'position' => 'top-end',
+                    'timer' => 3000,
+                    'toast' => true,
+                ]);
+            } else {
+                $this->alert('error', 'Demande introuvable.');
+            }
+        } catch (\Exception $e) {
+            $this->alert('error', 'Une erreur est survenue lors de l\'archivage.');
+        }
+    }
+
     public function render()
     {
 
+        // Exclure les demandes archivées
         $demandes = Demande::where('valide', 2)
             ->where('buget_prevu', '!=', null)
+            ->where('archivee', false) // Exclure les archivées
             ->orderBy('date_approbation', 'desc')
             ->paginate(6);
 

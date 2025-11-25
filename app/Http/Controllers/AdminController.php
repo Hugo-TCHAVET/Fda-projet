@@ -34,6 +34,11 @@ class AdminController extends Controller
         return view('Admin.demandeApprouve');
     }
 
+    public function DemandeArchivee()
+    {
+        return view('Admin.demandeArchivee');
+    }
+
     public function DemandeSuspendu()
     {
         return view('Admin.demandeSuspendu');
@@ -193,10 +198,21 @@ class AdminController extends Controller
         $departement = $demande->departement ? Departement::where('id', $demande->departement)->first() : null;
         $commune = $demande->commune ? Commune::where('id', $demande->commune)->first() : null;
 
+        // Encoder le logo en base64 pour DomPDF
+        $logoPath = public_path('Client/assets/lofoFDA.png');
+        if (!file_exists($logoPath)) {
+            $logoPath = public_path('Client/assets/img/lofoFDA.png');
+        }
+        $logoBase64 = '';
+        if (file_exists($logoPath)) {
+            $logoData = file_get_contents($logoPath);
+            $logoBase64 = 'data:image/png;base64,' . base64_encode($logoData);
+        }
+
         $dompdf = new Dompdf();
 
         // Charger la vue avec les données
-        $view = view('Admin.pdf', compact('demande', 'branche', 'corps', 'metier', 'departement', 'commune'))->render();
+        $view = view('Admin.pdf', compact('demande', 'branche', 'corps', 'metier', 'departement', 'commune', 'logoBase64'))->render();
 
         // Générer le PDF
         $dompdf->loadHtml($view);
