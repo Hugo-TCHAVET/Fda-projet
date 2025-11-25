@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2025 at 12:21 PM
+-- Generation Time: Nov 25, 2025 at 03:26 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -240,48 +240,57 @@ CREATE TABLE `demandes` (
   `prenom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sexe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ifu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contact` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `titre_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `obejectif_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `debut_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fin_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dure_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `departement` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `commune` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lieux` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `homme_touche` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `debut_activite` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fin_activite` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dure_activite` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `departement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commune` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lieux` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `homme_touche` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `budget` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `piece` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `piece` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `buget_prevu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `rapport_depose` tinyint(1) NOT NULL DEFAULT '0',
   `effectif_homme_forme` int DEFAULT NULL,
   `effectif_femme_forme` int DEFAULT NULL,
-  `date_depot_rapport` date DEFAULT NULL,
+  `date_depot_rapport` datetime DEFAULT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'En attente',
   `statut` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `statuts` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `valide` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `suspendre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `rejeter` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `archivee` tinyint(1) NOT NULL DEFAULT '0',
+  `annee_exercice` int DEFAULT NULL,
+  `date_archivage` datetime DEFAULT NULL,
   `message` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date_transmission` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `date_approbation` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `demandes`
 --
 
-INSERT INTO `demandes` (`id`, `code`, `structure`, `service`, `type_demande`, `branche`, `corps`, `metier`, `nom`, `prenom`, `sexe`, `ifu`, `contact`, `titre_activite`, `obejectif_activite`, `debut_activite`, `fin_activite`, `dure_activite`, `departement`, `commune`, `lieux`, `homme_touche`, `budget`, `piece`, `buget_prevu`, `rapport_depose`, `effectif_homme_forme`, `effectif_femme_forme`, `date_depot_rapport`, `status`, `statut`, `statuts`, `valide`, `suspendre`, `rejeter`, `message`, `created_at`, `updated_at`) VALUES
-(1, 'G76-PEOK-XMPD-OZXL', 'ert', 'Assistance', 'professionnel', '2', '41', '300', 'ZERT', 'erty', 'Masculin', '1234565432123', '234567', 'ZERTY', 'ZERTY', '2025-11-19', '2025-11-20', '1', '4', '43', 'HOPITAL', '10', '1000000', 'piece/NgE32zeTqMLsxghYP5Eb3iFjPuSbX6GnbPkUZliP.pdf', '500000', 1, 100, 20, '2025-11-20', 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-20 22:43:33', '2025-11-20 11:20:50'),
-(2, 'O78-GSJN-YOPL-KCPG', 'A', 'Financier', 'structure', '2', '41', '306', 'ZERT', 'Z', 'Masculin', '34321235', '34567', 'ZER', 'ERT', '2025-11-13', '2025-11-20', '7', '10', '36', '3', '3', '250000', 'piece/KQ9uP2q231ZH4bvKFn0OFWN2KEGL3SXotwTJayeB.pdf', '200000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-20 23:55:00', '2025-11-21 04:11:16'),
-(3, 'X81-YFAZ-POXW-KBDZ', 'n', 'Assistance', 'professionnel', '', '', '', 'n', 'n', 'Masculin', '1234', '2345', 'U', 'ERTY', '2025-11-21', '2025-11-23', '2', '10', '36', 'SALLE DES JEUNES', '5', '150000', 'piece/l7Pmgu9UJb9x6qJ7xPOmn6Ok3joxmfu8FH2mUjla.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-21 00:47:24', '2025-11-21 04:10:56'),
-(4, 'M93-FIJP-DESJ-BNFX', 'h', 'Assistance', 'professionnel', '', '', '', 'h', 'Hugo', 'Féminin', '1234321234568', '234567', 'H', 'H', '2025-11-21', '2025-11-23', '2', '5', '55', 'SALLE DES ENFANTS', '50', '3456', 'piece/Q4Ir1mptf0jxYrFwiD4nat2PKsjFaV84Db7AiU2W.pdf', '1000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-21 01:12:29', '2025-11-20 11:07:06'),
-(5, 'L47-PWKO-IEUO-WVMK', 'h', 'Assistance', 'professionnel', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234321234568', '234567', 'ZER', 'TYU', '2025-11-13', '2025-11-20', '7', '8', '77', 'SALLE DES ENFANTS', '50', '250000', 'piece/5UHPZEcgXixt64lV8ODfrkRbtsJAtok1ARyRDzS4.pdf', '150000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-21 01:15:17', '2025-11-20 11:07:14'),
-(6, 'Z63-NAJU-AQBP-VSNY', 'ert', 'Assistance', 'structure', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234565432123', '234567', 'Mise à jour', 'Mise à jour de le plateforme', '2025-10-30', '2025-11-06', '7', '10', '33', 'SALLE DES ENFANTS', '50', '500000', 'piece/NaktdHr7F3odq1bnQgeOEXBQiymXl8CWKsP5JaZL.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-21 01:39:06', '2025-11-20 11:06:45'),
-(7, 'X52-YNIB-EZDF-KYSD', 'zert', 'Formation', 'professionnel', '8', '', '', 'yui', 'Fanzaëlle Chancia', 'Féminin', '0234321234568', '234567', 'Mise à jour', 'rtyu', '2025-10-30', '2025-11-06', '7', '7', '4', 'HOPITAL', '20', '500000', 'piece/iHLrtLfTxmJ3DWsYihSzSxx6wHaENnKoFx0T7z0I.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', NULL, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
-(8, 'U06-LOPZ-AFMY-ZWHR', 'Fda', 'Assistance', 'professionnel', '', '', '', 'AKPO', 'Gérard', 'Masculin', '0987767666544', '34567', 'Mise à jour', 'Mise à jour de la plateforme', '2025-07-29', '2025-08-05', '7', '8', '75', 'DDAEP', '20', '500000', 'piece/SpQBDvBvUixooNNKzhYWmTM3PyEO88mrn0BJZ3GX.pdf', '0', 0, NULL, NULL, NULL, 'En attente', 'Suspendus', NULL, '0', '1', '0', 'Projet non prometteur', '2025-11-21 04:06:52', '2025-11-20 10:46:26'),
-(9, 'M09-FNTT-NNAR-TKAU', 'ASSIRI', 'Assistance', 'structure', '8', '35', '259', 'Anicet', 'Pancras Anicet', 'Masculin', '1200901979305', '2290162012345', 'Formation en élévage de poules pondeuses', 'Formation', '2025-12-15', '2025-12-25', '10', '1', '7', 'Djèbgadji', '60', '500000', 'piece/ImXRARY1zYywFQWgcllTxvSt5WplPPV0uABUBwtL.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', NULL, '2025-11-20 09:58:38', '2025-11-20 10:44:15');
+INSERT INTO `demandes` (`id`, `code`, `structure`, `service`, `type_demande`, `branche`, `corps`, `metier`, `nom`, `prenom`, `sexe`, `ifu`, `contact`, `titre_activite`, `obejectif_activite`, `debut_activite`, `fin_activite`, `dure_activite`, `departement`, `commune`, `lieux`, `homme_touche`, `budget`, `piece`, `buget_prevu`, `rapport_depose`, `effectif_homme_forme`, `effectif_femme_forme`, `date_depot_rapport`, `status`, `statut`, `statuts`, `valide`, `suspendre`, `rejeter`, `archivee`, `annee_exercice`, `date_archivage`, `message`, `date_transmission`, `created_at`, `updated_at`, `date_approbation`) VALUES
+(1, 'G76-PEOK-XMPD-OZXL', 'ert', 'Assistance', 'professionnel', '2', '41', '300', 'ZERT', 'erty', 'Masculin', '1234565432123', '234567', 'ZERTY', 'ZERTY', '2025-11-19', '2025-11-20', '1', '4', '43', 'HOPITAL', '10', '1000000', 'piece/NgE32zeTqMLsxghYP5Eb3iFjPuSbX6GnbPkUZliP.pdf', '500000', 1, 100, 20, '2025-11-20 00:00:00', 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2025, '2025-11-25 14:18:47', NULL, NULL, '2025-11-20 22:43:33', '2025-11-25 13:18:47', NULL),
+(3, 'X81-YFAZ-POXW-KBDZ', 'n', 'Assistance', 'professionnel', '', '', '', 'n', 'n', 'Masculin', '1234', '2345', 'U', 'ERTY', '2025-11-21', '2025-11-23', '2', '10', '36', 'SALLE DES JEUNES', '5', '150000', 'piece/l7Pmgu9UJb9x6qJ7xPOmn6Ok3joxmfu8FH2mUjla.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 00:47:24', '2025-11-21 04:10:56', NULL),
+(4, 'M93-FIJP-DESJ-BNFX', 'h', 'Assistance', 'professionnel', '', '', '', 'h', 'Hugo', 'Féminin', '1234321234568', '234567', 'H', 'H', '2025-11-21', '2025-11-23', '2', '5', '55', 'SALLE DES ENFANTS', '50', '3456', 'piece/Q4Ir1mptf0jxYrFwiD4nat2PKsjFaV84Db7AiU2W.pdf', '1000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 01:12:29', '2025-11-20 11:07:06', NULL),
+(5, 'L47-PWKO-IEUO-WVMK', 'h', 'Assistance', 'professionnel', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234321234568', '234567', 'ZER', 'TYU', '2025-11-13', '2025-11-20', '7', '8', '77', 'SALLE DES ENFANTS', '50', '250000', 'piece/5UHPZEcgXixt64lV8ODfrkRbtsJAtok1ARyRDzS4.pdf', '150000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2024, '2025-11-25 14:18:54', NULL, NULL, '2025-11-21 01:15:17', '2025-11-25 13:18:54', NULL),
+(6, 'Z63-NAJU-AQBP-VSNY', 'ert', 'Assistance', 'structure', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234565432123', '234567', 'Mise à jour', 'Mise à jour de le plateforme', '2025-10-30', '2025-11-06', '7', '10', '33', 'SALLE DES ENFANTS', '50', '500000', 'piece/NaktdHr7F3odq1bnQgeOEXBQiymXl8CWKsP5JaZL.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 01:39:06', '2025-11-20 11:06:45', NULL),
+(7, 'X52-YNIB-EZDF-KYSD', 'zert', 'Formation', 'professionnel', '8', '', '', 'yui', 'Fanzaëlle Chancia', 'Féminin', '0234321234568', '234567', 'Mise à jour', 'rtyu', '2025-10-30', '2025-11-06', '7', '7', '4', 'HOPITAL', '20', '500000', 'piece/iHLrtLfTxmJ3DWsYihSzSxx6wHaENnKoFx0T7z0I.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 02:17:36', '2025-11-24 17:12:48', '2025-11-24 18:12:48'),
+(8, 'U06-LOPZ-AFMY-ZWHR', 'Fda', 'Assistance', 'professionnel', NULL, NULL, NULL, 'AKPO', 'Gérard', 'Masculin', '0987767666544', '34567', 'Mise à jour', 'Mise à jour de la plateforme', '2025-07-29', '2025-08-05', '7', '8', '75', 'DDAEP', '20', '500000', 'piece/SpQBDvBvUixooNNKzhYWmTM3PyEO88mrn0BJZ3GX.pdf', '0', 0, NULL, NULL, NULL, 'En attente', 'Suspendus', NULL, '0', '1', '0', 0, NULL, NULL, 'Projet non prometteur', NULL, '2025-11-21 04:06:52', '2025-11-25 07:24:44', NULL),
+(9, 'M09-FNTT-NNAR-TKAU', 'ASSIRI', 'Assistance', 'structure', '8', '35', '259', 'Anicet', 'Pancras Anicet', 'Masculin', '1200901979305', '2290162012345', 'Formation en élévage de poules pondeuses', 'Formation', '2025-12-15', '2025-12-25', '10', '1', '7', 'Djèbgadji', '60', '500000', 'piece/ImXRARY1zYywFQWgcllTxvSt5WplPPV0uABUBwtL.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-20 09:58:38', '2025-11-20 10:44:15', NULL),
+(10, 'B80-ZPQS-KHBS-YYXN', 'Abdoul', 'Assistance', 'professionnel', '9', '38', '', 'Abdoul', 'Hack', 'Masculin', '1200901979304', '2290168789586', 'Formation en élévage de poules pondeuses', 'Formation', '2025-11-18', '2025-11-25', '7', '8', '76', 'Djèbgadji', '150', '200000', 'piece/vmTDEsx0pLeXhwhngTELaPPZAirMJyoYDk9FUFT1.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 19:14:54', '2025-11-21 19:14:54', NULL),
+(11, 'L26-PYJK-RGVT-PVFC', 'ASSIRI', 'Assistance', 'professionnel', '2', '41', '304', 'IZI', 'Net', 'Féminin', '2145786325875', '2290190996353', 'Formation', 'Formations', '2025-02-12', '2025-11-12', '273', '9', '24', 'Santiago', '100', '15000000', 'piece/2I2HGMjm6r4ck4xdxGj9MH6Dj6niqYU7Lxaf94bs.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-23 20:20:19', '2025-11-23 20:20:19', NULL),
+(12, 'H62-ICAU-WCRH-TXHR', 'ASSIRI', 'Assistance', 'professionnel', '', '', '', 'ASSIRI', 'Services', 'Masculin', '1225654215848', '22901254887', 'Formation en élévage', 'kjdkfdns', '2025-02-15', '2025-03-30', '43', '10', '36', 'Missrété', '100', '1000000', 'piece/JPEjtrXNWvZRbYTVXusfBb3ABiKAa0nKPy9f68zD.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-23 21:19:42', '2025-11-23 21:19:42', NULL),
+(13, 'N94-BSIK-GLRV-PNFC', 'ASSIRI Services', 'Assistance', 'professionnel', '2', '', '', 'Thibault', 'Hack', 'Masculin', '1200901979305', '+2292968767789', 'Formation en élévage de poules pondeuses', 'Formation', '2025-03-22', '2025-04-21', '30', '1', '7', 'Djèbgadji', '100', '10000000', 'piece/S5zKkNfiZVMYfIHb9eWXcE6HQEpzC9mAmLoYM2us.pdf', '10000000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-24 09:24:55', '2025-11-24 16:04:17', NULL),
+(14, 'N85-WVCY-WPTU-GBQR', 'ASSIRI', 'Formation', 'professionnel', '5', '26', '271', 'Anicet', 'Hack', 'Féminin', '1200901979305', '22901254887', 'Formation en élévage de poules pondeuses', 'rien de sérieux', NULL, NULL, NULL, '', '', '', '0', '1000000', NULL, '1000000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2025, '2025-11-25 14:13:13', NULL, NULL, '2025-11-24 14:01:25', '2025-11-25 13:13:13', '2025-11-25 10:42:01');
 
 -- --------------------------------------------------------
 
@@ -295,7 +304,7 @@ CREATE TABLE `demande_localisations` (
   `departement_id` bigint UNSIGNED NOT NULL,
   `commune_id` bigint UNSIGNED NOT NULL,
   `lieux` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `homme_touche` int NOT NULL,
+  `homme_touche` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -307,7 +316,6 @@ CREATE TABLE `demande_localisations` (
 INSERT INTO `demande_localisations` (`id`, `demande_id`, `departement_id`, `commune_id`, `lieux`, `homme_touche`, `created_at`, `updated_at`) VALUES
 (1, 1, 4, 43, 'HOPITAL', 10, '2025-11-20 22:43:33', '2025-11-20 22:43:33'),
 (2, 1, 5, 55, 'MAIRIE', 12, '2025-11-20 22:43:33', '2025-11-20 22:43:33'),
-(3, 2, 10, 36, '3', 3, '2025-11-20 23:55:00', '2025-11-20 23:55:00'),
 (4, 3, 10, 36, 'SALLE DES JEUNES', 5, '2025-11-21 00:47:24', '2025-11-21 00:47:24'),
 (5, 4, 5, 55, 'SALLE DES ENFANTS', 50, '2025-11-21 01:12:29', '2025-11-21 01:12:29'),
 (6, 5, 8, 77, 'SALLE DES ENFANTS', 50, '2025-11-21 01:15:17', '2025-11-21 01:15:17'),
@@ -315,8 +323,14 @@ INSERT INTO `demande_localisations` (`id`, `demande_id`, `departement_id`, `comm
 (8, 6, 7, 66, 'MAIRIE', 5, '2025-11-21 01:39:06', '2025-11-21 01:39:06'),
 (9, 7, 7, 4, 'HOPITAL', 20, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
 (10, 7, 9, 26, 'DDAEP', 5, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
-(11, 8, 8, 75, 'DDAEP', 20, '2025-11-21 04:06:52', '2025-11-21 04:06:52'),
-(12, 9, 1, 7, 'Djèbgadji', 60, '2025-11-20 09:58:38', '2025-11-20 09:58:38');
+(12, 9, 1, 7, 'Djèbgadji', 60, '2025-11-20 09:58:38', '2025-11-20 09:58:38'),
+(13, 10, 8, 76, 'Djèbgadji', 150, '2025-11-21 19:14:54', '2025-11-21 19:14:54'),
+(14, 10, 5, 56, 'ccer', 50, '2025-11-21 19:14:54', '2025-11-21 19:14:54'),
+(15, 11, 9, 24, 'Santiago', 100, '2025-11-23 20:20:19', '2025-11-23 20:20:19'),
+(16, 11, 6, 62, 'arafat', 200, '2025-11-23 20:20:19', '2025-11-23 20:20:19'),
+(17, 12, 10, 36, 'Missrété', 100, '2025-11-23 21:19:42', '2025-11-23 21:19:42'),
+(18, 13, 1, 7, 'Djèbgadji', 100, '2025-11-24 09:24:56', '2025-11-24 09:24:56'),
+(21, 8, 8, 75, 'Maison des jeunes GOGOUNOU', 60, '2025-11-25 07:24:44', '2025-11-25 07:24:44');
 
 -- --------------------------------------------------------
 
@@ -729,7 +743,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2024_02_01_160355_create_contacts_table', 1),
 (14, '2024_06_20_105017_add_default_user', 1),
 (15, '2024_06_20_120000_create_demande_localisations_table', 1),
-(16, '2025_11_18_193620_add_post_appui_columns_to_demandes_table', 2);
+(16, '2025_11_18_193620_add_post_appui_columns_to_demandes_table', 2),
+(17, '2025_11_24_174135_add_date_approbation_to_demandes_table', 3),
+(19, '2025_11_25_103051_add_date_transmission_to_demandes_table', 4),
+(20, '2025_11_26_000000_change_date_depot_rapport_to_datetime_in_demandes_table', 5),
+(21, '2025_11_25_133101_add_archive_fields_to_demandes_table', 6);
 
 -- --------------------------------------------------------
 
@@ -782,9 +800,10 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('IGFMXv4qFNCTNkBd9UOld5RHi1XVfyY7ep23bJdQ', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoib0VXR3J0ZHZ1T2k5MlhUd2pXT2s1eGptZVRuV1YxYnBpMVhxQ1FSRiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zdGF0aXN0aXF1ZV9zZXJ2aWNlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjM2NTUwMDg7fXM6MjE6InBhc3N3b3JkX2hhc2hfc2FuY3R1bSI7czo2MDoiJDJ5JDEwJFVQT21ZOC95RnpwV0RmblVtWGFqb3VyUS5wS1A5YUc1LlZHWDBiam1JWTNXczhudU5LdkN1IjtzOjU6ImFsZXJ0IjthOjA6e319', 1763655082),
-('l1wBISGn4lpbYCEeD8DCZuVjCWhxwdpMUlaWdO8y', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiMmx3eFUzZU82YUpENkI2MEZ2NHA4RWFuazZFRTlqckJSRzFkRjJQbyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9saXN0ZV9kZW1hbmRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjM2MzgwOTA7fXM6MjE6InBhc3N3b3JkX2hhc2hfc2FuY3R1bSI7czo2MDoiJDJ5JDEwJFZBaFVCaEdwUjVKdS9Ld1lNalFhYU9tSUQ2R1JJWEFOcy9KZC9FSmswRGh5Ny5jMU5BSFptIjtzOjU6ImFsZXJ0IjthOjA6e319', 1763639765),
-('lA3VWmFhJFeGUtZsZIEV4aL0MXTkiKYSNiITF091', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoidUZRR0JqcEpmTGJzOEVrMndEVm5ackFkamY2aHo1MzBRMDNWU0xRWCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wb3N0LWFwcHVpIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjM2Mzc5MDY7fXM6MjE6InBhc3N3b3JkX2hhc2hfc2FuY3R1bSI7czo2MDoiJDJ5JDEwJFVQT21ZOC95RnpwV0RmblVtWGFqb3VyUS5wS1A5YUc1LlZHWDBiam1JWTNXczhudU5LdkN1IjtzOjU6ImFsZXJ0IjthOjA6e319', 1763641250);
+('eW4v4IPj3WxzRHCnUI95N9vJEA4xBOXbQnjZ0tzl', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiT2dHNjc4TklnWmhPYk5VSDA5cXN4bjU1ODBYaTNyZDNOUkJzRUpFQiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9saXN0ZV9kZW1hbmRlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NjtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjQwNjM5NjY7fXM6MjE6InBhc3N3b3JkX2hhc2hfc2FuY3R1bSI7czo2MDoiJDJ5JDEwJDVTYmRiNjlPWDkwVVM3M0NzSFE4TGVMN2hLNjV1WGVnQXRHcnU3eUJGRkhjWXIvLlN2Mlo2Ijt9', 1764075267),
+('IDQCB2AdVJkOAl5Tyhfd9Ang0ohhMpxfJyfgzgrC', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiZGNSU2pRWW1ETmY4aEQzNUNHMTM1S1ZwbndybVVZUWp0MzZaTUtJayI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM4OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGVtYW5kZV9hcmNoaXZlZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzY0MDgwNjc1O31zOjIxOiJwYXNzd29yZF9oYXNoX3NhbmN0dW0iO3M6NjA6IiQyeSQxMCRPTEpnTkZiMVFzdWdNQVJ3RW1MMzEuRXUwNjBzNk0veFFzZUZVRzFvUlNwLmowS3lZa3hObSI7fQ==', 1764080762),
+('K9LYfMwlCIObHuUb4LXHQduuafMOIy41MjmJJIfG', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidkpKeW1RVHV6cXRXUnh4aUVRUEM0dHhja0RKR0xHWTFkdnYzOVY1WiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2RlbWFuZGVfc3VzcGVuZHUiO31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764077401),
+('N7SBVEF2lQOdqpjwH0w0WzNgV89iRkaPVnvQmlhg', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVndoWlRadUV4Q3AyZmxLOVZoNjdjY2U0d3EzR0tnMWZaY1p3bXZ0MyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fX0=', 1764084300);
 
 -- --------------------------------------------------------
 
@@ -818,7 +837,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `code`, `email_verified_at`, `passwo
 (2, 'SPEA FDA', 'spea@gmail.com', NULL, NULL, '$2y$10$VAhUBhGpR5Ju/KwYMjQaaOmID6GRIXANs/Jd/EJk0Dhy7.c1NAHZm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'DG FDA', 'dg@gmail.com', NULL, NULL, '$2y$10$agfBgurWrYJCv2MlfDpuvOlOPJ2d/CJPH7iLiS3OcT4F307r8MIqO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (4, 'DAF FDA', 'daf@gmail.com', NULL, NULL, '$2y$10$OLJgNFb1QsugMARwEmL31.Eu060s6M/xQseFUG1oRSp.j0KyYkxNm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'DO FDA', 'do@gmail.com', NULL, NULL, '$2y$10$EOFjxCmlcBbl/7aIgo9EM.7qk78iTLv1eoUUG37zB1qQ8U9zBCn.y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(5, 'DO FDA', 'do@gmail.com', NULL, NULL, '$2y$10$EOFjxCmlcBbl/7aIgo9EM.7qk78iTLv1eoUUG37zB1qQ8U9zBCn.y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 'Secrétaire FDA', 'secretaire@gmail.com', NULL, NULL, '$2y$10$5Sbdb69OX90US73CsHQ8LeL7hK65uXegAtGru7yBFFHcYr/.Sv2Z6', NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-25 08:41:29', '2025-11-25 08:41:29');
 
 --
 -- Indexes for dumped tables
@@ -953,13 +973,13 @@ ALTER TABLE `corps`
 -- AUTO_INCREMENT for table `demandes`
 --
 ALTER TABLE `demandes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `demande_localisations`
 --
 ALTER TABLE `demande_localisations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `departements`
@@ -983,7 +1003,7 @@ ALTER TABLE `metiers`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -995,7 +1015,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
