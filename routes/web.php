@@ -47,6 +47,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::get('/statistiques', [AdminController::class, 'statistiques'])->name('statistiques.admin');
     Route::get('/post-appui', [AdminController::class, 'postAppui'])->name('post-appui');
+    Route::get('/suivi-demandes', [AdminController::class, 'suiviDemandes'])->name('suivi.demandes');
 });
 
 
