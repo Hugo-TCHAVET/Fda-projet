@@ -37,6 +37,8 @@
               <h2 style="font-weight: bold; margin:0;">DAF</h2>
               @elseif (Auth::user()->email == 'do@gmail.com')
               <h2 style="font-weight: bold; margin:0;">DO</h2>
+              @elseif (Auth::user()->email == 'secretaire@gmail.com')
+              <h2 style="font-weight: bold; margin:0;">SECRETAIRE</h2>
               @endif
             </li>
             <li class="nav-item dropdown">
@@ -68,8 +70,8 @@
         <div class="col-md-12">
           <div class="card modern-card">
             <div class="card-header">
-              <h4 class="card-title">Liste des Demandes</h4>
-              <p class="card-category">Gestion des demandes entrantes</p>
+              <h4 class="card-title">Liste des demandes d'appui</h4>
+              <p class="card-category">Gestion des demandes d'appui entrantes</p>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -78,8 +80,7 @@
                     <tr>
                       <th>Structure</th>
                       <th>Contact</th>
-                      <th>Budget</th>
-                      <th>Date Début</th>
+                      <th>Budget de l'activité</th>
                       <th>Statut</th>
                       @if (!in_array(Auth::user()->email, ['dg@gmail.com', 'daf@gmail.com', 'do@gmail.com']))
                       <th class="text-center">Actions</th>
@@ -91,8 +92,7 @@
                     <tr>
                       <td style="font-weight: 500; color: #333;">{{$demande->structure}}</td>
                       <td>{{$demande->contact}}</td>
-                      <td style="font-weight: bold; color: #2c3e50;">{{$demande->budget}}</td>
-                      <td>{{$demande->debut_activite}}</td>
+                      <td style="font-weight: bold; color: #2c3e50;">{{ number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
                       <td>
                         <span class="status-badge status-primary">
                           {{$demande->status}}
@@ -111,7 +111,7 @@
                             </svg>
                           </a>
 
-                          <button wire:click="Transmetre({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
+                          <button onclick="confirmerTransmission({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
                             <i class="now-ui-icons ui-1_send"></i>
                           </button>
 
@@ -310,6 +310,35 @@
       background-color: #f39c12;
       color: #fff;
       transform: translateY(-2px);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function confirmerTransmission(demandeId) {
+      Swal.fire({
+        title: 'Confirmation',
+        text: 'Êtes-vous sûr de vouloir transmettre cette demande ?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#009879',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, transmettre',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Livewire.find('{{ $_instance->id }}').call('Transmetre', demandeId);
+        }
+      });
+    }
+  </script>
+
+  <style>
+    .swal-poppins {
+      font-family: 'Poppins', sans-serif !important;
     }
   </style>
 </div>

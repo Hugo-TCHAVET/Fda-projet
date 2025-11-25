@@ -10,8 +10,8 @@ class IndexAdmin extends Component
 {
     public function render()
     {
-        $nbreformation = Demande::where('service', "Formation")->count();
-        $nbrepromotion = Demande::where('service', "Assistance")->count();
+        $nbreformation = Demande::where('service', "Formation")->where('suspendre', '!=', 1)->count();
+        $nbrepromotion = Demande::where('service', "Assistance")->where('suspendre', '!=', 1)->count();
         $nbrefinancier = Demande::where('service', "Financier")->count();
 
 

@@ -219,7 +219,9 @@ class DemandeVerifier extends Component
     public function render()
     {
 
-        $demandes = Demande::where('valide', 1)->paginate(6);
+        $demandes = Demande::where('valide', 1)
+            ->orderBy('date_transmission', 'desc')
+            ->paginate(6);
 
         return view('livewire.demande-verifier', compact('demandes'));
     }

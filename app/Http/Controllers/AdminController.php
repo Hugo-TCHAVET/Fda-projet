@@ -212,65 +212,129 @@ class AdminController extends Controller
 
     public function statistiques()
     {
-        $serviceData = Demande::groupBy('service')
+        // --- 1. DOSSIERS REÇUS (Toutes les demandes) ---
+
+        // G1 : Répartition par service (Reçus)
+        $g1_service_recus = Demande::groupBy('service')
             ->selectRaw('service, count(*) as count')
             ->get();
 
-        $sexeData = Demande::groupBy('sexe')
-            ->selectRaw('sexe, count(*) as count')
-            ->get();
-
-        $totalDemandes = Demande::count();
-
-        $departementData = Departement::leftJoin('demandes', 'departements.id', '=', 'demandes.departement')
-            ->groupBy('departements.id', 'departements.nom')
-            ->selectRaw('departements.id, departements.nom as nom_departement, count(demandes.id) as count')
-            ->get()
-            ->map(function ($item) use ($totalDemandes) {
-                $item['percentage'] = $totalDemandes > 0 ? ($item['count'] / $totalDemandes) * 100 : 0;
-                return $item;
-            });
-
-        $demandeurData = Demande::groupBy('type_demande')
+        // G2 : Répartition par type demandeur (Reçus)
+        $g2_demandeur_recus = Demande::groupBy('type_demande')
             ->selectRaw('type_demande, count(*) as count')
-            ->get()
-            ->map(function ($item) use ($totalDemandes) {
-                $item['percentage'] = $totalDemandes > 0 ? ($item['count'] / $totalDemandes) * 100 : 0;
-                return $item;
-            });
-
-        // $postAppuiBranche = Brache::leftJoin('demandes', 'braches.id', '=', 'demandes.branche')
-        //     ->groupBy('braches.id', 'braches.nom')
-        //     ->selectRaw('braches.id, braches.nom as nom_branche, count(demandes.id) as count')
-        //     ->get()
-        //     ->map(function ($item) use ($totalDemandes) {
-        //         $item['percentage'] = $totalDemandes > 0 ? ($item['count'] / $totalDemandes) * 100 : 0;
-        //         return $item;
-        //     });
-
-        $effectifsParBranche = Brache::leftJoin('demandes', 'braches.id', '=', 'demandes.branche')
-            ->selectRaw("
-                braches.id,
-                braches.nom AS nom_branche,
-                COALESCE(SUM(demandes.homme_touche), 0) AS effectif_total
-            ")
-            // TODO: appliquer un filtre sur le statut des demandes lorsqu’on saura lequel utiliser
-            ->groupBy('braches.id', 'braches.nom')
-            ->orderBy('braches.nom')
             ->get();
 
-        return view('Statistique.index', [
-            'serviceData' => $serviceData,
-            'sexeData' => $sexeData,
-            'departementData' => $departementData,
-            'demandeurData' => $demandeurData,
-            'effectifsParBranche' => $effectifsParBranche,
-        ]);
+        // G3 : Répartition par branche (Reçus)
+        $g3_branche_recus = Brache::leftJoin('demandes', 'braches.id', '=', 'demandes.branche')
+            ->groupBy('braches.id', 'braches.nom')
+            ->selectRaw('SUBSTRING(braches.nom, 1, 60) as nom, count(demandes.id) as count')
+            ->get();
+
+        // G12 : Effectif artisans prévus par commune (Reçus)
+        $g12_effectif_commune_recus = Commune::leftJoin('demandes', 'communes.id', '=', 'demandes.commune')
+            ->groupBy('communes.id', 'communes.nom')
+            ->selectRaw('communes.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
+            ->get();
+
+        // G13 : Effectif TOTAL artisans prévus formés (Reçus)
+        $g13_effectif_total_recus = Demande::sum('homme_touche');
+
+
+        // --- 2. DOSSIERS APPUYÉS / ACCEPTÉS (Statut = Approuvé) ---
+
+        // G4 : Répartition par service (Approuvés)
+        $g4_service_approuves = Demande::where('statuts', 'Approuvé')
+            ->groupBy('service')
+            ->selectRaw('service, count(*) as count')
+            ->get();
+
+        // G5 : Répartition par type demandeur (Approuvés)
+        $g5_demandeur_approuves = Demande::where('statuts', 'Approuvé')
+            ->groupBy('type_demande')
+            ->selectRaw('type_demande, count(*) as count')
+            ->get();
+
+        // G6 : Répartition par branche (Approuvés)
+        $g6_branche_approuves = Brache::leftJoin('demandes', function ($join) {
+            $join->on('braches.id', '=', 'demandes.branche')
+                ->where('demandes.statuts', 'Approuvé');
+        })
+            ->groupBy('braches.id', 'braches.nom')
+            ->selectRaw('braches.nom, count(demandes.id) as count')
+            ->get();
+
+        // G7 : Effectif artisans prévus par service (Approuvés)
+        $g7_effectif_service_approuves = Demande::where('statuts', 'Approuvé')
+            ->groupBy('service')
+            ->selectRaw('service, SUM(homme_touche) as effectif')
+            ->get();
+
+        // G8 : Effectif artisans prévus formés par type demandeur (Approuvés)
+        $g8_effectif_demandeur_approuves = Demande::where('statuts', 'Approuvé')
+            ->groupBy('type_demande')
+            ->selectRaw('type_demande, SUM(homme_touche) as effectif')
+            ->get();
+
+        // G9 : Effectif artisans prévus formés par branche (Approuvés)
+        $g9_effectif_branche_approuves = Brache::leftJoin('demandes', function ($join) {
+            $join->on('braches.id', '=', 'demandes.branche')
+                ->where('demandes.statuts', 'Approuvé');
+        })
+            ->groupBy('braches.id', 'braches.nom')
+            ->selectRaw('braches.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
+            ->get();
+
+        // G10 & G11 : Effectif artisans prévus formés par commune (Approuvés)
+        $g10_effectif_commune_approuves = Commune::leftJoin('demandes', function ($join) {
+            $join->on('communes.id', '=', 'demandes.commune')
+                ->where('demandes.statuts', 'Approuvé');
+        })
+            ->groupBy('communes.id', 'communes.nom')
+            ->selectRaw('communes.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
+            ->get();
+
+        // G14 : Montant total des appuis accordés par service (Approuvés)
+        $g14_montant_service_approuves = Demande::where('statuts', 'Approuvé')
+            ->groupBy('service')
+            ->selectRaw('service, SUM(buget_prevu) as montant')
+            ->get();
+
+        // G15 : Ratio Structures ayant déposé leur rapport / Structures appuyées
+        $count_approuves = Demande::where('statuts', 'Approuvé')->count();
+        $count_rapports = Demande::where('statuts', 'Approuvé')->where('rapport_depose', 1)->count();
+
+        // On prépare un petit objet pour le graphique
+        $g15_ratio_data = [
+            'rapports_deposes' => $count_rapports,
+            'rapports_manquants' => $count_approuves - $count_rapports
+        ];
+
+        return view('Statistique.index', compact(
+            'g1_service_recus',
+            'g2_demandeur_recus',
+            'g3_branche_recus',
+            'g12_effectif_commune_recus',
+            'g13_effectif_total_recus',
+            'g4_service_approuves',
+            'g5_demandeur_approuves',
+            'g6_branche_approuves',
+            'g7_effectif_service_approuves',
+            'g8_effectif_demandeur_approuves',
+            'g9_effectif_branche_approuves',
+            'g10_effectif_commune_approuves',
+            'g14_montant_service_approuves',
+            'g15_ratio_data'
+        ));
     }
 
     public function postAppui()
     {
         return view('Statistique.post-appui');
+    }
+
+    public function suiviDemandes()
+    {
+        return view('Admin.suivi_demandes');
     }
     public function storeDemande(Request $request)
     {

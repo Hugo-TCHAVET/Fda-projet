@@ -73,7 +73,7 @@
               <p>Tableau de Bord</p>
             </a>
           </li>
-          @if (Auth::user()->email == 'spea@gmail.com')
+          @if (Auth::user()->email == 'secretaire@gmail.com')
           <li class="{{ request()->routeIs('liste.demande') ? 'active' : '' }}">
             <a href="{{ route('liste.demande') }}">
               <i class="now-ui-icons education_atom"></i>
@@ -86,7 +86,7 @@
               <p>Demande rejetée</p>
             </a>
           </li>
-          @elseif (Auth::user()->email == 'sese@gmail.com')
+          @elseif (Auth::user()->email == 'sese@gmail.com'|Auth::user()->email == 'do@gmail.com')
           <li class="{{ request()->routeIs('demande.verifier') ? 'active' : '' }}">
             <a href="{{ route('demande.verifier') }}">
               <i class="now-ui-icons location_map-big"></i>
@@ -99,27 +99,15 @@
               <p>Demande Approuvée</p>
             </a>
           </li>
-          @elseif (Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
-          <li class="{{ request()->routeIs('liste.demande') ? 'active' : '' }}">
-            <a href="{{ route('liste.demande') }}">
-              <i class="now-ui-icons education_atom"></i>
-              <p>Liste des demandes</p>
-            </a>
-          </li>
-          <li class="{{ request()->routeIs('demande.verifier') ? 'active' : '' }}">
-            <a href="{{ route('demande.verifier') }}">
-              <i class="now-ui-icons location_map-big"></i>
-              <p>Demande analysé</p>
-            </a>
-          </li>
-          <li class="{{ request()->routeIs('demande.approve') ? 'active' : '' }}">
-            <a href="{{ route('demande.approve') }}">
-              <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Demande Approuvée</p>
+          @elseif (in_array(Auth::user()->email, ['dg@gmail.com', 'daf@gmail.com', 'spea@gmail.com']))
+          <li class="{{ request()->routeIs('suivi.demandes') ? 'active' : '' }}">
+            <a href="{{ route('suivi.demandes') }}">
+              <i class="now-ui-icons ui-1_zoom-bold"></i>
+              <p>Suivi des demandes</p>
             </a>
           </li>
           @endif
-          @if (Auth::user()->email == 'sese@gmail.com' || Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
+          @if (Auth::user()->email == 'sese@gmail.com' || Auth::user()->email == 'spea@gmail.com' || Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
           <li class="{{ request()->routeIs('statistiques.admin') ? 'active' : '' }}">
             <a href="{{ route('statistiques.admin') }}">
               <i class="now-ui-icons business_chart-bar-32"></i>

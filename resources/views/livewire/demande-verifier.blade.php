@@ -79,7 +79,7 @@
                       <th>Structure</th>
                       <th>Contact</th>
                       <th>Budget de l'activité</th>
-                      <th>IFU</th>
+                      <th>Date de réception</th>
                       <th>Statut</th>
                       <th class="text-center">Actions</th>
                     </tr>
@@ -90,7 +90,13 @@
                       <td style="font-weight: 500; color: #333;">{{$demande->structure}}</td>
                       <td>{{$demande->contact}}</td>
                       <td style="font-weight: bold;">{{$demande->budget}}</td>
-                      <td>{{$demande->ifu}}</td>
+                      <td style="font-weight: 500; color: #555;">
+                        @if($demande->date_transmission)
+                        {{ $demande->date_transmission->format('d/m/Y à H:i') }}
+                        @else
+                        <span style="color: #999;">Non disponible</span>
+                        @endif
+                      </td>
                       <td>
                         <span class="status-badge status-info">
                           {{$demande->statut}}

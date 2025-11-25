@@ -124,6 +124,8 @@
             <li class="mr-3 text-white">
               @if (Auth::user()->email == 'spea@gmail.com')
               <h2 class="mb-0" style="font-weight: bold; color: white;">SPEA</h2>
+              @elseif (Auth::user()->email == 'secretaire@gmail.com')
+              <h2 class="mb-0" style="font-weight: bold; color: white;">SECRETAIRE</h2>
               @elseif (Auth::user()->email == 'sese@gmail.com')
               <h2 class="mb-0" style="font-weight: bold; color: white;">SESE</h2>
               @elseif (Auth::user()->email == 'dg@gmail.com')

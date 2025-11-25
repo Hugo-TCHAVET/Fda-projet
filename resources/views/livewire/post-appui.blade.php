@@ -164,9 +164,10 @@
                                     <thead>
                                         <tr>
                                             <th>Structure</th>
-                                            <th>Budget demandé</th>
-                                            <th>Budget Attribué</th>
-                                            <th>Statut Rapport</th>
+                                            <th>Budget de l'activité</th>
+                                            <th>Budget attribué</th>
+                                            <th>Statut rapport</th>
+                                            <th>Date de dépôt</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -183,6 +184,13 @@
                                                 <span class="status-badge status-warning">En attente</span>
                                                 @endif
                                             </td>
+                                            <td style="font-weight: 500; color: #555;">
+                                                @if($demande->date_depot_rapport)
+                                                {{ $demande->date_depot_rapport->format('d/m/Y') }}
+                                                @else
+                                                <span style="color: #999;">-</span>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <div class="action-buttons">
                                                     <button wire:click="edit({{ $demande->id }})" class="btn-action btn-edit" title="Déposer/Éditer rapport">
@@ -193,7 +201,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="5" class="text-center py-5">
+                                            <td colspan="6" class="text-center py-5">
                                                 <div style="display: flex; flex-direction: column; align-items: center; color: #888;">
                                                     <i class="now-ui-icons files_box" style="font-size: 32px; margin-bottom: 10px;"></i>
                                                     <p style="font-size: 16px;">Aucune demande approuvée</p>

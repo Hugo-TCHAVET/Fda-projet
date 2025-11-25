@@ -342,7 +342,7 @@
                                             <th>Département</th>
                                             <th>Commune</th>
                                             <th>Lieu</th>
-                                            <th>Personne</th>
+                                            <th>Personnes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -351,7 +351,7 @@
                                             <td class="font-weight-bold">{{ $loc->departement ? $loc->departement->nom : '-' }}</td>
                                             <td>{{ $loc->commune ? $loc->commune->nom : '-' }}</td>
                                             <td>{{ $loc->lieux }}</td>
-                                            <td><span class="badge bg-secondary">{{ $loc->homme_touche }}</span></td>
+                                            <td><span class="badge text-center bg-secondary">{{ $loc->homme_touche }}</span></td>
                                         </tr>
                                         @endforeach
                                     </tbody>

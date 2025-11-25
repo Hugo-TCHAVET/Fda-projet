@@ -12,6 +12,12 @@ class Demande extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'date_transmission' => 'datetime',
+        'date_depot_rapport' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function branche()
     {

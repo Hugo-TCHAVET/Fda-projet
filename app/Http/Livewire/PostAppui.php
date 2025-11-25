@@ -105,6 +105,8 @@ class PostAppui extends Component
         // Récupérer les demandes approuvées (valide = 2 et buget_prevu != null)
         $demandes = Demande::where('valide', 2)
             ->where('buget_prevu', '!=', null)
+            ->orderBy('date_depot_rapport', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(6);
 
         // Calculer les statistiques

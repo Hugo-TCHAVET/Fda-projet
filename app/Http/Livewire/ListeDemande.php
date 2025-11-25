@@ -152,7 +152,11 @@ class ListeDemande extends Component
     {
         $demande = Demande::find($demandeId);
 
-        $demande->update(['valide' => 1, 'statut' => "En cours de traitement"]);
+        $demande->update([
+            'valide' => 1, 
+            'statut' => "En cours de traitement",
+            'date_transmission' => now()
+        ]);
         $this->alert('success', 'Votre demande a été envoyé avec succes!', [
             'position' => 'top-end',
             'timer' => 5000,
@@ -224,6 +228,7 @@ class ListeDemande extends Component
         // dd($anneeActive);
         $demandes = Demande::where('valide', 0)
             ->where('suspendre', 0)
+            ->orderBy('created_at', 'desc')
             ->paginate(6);
 
         return view('livewire.liste-demande', compact('demandes'));
