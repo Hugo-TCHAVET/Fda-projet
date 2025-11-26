@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 25, 2025 at 03:26 PM
+-- Generation Time: Nov 26, 2025 at 12:47 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -252,6 +252,93 @@ CREATE TABLE `demandes` (
   `homme_touche` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `budget` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `piece` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `buget_prevu` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0',
+  `rapport_depose` tinyint(1) DEFAULT '0',
+  `effectif_homme_forme` int DEFAULT NULL,
+  `effectif_femme_forme` int DEFAULT NULL,
+  `date_depot_rapport` datetime DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'En attente',
+  `statut` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `statuts` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `valide` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0',
+  `suspendre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0',
+  `rejeter` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0',
+  `archivee` tinyint(1) DEFAULT '0',
+  `annee_exercice` int DEFAULT NULL,
+  `date_archivage` datetime DEFAULT NULL,
+  `message` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date_transmission` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `date_approbation` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `demandes`
+--
+
+INSERT INTO `demandes` (`id`, `code`, `structure`, `service`, `type_demande`, `branche`, `corps`, `metier`, `nom`, `prenom`, `sexe`, `ifu`, `contact`, `titre_activite`, `obejectif_activite`, `debut_activite`, `fin_activite`, `dure_activite`, `departement`, `commune`, `lieux`, `homme_touche`, `budget`, `piece`, `buget_prevu`, `rapport_depose`, `effectif_homme_forme`, `effectif_femme_forme`, `date_depot_rapport`, `status`, `statut`, `statuts`, `valide`, `suspendre`, `rejeter`, `archivee`, `annee_exercice`, `date_archivage`, `message`, `date_transmission`, `created_at`, `updated_at`, `date_approbation`) VALUES
+(60, 'H38-GTAW-LXBN-HXQL', 'Daugherty and Sons', 'Financier', 'professionnel', '10', NULL, NULL, 'Fadel', 'Bettye', 'Féminin', '92959645381617', '+1-929-778-2885', 'Ipsam cum et vel aliquid.', 'Ut maxime delectus repellendus voluptatem quae et. Corrupti eius totam cupiditate consequatur est id ut. Cupiditate vitae quam harum odio.', '2025-12-17', '2026-01-02', '16', '5', '52', '6765 Karlie Route Suite 342', '173', '3761097', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-01-25 06:29:42', '2024-01-25 06:29:42', NULL),
+(61, 'I78-OHBB-GXSL-KWBI', 'Zboncak-Reynolds', 'Financier', 'structure', '8', '33', '249', 'Stiedemann', 'Maverick', 'Masculin', '83055146642039', '+1-754-946-3210', 'Laboriosam repudiandae eius quo ducimus.', 'Voluptatem veniam debitis non consequatur consequuntur eum possimus. Et hic occaecati quasi laudantium est modi tempora.', '2025-12-03', '2026-01-05', '33', '11', '42', '45090 Bergnaum Highway Suite 919', '55', '2292821', NULL, '2100000', 1, 0, 80, '2025-11-26 12:36:05', 'En attente', NULL, 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-06-30 19:04:55', '2025-11-26 11:36:05', '2025-11-26 12:27:31'),
+(62, 'C23-PGNS-IYGY-MRQC', 'Hodkiewicz-Schuster', 'Financier', 'professionnel', '4', '22', '111', 'Pacocha', 'Dangelo', 'Masculin', '88279492879697', '(726) 328-1142', 'Et quia tempore corporis maiores.', 'Qui minus pariatur qui dicta architecto. Quaerat aut odit voluptatem officiis. Velit ad eveniet quod optio cumque nihil aut qui.', '2025-12-05', '2026-01-17', '43', '9', '26', '22636 Hershel Parkway', '157', '3819069', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-07-19 09:17:03', '2024-07-19 09:17:03', NULL),
+(63, 'Q19-ZVEB-YTKH-EQJL', 'Mertz-Wilkinson', 'Formation', 'ONG', '3', '15', '98', 'Schoen', 'Oswaldo', 'Masculin', '38014450183308', '+1-959-725-4209', 'Labore consequatur eum deserunt quas aut.', 'Qui id quia at qui. Recusandae provident necessitatibus unde omnis sed. Unde et et aliquam.', '2025-12-22', '2026-01-05', '13', '9', '27', '4224 Leffler Stravenue Apt. 504', '72', '4601001', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-11-27 13:07:13', '2024-11-27 13:07:13', NULL),
+(65, 'I25-WRZW-GUTH-XWKQ', 'Hettinger and Sons', 'Financier', 'professionnel', '10', NULL, NULL, 'Blanda', 'Jakob', 'Masculin', '39715555853358', '+1 (347) 612-7523', 'Voluptatem aspernatur ipsum voluptatem unde temporibus.', 'Vel repudiandae sequi aut qui officia aut enim. Corrupti illo nostrum qui doloremque nemo molestiae eligendi. Inventore tempora assumenda nobis commodi optio aliquid magni in.', '2025-12-07', '2026-01-05', '28', '3', '23', '3101 Larson Loop Apt. 306', '30', '282051', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-10-28 03:08:26', '2024-10-28 03:08:26', NULL),
+(66, 'O85-DRTN-ALYX-ILAL', 'Mraz, Cruickshank and Johns', 'Formation', 'ONG', '9', '38', '282', 'Turcotte', 'Etha', 'Masculin', '74696778357977', '726.856.4214', 'Aut amet accusantium qui autem.', 'Molestiae minus aliquid eveniet iusto excepturi. Sapiente itaque et ut voluptate. Nesciunt aut sunt debitis dolores.', '2025-12-19', '2026-02-15', '58', '1', '10', '877 Hagenes Cliffs', '75', '2479058', NULL, '2400000', 1, 10, 25, '2025-11-26 12:35:11', 'En attente', NULL, 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-11-01 04:10:00', '2025-11-26 11:35:11', '2025-11-26 12:30:13'),
+(67, 'Q66-TIKE-LNSE-CMRM', 'VonRueden-White', 'Financier', 'professionnel', '6', '27', '224', 'Wehner', 'Aylin', 'Féminin', '86384980839288', '+1.385.876.3912', 'Voluptatem nihil et repellat excepturi.', 'Qui alias vel excepturi tempora velit. Ad debitis amet et facere. Maiores eos impedit quia asperiores.', '2025-11-29', '2026-02-25', '87', '5', '55', '161 Upton Walk Suite 392', '118', '4941364', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-06-20 02:58:21', '2024-06-20 02:58:21', NULL),
+(68, 'W78-NMFB-RVAI-OBOA', 'Lynch PLC', 'Assistance', 'structure', '3', '12', '61', 'Russel', 'Trey', 'Masculin', '68380050845555', '+1-854-725-0819', 'Voluptatem minus non laudantium.', 'Eveniet reiciendis itaque est et ipsam ipsa dolorum debitis. Ratione qui suscipit expedita quod molestias tenetur.', '2025-12-20', '2026-02-08', '49', '11', '41', '624 Annie Landing', '98', '1825067', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-01-05 17:18:38', '2024-01-05 17:18:38', NULL),
+(69, 'G17-BJQV-BPYV-QGCH', 'Raynor-Will', 'Assistance', 'ONG', '7', '30', '236', 'Hettinger', 'Gail', 'Masculin', '42362083244716', '424-301-9669', 'Quo ut nihil ea.', 'At eum voluptates non quo voluptatem adipisci recusandae eveniet. Consectetur nulla unde autem cupiditate quas repellendus.', '2025-11-27', '2026-01-06', '40', '12', '28', '465 Rusty Lake Apt. 292', '147', '4793314', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-04-01 17:06:36', '2024-04-01 17:06:36', NULL),
+(70, 'K66-DZTG-GCDZ-BAII', 'ALKAPOTE', 'Assistance', 'professionnel', '', '', '', 'Pop', 'Smoke', 'Masculin', '1215444354554', NULL, 'Intitulé', 'BFdskfjdk', NULL, NULL, NULL, '', '', '', '0', '12000000', NULL, '0', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-26 11:25:57', '2025-11-26 11:23:15', '2025-11-26 11:25:57', NULL),
+(71, 'C57-HRMQ-WFAH-DUUN', 'Hintz LLC', 'Financier', 'ONG', '9', '39', '296', 'Emmerich', 'Johathan', 'Féminin', '77877689499532', '1-812-657-1217', 'Cumque aperiam voluptates similique occaecati autem.', 'Nesciunt repellat cum harum. Sit enim nam eos aperiam saepe quis cumque. Minus non reiciendis et at asperiores praesentium.', '2025-12-15', '2025-12-19', '4', '12', '28', '9692 Jordyn Locks Suite 212', '54', '2649986', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', 'Suspendus', NULL, '0', '1', '0', 0, NULL, NULL, NULL, NULL, '2024-11-27 18:50:08', '2025-11-26 11:32:56', NULL),
+(72, 'K24-WGGA-GVGE-VFDH', 'Aufderhar Inc', 'Assistance', 'ONG', '10', NULL, NULL, 'Boyer', 'Donavon', 'Féminin', '90023265680511', '+1-434-284-3979', 'Quod voluptas quod ut.', 'Accusamus omnis ducimus aliquam et. Voluptates ut nihil ut numquam repellat culpa.', '2025-12-01', '2025-12-05', '4', '3', '18', '529 Bennett Inlet Apt. 962', '143', '617767', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', 'Suspendus', NULL, '0', '1', '0', 0, NULL, NULL, NULL, NULL, '2024-11-09 13:57:35', '2025-11-26 11:34:27', NULL),
+(73, 'N72-MDIN-BJTY-SMXT', 'Cronin-Greenholt', 'Formation', 'professionnel', '7', '31', '233', 'Turner', 'Sister', 'Masculin', '72630314455464', '678.254.5878', 'Et sed explicabo voluptate.', 'Iusto enim est est eveniet. Aut qui qui iste dolorum exercitationem sit facere officia. Deserunt blanditiis et et quod ea.', '2025-12-06', '2025-12-21', '15', '8', '76', '12685 Little Square Apt. 550', '96', '3376299', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-06-07 04:11:29', '2024-06-07 04:11:29', NULL),
+(75, 'U61-EHAN-NGYU-TWRT', 'Bayer, Luettgen and Ankunding', 'Formation', 'professionnel', '2', '43', '14', 'Blick', 'Michele', 'Féminin', '62098222769970', '984-383-4240', 'Ea qui et numquam.', 'Aut aspernatur et excepturi saepe necessitatibus sit quae. Temporibus aut officia iure consequatur repellat perferendis.', '2025-12-12', '2026-01-07', '25', '6', '65', '8098 Dale Skyway', '127', '3010293', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-26 11:33:19', '2024-08-06 06:09:28', '2025-11-26 11:33:19', NULL),
+(76, 'W17-SSJC-CTZF-LHOM', 'Mohr-Nolan', 'Assistance', 'ONG', '6', '28', '222', 'Schulist', 'Kassandra', 'Masculin', '37083362040762', '+1-820-976-0094', 'Quos molestias atque cum qui neque.', 'Distinctio incidunt ratione mollitia perspiciatis. Non at aliquid quasi soluta sed. Voluptatibus omnis et occaecati in voluptatem.', '2025-12-05', '2025-12-22', '16', '1', '8', '871 Dooley Mount', '155', '922321', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-06-22 03:42:27', '2024-06-22 03:42:27', NULL),
+(77, 'M78-QEOL-FLKB-AZQF', 'Gottlieb-Gibson', 'Assistance', 'structure', '8', '33', '265', 'Roberts', 'Christina', 'Féminin', '25565484621582', '+1.316.661.3246', 'Delectus consequatur consequatur.', 'Itaque ipsa aut ut. Fuga voluptas minus sit totam voluptate eaque. Eum dolorem aliquam explicabo dolorem.', '2025-11-29', '2026-02-08', '70', '11', '42', '60035 Mante Squares Apt. 633', '144', '1515252', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-26 11:34:03', '2024-02-28 07:32:52', '2025-11-26 11:34:03', NULL),
+(78, 'K91-VLWJ-ESEO-UIZQ', 'Pancras Anicet', 'Assistance', 'professionnel', '2', '7', '47', 'Wehner', 'Lea', 'Masculin', '74239192388490', '561-813-6525', 'Reiciendis possimus enim.', 'Inventore quia voluptatem dolores. Natus perspiciatis fugit alias repellendus nam. Magni voluptatem maiores veritatis quam.', '2025-11-27', '2026-01-20', '53', '1', '11', '7154 Vena Forks Suite 807', '155', '1417394', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-01-28 09:39:14', '2025-11-26 11:33:47', NULL),
+(79, 'N79-JOEH-TQKL-YDJW', 'Donnelly-Effertz', 'Financier', 'professionnel', '4', '24', '117', 'Champlin', 'Roxanne', 'Masculin', '10020687874748', '(443) 279-9313', 'Iusto fugit ea dignissimos eaque optio.', 'Minima sunt officiis nihil in. Temporibus occaecati totam quibusdam aut cumque facere expedita. Accusamus suscipit dolores quia repellendus voluptas.', '2025-12-05', '2026-01-11', '36', '8', '74', '56209 Vernice Street', '22', '4832350', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-09-02 15:32:07', '2024-09-02 15:32:07', NULL),
+(81, 'X62-YNAM-YAXI-HRRA', 'Considine, Erdman and Schuster', 'Financier', 'structure', '10', NULL, NULL, 'Gulgowski', 'Linwood', 'Masculin', '07899419726257', '+1-479-443-3508', 'Et excepturi non eum earum.', 'Eligendi ullam rerum commodi ab. Est et omnis iusto dolorum. Necessitatibus aliquid omnis quo enim laborum fugiat totam.', '2025-12-21', '2025-12-23', '1', '3', '19', '24520 Bogisich Valley', '117', '2125911', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-02-10 05:33:49', '2024-02-10 05:33:49', NULL),
+(82, 'G78-WGCB-FVTI-YMCL', 'Hammes-Turcotte', 'Financier', 'professionnel', '4', '20', '121', 'Bradtke', 'Sarina', 'Féminin', '45314683646529', '+1-727-816-5429', 'Est aut aut sunt dicta.', 'Labore et quia commodi repellat sunt. Est minima ut deserunt molestias qui voluptas.', '2025-12-26', '2026-02-12', '48', '3', '18', '42802 Rohan Cliff Apt. 212', '120', '3971787', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-07-18 02:53:43', '2024-07-18 02:53:43', NULL),
+(83, 'U40-VYIR-VGAO-TUOG', 'Weimann and Sons', 'Formation', 'structure', '4', '20', '190', 'Dietrich', 'Roman', 'Féminin', '18071098644261', '1-360-387-4370', 'Vel qui cum.', 'Explicabo ea dolor possimus debitis molestias cum. Minima molestiae itaque vero autem aut perferendis. Voluptatum quia quia sed eos ut ea laudantium.', '2025-12-18', '2026-02-18', '62', '7', '66', '4276 Hintz Lodge Suite 459', '47', '2006671', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-10-21 20:11:57', '2024-10-21 20:11:57', NULL),
+(84, 'E87-IVXK-EDVF-XTXK', 'Rippin Ltd', 'Financier', 'professionnel', '7', '30', '236', 'Koelpin', 'Shemar', 'Féminin', '83927952853637', '1-678-767-1325', 'Dolorem in ea beatae.', 'Nesciunt esse officiis optio nostrum qui quo eos autem. Dolor eum dignissimos adipisci. Iusto odio error aperiam dolorum perspiciatis.', '2025-12-19', '2026-02-13', '56', '3', '23', '4576 Aditya Forge Apt. 229', '115', '1836205', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-10-25 08:40:13', '2024-10-25 08:40:13', NULL),
+(85, 'R94-CQAT-OOTU-HAYG', 'Deckow Group', 'Formation', 'ONG', '8', '36', '259', 'Considine', 'Trudie', 'Masculin', '35694971843466', '1-430-594-7360', 'Architecto alias doloribus.', 'Dolorem error dolores deleniti explicabo asperiores tempora. Quis veritatis sed aut eveniet.', '2025-11-29', '2026-02-11', '73', '7', '68', '63610 Percival Drive Suite 190', '160', '2371171', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-04-26 19:18:49', '2024-04-26 19:18:49', NULL),
+(86, 'A08-COIS-BFKX-HMIL', 'Kling, Schmeler and Cummerata', 'Assistance', 'structure', '10', NULL, NULL, 'Larkin', 'Hanna', 'Masculin', '07919224064117', '+1-938-847-0939', 'Beatae quas officia ratione.', 'Pariatur porro delectus quia quidem iusto qui. Voluptates vel sit consequatur ratione ducimus aliquam enim mollitia. Non blanditiis ipsum molestiae doloremque.', '2025-12-11', '2026-02-15', '66', '11', '41', '9416 Adams Forge Apt. 238', '44', '4587487', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-11-20 10:40:30', '2024-11-20 10:40:30', NULL),
+(87, 'D43-MTNT-GBJU-KYRJ', 'Kshlerin, Schumm and Aufderhar', 'Assistance', 'ONG', '5', '25', '206', 'Murazik', 'Alison', 'Féminin', '63309907270676', '331-248-7791', 'Ipsam aperiam ratione.', 'Et culpa eaque soluta necessitatibus laborum quia ut. Architecto est dolore enim accusamus itaque.', '2025-12-08', '2025-12-16', '8', '7', '68', '423 Cartwright Port Suite 884', '135', '2711553', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-06-04 00:52:22', '2024-06-04 00:52:22', NULL),
+(88, 'V35-OCOO-HLHU-NSZO', 'Lehner-Torphy', 'Formation', 'structure', '2', '41', '14', 'Keeling', 'Jeramy', 'Féminin', '64884408241646', '520-706-1582', 'Omnis iure nisi omnis.', 'Est qui accusantium exercitationem voluptate. Ducimus beatae quia aliquam. Blanditiis et accusamus sunt eveniet.', '2025-12-16', '2025-12-30', '13', '6', '58', '9729 Ziemann Highway', '29', '2658111', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-05-22 01:50:38', '2024-05-22 01:50:38', NULL),
+(89, 'Q81-WGOD-FWND-IDBV', 'Barrows LLC', 'Formation', 'ONG', '4', '23', '134', 'Wintheiser', 'Liana', 'Féminin', '78899498726467', '217-659-1282', 'Aut est enim iusto ut.', 'Dolorem est iusto a recusandae. Repudiandae sequi ut quia doloremque.', '2025-12-12', '2026-01-15', '33', '9', '24', '91675 Andy Ford Apt. 928', '173', '1642303', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-01-05 08:51:10', '2024-01-05 08:51:10', NULL),
+(90, 'V93-FQGY-UYQR-LLEF', 'Stehr LLC', 'Formation', 'professionnel', '8', '33', '268', 'Wisozk', 'Darron', 'Masculin', '77132983335044', '954.578.7868', 'Harum dolore asperiores harum.', 'Consequuntur deleniti non laboriosam laudantium voluptas. Libero possimus veniam asperiores soluta nostrum nihil quasi.', '2025-12-23', '2026-02-23', '62', '12', '28', '94998 Zachariah Expressway', '96', '4443387', NULL, NULL, 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2024-05-04 01:12:19', '2024-05-04 01:12:19', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `demandes_clotures`
+--
+
+CREATE TABLE `demandes_clotures` (
+  `id` bigint UNSIGNED NOT NULL,
+  `demande_id_original` bigint UNSIGNED NOT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `structure` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `service` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type_demande` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `branche` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `corps` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prenom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sexe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ifu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `titre_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `obejectif_activite` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `debut_activite` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fin_activite` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dure_activite` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `departement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commune` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lieux` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `homme_touche` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `budget` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `piece` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `buget_prevu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `rapport_depose` tinyint(1) NOT NULL DEFAULT '0',
   `effectif_homme_forme` int DEFAULT NULL,
@@ -268,29 +355,53 @@ CREATE TABLE `demandes` (
   `date_archivage` datetime DEFAULT NULL,
   `message` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_transmission` timestamp NULL DEFAULT NULL,
+  `date_approbation` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `date_approbation` datetime DEFAULT NULL
+  `annee_exercice_cloture` int NOT NULL,
+  `date_cloture` datetime NOT NULL,
+  `user_id_cloture` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `demandes`
+-- Dumping data for table `demandes_clotures`
 --
 
-INSERT INTO `demandes` (`id`, `code`, `structure`, `service`, `type_demande`, `branche`, `corps`, `metier`, `nom`, `prenom`, `sexe`, `ifu`, `contact`, `titre_activite`, `obejectif_activite`, `debut_activite`, `fin_activite`, `dure_activite`, `departement`, `commune`, `lieux`, `homme_touche`, `budget`, `piece`, `buget_prevu`, `rapport_depose`, `effectif_homme_forme`, `effectif_femme_forme`, `date_depot_rapport`, `status`, `statut`, `statuts`, `valide`, `suspendre`, `rejeter`, `archivee`, `annee_exercice`, `date_archivage`, `message`, `date_transmission`, `created_at`, `updated_at`, `date_approbation`) VALUES
-(1, 'G76-PEOK-XMPD-OZXL', 'ert', 'Assistance', 'professionnel', '2', '41', '300', 'ZERT', 'erty', 'Masculin', '1234565432123', '234567', 'ZERTY', 'ZERTY', '2025-11-19', '2025-11-20', '1', '4', '43', 'HOPITAL', '10', '1000000', 'piece/NgE32zeTqMLsxghYP5Eb3iFjPuSbX6GnbPkUZliP.pdf', '500000', 1, 100, 20, '2025-11-20 00:00:00', 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2025, '2025-11-25 14:18:47', NULL, NULL, '2025-11-20 22:43:33', '2025-11-25 13:18:47', NULL),
-(3, 'X81-YFAZ-POXW-KBDZ', 'n', 'Assistance', 'professionnel', '', '', '', 'n', 'n', 'Masculin', '1234', '2345', 'U', 'ERTY', '2025-11-21', '2025-11-23', '2', '10', '36', 'SALLE DES JEUNES', '5', '150000', 'piece/l7Pmgu9UJb9x6qJ7xPOmn6Ok3joxmfu8FH2mUjla.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 00:47:24', '2025-11-21 04:10:56', NULL),
-(4, 'M93-FIJP-DESJ-BNFX', 'h', 'Assistance', 'professionnel', '', '', '', 'h', 'Hugo', 'Féminin', '1234321234568', '234567', 'H', 'H', '2025-11-21', '2025-11-23', '2', '5', '55', 'SALLE DES ENFANTS', '50', '3456', 'piece/Q4Ir1mptf0jxYrFwiD4nat2PKsjFaV84Db7AiU2W.pdf', '1000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 01:12:29', '2025-11-20 11:07:06', NULL),
-(5, 'L47-PWKO-IEUO-WVMK', 'h', 'Assistance', 'professionnel', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234321234568', '234567', 'ZER', 'TYU', '2025-11-13', '2025-11-20', '7', '8', '77', 'SALLE DES ENFANTS', '50', '250000', 'piece/5UHPZEcgXixt64lV8ODfrkRbtsJAtok1ARyRDzS4.pdf', '150000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2024, '2025-11-25 14:18:54', NULL, NULL, '2025-11-21 01:15:17', '2025-11-25 13:18:54', NULL),
-(6, 'Z63-NAJU-AQBP-VSNY', 'ert', 'Assistance', 'structure', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234565432123', '234567', 'Mise à jour', 'Mise à jour de le plateforme', '2025-10-30', '2025-11-06', '7', '10', '33', 'SALLE DES ENFANTS', '50', '500000', 'piece/NaktdHr7F3odq1bnQgeOEXBQiymXl8CWKsP5JaZL.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 01:39:06', '2025-11-20 11:06:45', NULL),
-(7, 'X52-YNIB-EZDF-KYSD', 'zert', 'Formation', 'professionnel', '8', '', '', 'yui', 'Fanzaëlle Chancia', 'Féminin', '0234321234568', '234567', 'Mise à jour', 'rtyu', '2025-10-30', '2025-11-06', '7', '7', '4', 'HOPITAL', '20', '500000', 'piece/iHLrtLfTxmJ3DWsYihSzSxx6wHaENnKoFx0T7z0I.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 02:17:36', '2025-11-24 17:12:48', '2025-11-24 18:12:48'),
-(8, 'U06-LOPZ-AFMY-ZWHR', 'Fda', 'Assistance', 'professionnel', NULL, NULL, NULL, 'AKPO', 'Gérard', 'Masculin', '0987767666544', '34567', 'Mise à jour', 'Mise à jour de la plateforme', '2025-07-29', '2025-08-05', '7', '8', '75', 'DDAEP', '20', '500000', 'piece/SpQBDvBvUixooNNKzhYWmTM3PyEO88mrn0BJZ3GX.pdf', '0', 0, NULL, NULL, NULL, 'En attente', 'Suspendus', NULL, '0', '1', '0', 0, NULL, NULL, 'Projet non prometteur', NULL, '2025-11-21 04:06:52', '2025-11-25 07:24:44', NULL),
-(9, 'M09-FNTT-NNAR-TKAU', 'ASSIRI', 'Assistance', 'structure', '8', '35', '259', 'Anicet', 'Pancras Anicet', 'Masculin', '1200901979305', '2290162012345', 'Formation en élévage de poules pondeuses', 'Formation', '2025-12-15', '2025-12-25', '10', '1', '7', 'Djèbgadji', '60', '500000', 'piece/ImXRARY1zYywFQWgcllTxvSt5WplPPV0uABUBwtL.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-20 09:58:38', '2025-11-20 10:44:15', NULL),
-(10, 'B80-ZPQS-KHBS-YYXN', 'Abdoul', 'Assistance', 'professionnel', '9', '38', '', 'Abdoul', 'Hack', 'Masculin', '1200901979304', '2290168789586', 'Formation en élévage de poules pondeuses', 'Formation', '2025-11-18', '2025-11-25', '7', '8', '76', 'Djèbgadji', '150', '200000', 'piece/vmTDEsx0pLeXhwhngTELaPPZAirMJyoYDk9FUFT1.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-21 19:14:54', '2025-11-21 19:14:54', NULL),
-(11, 'L26-PYJK-RGVT-PVFC', 'ASSIRI', 'Assistance', 'professionnel', '2', '41', '304', 'IZI', 'Net', 'Féminin', '2145786325875', '2290190996353', 'Formation', 'Formations', '2025-02-12', '2025-11-12', '273', '9', '24', 'Santiago', '100', '15000000', 'piece/2I2HGMjm6r4ck4xdxGj9MH6Dj6niqYU7Lxaf94bs.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-23 20:20:19', '2025-11-23 20:20:19', NULL),
-(12, 'H62-ICAU-WCRH-TXHR', 'ASSIRI', 'Assistance', 'professionnel', '', '', '', 'ASSIRI', 'Services', 'Masculin', '1225654215848', '22901254887', 'Formation en élévage', 'kjdkfdns', '2025-02-15', '2025-03-30', '43', '10', '36', 'Missrété', '100', '1000000', 'piece/JPEjtrXNWvZRbYTVXusfBb3ABiKAa0nKPy9f68zD.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-23 21:19:42', '2025-11-23 21:19:42', NULL),
-(13, 'N94-BSIK-GLRV-PNFC', 'ASSIRI Services', 'Assistance', 'professionnel', '2', '', '', 'Thibault', 'Hack', 'Masculin', '1200901979305', '+2292968767789', 'Formation en élévage de poules pondeuses', 'Formation', '2025-03-22', '2025-04-21', '30', '1', '7', 'Djèbgadji', '100', '10000000', 'piece/S5zKkNfiZVMYfIHb9eWXcE6HQEpzC9mAmLoYM2us.pdf', '10000000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-24 09:24:55', '2025-11-24 16:04:17', NULL),
-(14, 'N85-WVCY-WPTU-GBQR', 'ASSIRI', 'Formation', 'professionnel', '5', '26', '271', 'Anicet', 'Hack', 'Féminin', '1200901979305', '22901254887', 'Formation en élévage de poules pondeuses', 'rien de sérieux', NULL, NULL, NULL, '', '', '', '0', '1000000', NULL, '1000000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2025, '2025-11-25 14:13:13', NULL, NULL, '2025-11-24 14:01:25', '2025-11-25 13:13:13', '2025-11-25 10:42:01');
+INSERT INTO `demandes_clotures` (`id`, `demande_id_original`, `code`, `structure`, `service`, `type_demande`, `branche`, `corps`, `metier`, `nom`, `prenom`, `sexe`, `ifu`, `contact`, `titre_activite`, `obejectif_activite`, `debut_activite`, `fin_activite`, `dure_activite`, `departement`, `commune`, `lieux`, `homme_touche`, `budget`, `piece`, `buget_prevu`, `rapport_depose`, `effectif_homme_forme`, `effectif_femme_forme`, `date_depot_rapport`, `status`, `statut`, `statuts`, `valide`, `suspendre`, `rejeter`, `archivee`, `annee_exercice`, `date_archivage`, `message`, `date_transmission`, `date_approbation`, `created_at`, `updated_at`, `annee_exercice_cloture`, `date_cloture`, `user_id_cloture`) VALUES
+(46, 1, 'G76-PEOK-XMPD-OZXL', 'ert', 'Assistance', 'professionnel', '2', '41', '300', 'ZERT', 'erty', 'Masculin', '1234565432123', '234567', 'ZERTY', 'ZERTY', '2025-11-19', '2025-11-20', '1', '4', '43', 'HOPITAL', '10', '1000000', 'piece/NgE32zeTqMLsxghYP5Eb3iFjPuSbX6GnbPkUZliP.pdf', '500000', 1, 100, 20, '2025-11-20 00:00:00', 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2025, '2025-11-25 14:18:47', NULL, NULL, NULL, '2025-11-20 22:43:33', '2025-11-25 13:18:47', 2025, '2025-11-26 09:37:16', 1),
+(47, 3, 'X81-YFAZ-POXW-KBDZ', 'n', 'Assistance', 'professionnel', '', '', '', 'n', 'n', 'Masculin', '1234', '2345', 'U', 'ERTY', '2025-11-21', '2025-11-23', '2', '10', '36', 'SALLE DES JEUNES', '5', '150000', 'piece/l7Pmgu9UJb9x6qJ7xPOmn6Ok3joxmfu8FH2mUjla.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-21 00:47:24', '2025-11-21 04:10:56', 2025, '2025-11-26 09:37:16', 1),
+(48, 4, 'M93-FIJP-DESJ-BNFX', 'h', 'Assistance', 'professionnel', '', '', '', 'h', 'Hugo', 'Féminin', '1234321234568', '234567', 'H', 'H', '2025-11-21', '2025-11-23', '2', '5', '55', 'SALLE DES ENFANTS', '50', '3456', 'piece/Q4Ir1mptf0jxYrFwiD4nat2PKsjFaV84Db7AiU2W.pdf', '1000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-21 01:12:29', '2025-11-20 11:07:06', 2025, '2025-11-26 09:37:16', 1),
+(49, 5, 'L47-PWKO-IEUO-WVMK', 'h', 'Assistance', 'professionnel', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234321234568', '234567', 'ZER', 'TYU', '2025-11-13', '2025-11-20', '7', '8', '77', 'SALLE DES ENFANTS', '50', '250000', 'piece/5UHPZEcgXixt64lV8ODfrkRbtsJAtok1ARyRDzS4.pdf', '150000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2024, '2025-11-25 14:18:54', NULL, NULL, NULL, '2025-11-21 01:15:17', '2025-11-25 13:18:54', 2025, '2025-11-26 09:37:16', 1),
+(50, 6, 'Z63-NAJU-AQBP-VSNY', 'ert', 'Assistance', 'structure', '', '', '', 'sdfg', 'dfghj', 'Masculin', '1234565432123', '234567', 'Mise à jour', 'Mise à jour de le plateforme', '2025-10-30', '2025-11-06', '7', '10', '33', 'SALLE DES ENFANTS', '50', '500000', 'piece/NaktdHr7F3odq1bnQgeOEXBQiymXl8CWKsP5JaZL.pdf', '10000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-21 01:39:06', '2025-11-20 11:06:45', 2025, '2025-11-26 09:37:16', 1),
+(51, 7, 'X52-YNIB-EZDF-KYSD', 'zert', 'Formation', 'professionnel', '8', '', '', 'yui', 'Fanzaëlle Chancia', 'Féminin', '0234321234568', '234567', 'Mise à jour', 'rtyu', '2025-10-30', '2025-11-06', '7', '7', '4', 'HOPITAL', '20', '500000', 'piece/iHLrtLfTxmJ3DWsYihSzSxx6wHaENnKoFx0T7z0I.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-24 18:12:48', '2025-11-21 02:17:36', '2025-11-24 17:12:48', 2025, '2025-11-26 09:37:16', 1),
+(52, 9, 'M09-FNTT-NNAR-TKAU', 'ASSIRI', 'Assistance', 'structure', '8', '35', '259', 'Anicet', 'Pancras Anicet', 'Masculin', '1200901979305', '2290162012345', 'Formation en élévage de poules pondeuses', 'Formation', '2025-12-15', '2025-12-25', '10', '1', '7', 'Djèbgadji', '60', '500000', 'piece/ImXRARY1zYywFQWgcllTxvSt5WplPPV0uABUBwtL.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-20 09:58:38', '2025-11-20 10:44:15', 2025, '2025-11-26 09:37:16', 1),
+(53, 11, 'L26-PYJK-RGVT-PVFC', 'ASSIRI', 'Assistance', 'professionnel', '2', '41', '304', 'IZI', 'Net', 'Féminin', '2145786325875', '2290190996353', 'Formation', 'Formations', '2025-02-12', '2025-11-12', '273', '9', '24', 'Santiago', '100', '15000000', 'piece/PYj4CHe5y5d2BxrSiCdWtTZSA2T3xA1uQmtuSMlu.pdf', '0', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-25 19:48:20', NULL, '2025-11-23 20:20:19', '2025-11-25 19:48:20', 2025, '2025-11-26 09:37:16', 1),
+(54, 12, 'H62-ICAU-WCRH-TXHR', 'ASSIRI', 'Assistance', 'professionnel', '', '', '', 'ASSIRI', 'Services', 'Masculin', '1225654215848', '22901254887', 'Formation en élévage', 'kjdkfdns', '2025-02-15', '2025-03-30', '43', '10', '36', 'Missrété', '100', '1000000', 'piece/JPEjtrXNWvZRbYTVXusfBb3ABiKAa0nKPy9f68zD.pdf', '500000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, '2025-11-25 14:37:58', '2025-11-25 15:41:57', '2025-11-23 21:19:42', '2025-11-25 14:41:57', 2025, '2025-11-26 09:37:16', 1),
+(55, 13, 'N94-BSIK-GLRV-PNFC', 'ASSIRI Services', 'Assistance', 'professionnel', '2', '', '', 'Thibault', 'Hack', 'Masculin', '1200901979305', '+2292968767789', 'Formation en élévage de poules pondeuses', 'Formation', '2025-03-22', '2025-04-21', '30', '1', '7', 'Djèbgadji', '100', '10000000', 'piece/S5zKkNfiZVMYfIHb9eWXcE6HQEpzC9mAmLoYM2us.pdf', '10000000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-24 09:24:55', '2025-11-24 16:04:17', 2025, '2025-11-26 09:37:16', 1),
+(56, 14, 'N85-WVCY-WPTU-GBQR', 'ASSIRI', 'Formation', 'professionnel', '5', '26', '271', 'Anicet', 'Hack', 'Féminin', '1200901979305', '22901254887', 'Formation en élévage de poules pondeuses', 'rien de sérieux', NULL, NULL, NULL, '', '', '', '0', '1000000', NULL, '1000000', 1, 35, 47, '2025-11-25 16:01:00', 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 1, 2025, '2025-11-25 14:13:13', NULL, NULL, '2025-11-25 10:42:01', '2025-11-24 14:01:25', '2025-11-25 15:01:00', 2025, '2025-11-26 09:37:16', 1),
+(57, 17, 'I58-UIMQ-RTEB-MTJJ', 'Assiri', 'Assistance', 'ONG', '', '', '', 'MONGADJI', 'Cyril', 'Masculin', '1458960265485', NULL, 'Formation', '7854', NULL, NULL, NULL, '', '', '', '0', '15000000', NULL, '0', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-25 19:44:30', NULL, '2025-11-25 19:32:54', '2025-11-25 19:44:30', 2025, '2025-11-26 09:37:16', 1),
+(58, 18, 'W54-VEEJ-XKXQ-MPCY', 'LighInovation', 'Formation', 'ONG', '3', '11', '41', 'Camenbert', 'TJAY', 'Masculin', '6705895202515', NULL, 'Formation', 'Formation', NULL, NULL, NULL, '', '', '', '0', '12000000', 'piece/ZPy6YegsowZ89FVX07bTJ5OAzYMQOE3MiI4m94nQ.pdf', '0', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-25 20:51:36', '2025-11-25 21:24:37', 2025, '2025-11-26 09:37:16', 1),
+(59, 19, 'G57-FFEX-GKAQ-SJEQ', 'ALKAPOTE', 'Assistance', 'structure', '3', '', '', 'Pop', 'Smoke', 'Masculin', '5684789520158', NULL, 'Intitulé', 'Objectif', NULL, NULL, NULL, '', '', '', '0', '3000000', NULL, '3000000', 0, NULL, NULL, NULL, 'En attente', 'En cours de traitement', 'Approuvé', '2', '0', '0', 0, NULL, NULL, NULL, '2025-11-25 21:06:35', '2025-11-25 22:06:56', '2025-11-25 20:53:37', '2025-11-25 21:06:56', 2025, '2025-11-26 09:37:16', 1),
+(61, 40, 'W81-HGXU-BAQD-WEQR', 'Jaskolski Group', 'Formation', 'structure', '6', '28', '230', 'Doyle', 'Mikel', 'Féminin', '88301416126928', '364.310.2143', 'Vero assumenda et harum qui.', 'Sunt facilis impedit iste aut voluptas consequatur. Reiciendis dolorum hic nam est consequatur. Sit eaque odio quisquam ducimus qui dolor ratione.', '2025-12-13', '2026-01-11', '28', '6', '64', '17485 Agustin Light', '120', '2525930', NULL, '1750642', 0, 96, 113, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-04-18 15:26:59', '2025-04-18 15:26:59', 2025, '2025-11-26 11:15:49', 1),
+(62, 41, 'S22-LERK-YRVR-TJJV', 'Little, Cartwright and Muller', 'Formation', 'ONG', '4', '19', '136', 'Funk', 'Wayne', 'Masculin', '38595411765583', '1-626-800-5200', 'Sit ut sint.', 'Qui perspiciatis repellat reprehenderit assumenda reiciendis omnis voluptas. Nemo occaecati quia nemo fuga quos totam.', '2025-12-18', '2025-12-28', '10', '5', '55', '20760 Pfeffer Plaza', '161', '3160002', NULL, '2499798', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-09-27 14:07:35', NULL, '2025-04-13 03:48:50', '2025-04-13 03:48:50', 2025, '2025-11-26 11:15:49', 1),
+(63, 42, 'S54-BJZA-CUBX-DLQR', 'Bruen Inc', 'Formation', 'ONG', '9', '39', '272', 'D\'Amore', 'Kailee', 'Féminin', '37851005245894', '283-982-4545', 'Explicabo molestiae fuga.', 'Facilis voluptatem et et enim sint et quia. Accusantium accusantium quas quibusdam. Odit est non fugiat aspernatur esse quo.', '2025-12-20', '2026-01-03', '14', '11', '38', '8162 Bashirian Corner Apt. 995', '57', '3169379', NULL, '389794', 0, 5, 30, '2025-11-14 04:13:25', 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-05-08 05:48:35', '2025-05-08 05:48:35', 2025, '2025-11-26 11:15:49', 1),
+(64, 43, 'Z77-QYDV-UBIG-VZUA', 'VonRueden LLC', 'Financier', 'ONG', '7', '31', '232', 'Kovacek', 'Cade', 'Féminin', '82817353180633', '341.736.3508', 'Consequuntur velit et voluptate facere.', 'Labore doloribus laudantium repellendus occaecati nam. Sed officia inventore blanditiis nisi nobis quas nostrum. Vel quia dolorum aperiam qui nostrum deserunt.', '2025-12-07', '2025-12-14', '6', '1', '6', '3429 Gerhold Junction', '132', '2746283', NULL, '426359', 0, 108, 124, '2025-11-07 13:27:03', 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-04-05 03:50:13', '2025-04-05 03:50:13', 2025, '2025-11-26 11:15:49', 1),
+(65, 44, 'C25-QDJE-LVUN-BYAU', 'Rohan LLC', 'Assistance', 'structure', '4', '20', '174', 'Bergstrom', 'Jamison', 'Féminin', '85254334675626', '(678) 954-1211', 'Inventore eius corporis aut.', 'Laborum odit id culpa aliquam sed ullam. Minima molestias autem laborum deleniti similique.', '2025-12-23', '2026-01-07', '14', '2', '13', '45284 Lilla Mount', '197', '891226', NULL, '462206', 0, NULL, 140, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-11 13:35:51', '2025-10-30 01:14:30', '2025-10-30 01:14:30', 2025, '2025-11-26 11:15:49', 1),
+(66, 45, 'M22-NRKY-RLKL-KRUF', 'Johns-Wilderman', 'Financier', 'ONG', '7', '31', '231', 'Greenfelder', 'Granville', 'Masculin', '82493085525978', '+1-978-831-6051', 'Et ex doloremque aut.', 'Aperiam est quasi voluptas doloremque eum quo. Deleniti sit non est asperiores esse non eaque. Quasi repudiandae dicta aut enim voluptatibus et et.', '2025-12-03', '2025-12-31', '28', '6', '59', '6905 Kuvalis Ports', '172', '4419216', NULL, '856758', 0, 21, 49, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-11 03:04:11', '2025-10-25 17:35:08', '2025-10-25 17:35:08', 2025, '2025-11-26 11:15:49', 1),
+(67, 46, 'U41-ZKUC-XJMK-MOWA', 'Lakin LLC', 'Formation', 'ONG', '9', '40', '279', 'Schamberger', 'Marisol', 'Masculin', '50749474007334', '+1 (404) 442-1555', 'Rerum impedit eum voluptas.', 'Soluta earum quibusdam accusamus quis tenetur tempore. Ex accusantium quia sapiente hic ipsum magni. Est illum omnis optio voluptas blanditiis in accusantium.', '2025-12-08', '2026-02-06', '60', '11', '41', '21108 Steve Gardens', '193', '4960114', NULL, '1630384', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-03-15 09:03:57', '2025-03-15 09:03:57', 2025, '2025-11-26 11:15:49', 1),
+(68, 47, 'K89-LLJI-UJBD-KOQU', 'Dickinson-Muller', 'Financier', 'professionnel', '2', '42', '41', 'Gerhold', 'Lawrence', 'Masculin', '00693857221460', '1-260-303-1181', 'Possimus corporis et voluptatem.', 'Tempora natus autem dolores officia doloremque dolores. Corrupti est aliquam possimus et quaerat.', '2025-12-09', '2025-12-24', '15', '3', '21', '8251 Klocko Lodge Suite 488', '119', '4518961', NULL, '491088', 0, 110, 134, '2025-11-08 00:51:53', 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-11-14 11:31:51', '2025-11-14 11:31:51', 2025, '2025-11-26 11:15:49', 1),
+(69, 48, 'F62-HBXU-RGBH-FDRA', 'Gaylord-Bednar', 'Formation', 'professionnel', '4', '24', '165', 'Gottlieb', 'Abdullah', 'Féminin', '91048214870527', '+12123082248', 'Maiores deserunt ea maiores expedita.', 'Ipsum minima ipsum ab quo enim voluptas distinctio. Repudiandae impedit eos accusamus rerum in doloribus. Tenetur dolore voluptate voluptates reiciendis ratione vel.', '2025-11-29', '2025-12-02', '3', '12', '28', '801 Franecki Meadows Suite 145', '87', '3110687', NULL, '2101738', 0, 81, NULL, '2025-11-17 13:37:08', 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-06 04:13:11', '2025-11-20 15:20:43', '2025-11-14 04:34:17', '2025-11-14 04:34:17', 2025, '2025-11-26 11:15:49', 1),
+(70, 49, 'Z04-YALI-DWKM-MWHB', 'Lesch, Fadel and Hackett', 'Assistance', 'structure', '4', '20', '185', 'Dooley', 'Casimir', 'Masculin', '66283243189663', '430.630.3496', 'Illum minus minima molestiae.', 'Consequatur alias rerum voluptatem qui velit ratione accusantium veniam. Pariatur eum rerum itaque aut sapiente aut molestias.', '2025-12-19', '2026-02-15', '57', '8', '72', '1068 Jones Place Suite 021', '23', '2813906', NULL, '2016115', 0, 70, 85, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, '2025-10-29 05:50:11', '2025-10-27 04:17:57', '2025-05-14 12:24:13', '2025-05-14 12:24:13', 2025, '2025-11-26 11:15:49', 1),
+(71, 50, 'D34-IDIK-WYGN-ZGEM', 'Zulauf-Robel', 'Assistance', 'ONG', '3', '16', '103', 'Reichel', 'Shea', 'Féminin', '13053969079196', '+13516085748', 'Sunt et est qui dolores.', 'Quasi porro occaecati ipsa. Deleniti voluptas asperiores ut minus itaque amet.', '2025-12-08', '2026-01-07', '29', '9', '25', '31122 Ernser Haven', '52', '2846757', NULL, '2606753', 0, NULL, 149, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-10-08 10:38:28', NULL, '2025-05-20 10:25:26', '2025-05-20 10:25:26', 2025, '2025-11-26 11:15:49', 1),
+(72, 51, 'G01-HWOY-ZJAR-UZUE', 'Lowe Group', 'Financier', 'ONG', '5', '25', '195', 'Abernathy', 'Shanelle', 'Féminin', '05952171998963', '614.747.5870', 'Officiis blanditiis minima voluptates sit aperiam.', 'Quia ipsam nihil quis maiores tenetur cupiditate. Omnis laboriosam qui modi officia.', '2025-12-23', '2026-01-17', '24', '12', '28', '387 Lloyd Run', '102', '368136', NULL, '253640', 1, NULL, 64, '2025-10-29 01:31:05', 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-09-11 14:10:05', '2025-09-11 14:10:05', 2025, '2025-11-26 11:15:49', 1),
+(73, 52, 'R89-RJCT-HNUH-HXMR', 'Adams, Gleichner and Abshire', 'Financier', 'structure', '4', '23', '119', 'Jones', 'Evangeline', 'Féminin', '83772087774119', '505.490.7945', 'Dicta itaque expedita.', 'Iure reprehenderit sed id est consequuntur. Pariatur consequuntur quibusdam quas dolor voluptatem cum sunt. Non voluptatibus voluptas ea sint facere dolores.', '2025-12-04', '2025-12-31', '26', '9', '24', '297 Marion Fall', '12', '523319', NULL, '138618', 0, 134, 107, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-02-26 09:55:53', '2025-02-26 09:55:53', 2025, '2025-11-26 11:15:49', 1),
+(74, 53, 'E46-KABY-IPOI-FFCE', 'Larson, Walter and Moore', 'Assistance', 'structure', '9', '37', '299', 'Rippin', 'Makenzie', 'Féminin', '19570351264559', '+1-513-569-4266', 'Ex dolore suscipit eum.', 'Architecto et consectetur quod voluptatem ad adipisci. Facere autem rem voluptatem incidunt impedit id. Voluptatem debitis ut cum vitae impedit nemo deleniti.', '2025-12-09', '2026-01-26', '48', '8', '76', '675 Bosco Motorway Apt. 331', '158', '3189997', NULL, '2347998', 0, NULL, 68, '2025-11-11 07:07:20', 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-01 17:07:22', '2025-08-21 20:49:50', '2025-08-21 20:49:50', 2025, '2025-11-26 11:15:49', 1),
+(75, 54, 'H30-TESL-UTKQ-AMAP', 'Cronin-Purdy', 'Financier', 'professionnel', '2', '45', '8', 'Gleichner', 'Joanie', 'Masculin', '29384903042440', '(646) 669-8233', 'Hic et sunt.', 'Hic modi sed et quibusdam ut. Voluptatem consequatur accusantium quae dicta veniam amet. Fuga veritatis accusantium dolor repudiandae.', '2025-12-11', '2026-01-22', '41', '8', '70', '946 Beer Plaza Suite 364', '187', '1039266', NULL, '50844', 0, 118, NULL, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-10-31 10:47:53', '2025-10-10 03:36:48', '2025-10-10 03:36:48', 2025, '2025-11-26 11:15:49', 1),
+(76, 55, 'C09-UILZ-TVRN-SQNF', 'Kihn-Corwin', 'Financier', 'professionnel', '7', '30', '237', 'Bashirian', 'Estevan', 'Masculin', '32246286409390', '+1-567-539-0558', 'Aut eos eveniet nisi soluta commodi.', 'Voluptatem quidem aperiam optio et animi quia. Maxime fugit natus id delectus saepe sunt et.', '2025-12-18', '2026-01-15', '28', '1', '5', '7153 Schoen Common Suite 741', '152', '2320606', NULL, '563701', 0, NULL, NULL, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, '2025-10-23 04:45:08', '2025-11-18 21:16:28', '2025-11-24 20:31:09', '2025-11-24 20:31:09', 2025, '2025-11-26 11:15:49', 1),
+(77, 56, 'L69-JKUC-DPJF-WWLX', 'Heller-Johnson', 'Assistance', 'structure', '6', '28', '228', 'Conn', 'Stephon', 'Masculin', '57668144159288', '1-941-745-4125', 'Adipisci impedit nihil ut asperiores.', 'Quaerat ut omnis hic consequatur ipsum dolorum distinctio voluptas. Beatae nostrum aspernatur cumque explicabo odit. Est et nisi quo quae aliquid voluptates laudantium.', '2025-12-21', '2026-01-31', '41', '8', '71', '9335 Linwood Orchard Suite 254', '172', '4709086', NULL, '2130127', 1, 130, 132, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, '2025-09-29 00:19:53', NULL, '2025-10-22 20:21:04', '2025-10-22 20:21:04', 2025, '2025-11-26 11:15:49', 1),
+(78, 57, 'T75-LWLQ-GIRJ-LNZC', 'Champlin Ltd', 'Assistance', 'ONG', '2', '44', '18', 'Wiza', 'Marcelino', 'Masculin', '78147407086529', '442-886-5855', 'Unde alias ex.', 'Voluptas exercitationem et aliquid vitae quia repellendus ipsa. Ad in quae sint sed facilis facilis aut.', '2025-11-27', '2026-01-20', '54', '5', '56', '36314 Schneider Highway', '29', '3411802', NULL, '92825', 0, 96, 77, NULL, 'En attente', NULL, NULL, '2', '0', '0', 0, NULL, NULL, NULL, NULL, '2025-11-10 07:10:43', '2025-04-17 09:26:55', '2025-04-17 09:26:55', 2025, '2025-11-26 11:15:49', 1),
+(79, 58, 'I63-IABT-QSWN-IVUZ', 'Stehr, Smitham and Trantow', 'Formation', 'structure', '8', '33', '256', 'Franecki', 'Cole', 'Masculin', '75258113599399', '+13122781841', 'Amet ab minus dicta.', 'Aspernatur et repellat ipsum quia sint ipsum sed. Sit aut necessitatibus ex veniam ex asperiores. Est corporis ad quia ipsam.', '2025-12-01', '2026-02-19', '79', '4', '43', '7769 Crooks Summit Apt. 369', '187', '278855', NULL, '240144', 0, 29, 45, NULL, 'En attente', NULL, NULL, '0', '0', '0', 0, NULL, NULL, NULL, NULL, NULL, '2025-04-06 20:58:08', '2025-04-06 20:58:08', 2025, '2025-11-26 11:15:49', 1),
+(80, 59, 'C65-BDWC-GIVH-HAHF', 'King Inc', 'Financier', 'ONG', '3', '16', '61', 'Gleichner', 'Owen', 'Masculin', '42492785184547', '+1.443.616.4406', 'Assumenda autem qui porro dicta.', 'Reprehenderit praesentium alias consequatur voluptate. Et maxime temporibus perspiciatis veritatis nostrum. Quia aliquid autem quisquam.', '2025-12-17', '2026-01-09', '23', '8', '71', '611 Maximus Highway Suite 259', '193', '1602520', NULL, '524812', 0, 125, 5, NULL, 'En attente', NULL, NULL, '1', '0', '0', 0, NULL, NULL, NULL, '2025-11-08 23:19:05', NULL, '2025-08-25 22:47:22', '2025-08-25 22:47:22', 2025, '2025-11-26 11:15:49', 1);
 
 -- --------------------------------------------------------
 
@@ -314,23 +425,114 @@ CREATE TABLE `demande_localisations` (
 --
 
 INSERT INTO `demande_localisations` (`id`, `demande_id`, `departement_id`, `commune_id`, `lieux`, `homme_touche`, `created_at`, `updated_at`) VALUES
-(1, 1, 4, 43, 'HOPITAL', 10, '2025-11-20 22:43:33', '2025-11-20 22:43:33'),
-(2, 1, 5, 55, 'MAIRIE', 12, '2025-11-20 22:43:33', '2025-11-20 22:43:33'),
-(4, 3, 10, 36, 'SALLE DES JEUNES', 5, '2025-11-21 00:47:24', '2025-11-21 00:47:24'),
-(5, 4, 5, 55, 'SALLE DES ENFANTS', 50, '2025-11-21 01:12:29', '2025-11-21 01:12:29'),
-(6, 5, 8, 77, 'SALLE DES ENFANTS', 50, '2025-11-21 01:15:17', '2025-11-21 01:15:17'),
-(7, 6, 10, 33, 'SALLE DES ENFANTS', 50, '2025-11-21 01:39:06', '2025-11-21 01:39:06'),
-(8, 6, 7, 66, 'MAIRIE', 5, '2025-11-21 01:39:06', '2025-11-21 01:39:06'),
-(9, 7, 7, 4, 'HOPITAL', 20, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
-(10, 7, 9, 26, 'DDAEP', 5, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
-(12, 9, 1, 7, 'Djèbgadji', 60, '2025-11-20 09:58:38', '2025-11-20 09:58:38'),
-(13, 10, 8, 76, 'Djèbgadji', 150, '2025-11-21 19:14:54', '2025-11-21 19:14:54'),
-(14, 10, 5, 56, 'ccer', 50, '2025-11-21 19:14:54', '2025-11-21 19:14:54'),
-(15, 11, 9, 24, 'Santiago', 100, '2025-11-23 20:20:19', '2025-11-23 20:20:19'),
-(16, 11, 6, 62, 'arafat', 200, '2025-11-23 20:20:19', '2025-11-23 20:20:19'),
-(17, 12, 10, 36, 'Missrété', 100, '2025-11-23 21:19:42', '2025-11-23 21:19:42'),
-(18, 13, 1, 7, 'Djèbgadji', 100, '2025-11-24 09:24:56', '2025-11-24 09:24:56'),
-(21, 8, 8, 75, 'Maison des jeunes GOGOUNOU', 60, '2025-11-25 07:24:44', '2025-11-25 07:24:44');
+(72, 60, 11, 39, '79, boulevard de Toussaint', 111, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(73, 60, 8, 78, '3, boulevard de Lopez', 123, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(74, 61, 4, 50, '35, rue de Barbier', 100, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(75, 62, 10, 30, '7, rue de Delaunay', 244, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(76, 62, 6, 63, '85, rue de Joubert', 283, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(77, 66, 1, 7, '7, impasse Bourdon', 221, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(78, 67, 3, 21, '2, avenue de Gregoire', 212, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(79, 67, 2, 17, '77, avenue Alves', 53, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(80, 68, 5, 57, '29, place de Lamy', 54, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(81, 68, 1, 6, '67, rue Nathalie Rousseau', 250, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(82, 69, 7, 67, '4, boulevard de Hernandez', 137, '2025-11-26 11:14:42', '2025-11-26 11:14:42'),
+(83, 73, 9, 26, '97, impasse Chauvet', 218, '2025-11-26 11:31:25', '2025-11-26 11:31:25'),
+(86, 75, 12, 28, 'chemin Bertrand Bourgeois', 106, '2025-11-26 11:31:25', '2025-11-26 11:31:25'),
+(87, 75, 4, 49, '17, boulevard Vasseur', 112, '2025-11-26 11:31:25', '2025-11-26 11:31:25'),
+(88, 76, 1, 5, '93, place Denis Turpin', 141, '2025-11-26 11:31:25', '2025-11-26 11:31:25'),
+(89, 77, 8, 78, 'avenue Julie Mace', 139, '2025-11-26 11:31:25', '2025-11-26 11:31:25'),
+(93, 78, 11, 42, '11, avenue de Levy', 284, '2025-11-26 11:33:47', '2025-11-26 11:33:47'),
+(94, 83, 10, 36, '26, chemin Perez', 162, '2025-11-26 11:41:04', '2025-11-26 11:41:04'),
+(95, 85, 8, 76, '7, impasse Camille Guillaume', 229, '2025-11-26 11:41:04', '2025-11-26 11:41:04'),
+(96, 85, 10, 36, '50, rue Paul Cordier', 197, '2025-11-26 11:41:04', '2025-11-26 11:41:04'),
+(97, 88, 3, 21, 'rue Maryse Delaunay', 242, '2025-11-26 11:41:05', '2025-11-26 11:41:05'),
+(98, 89, 12, 28, '1, rue Alain Chauvet', 58, '2025-11-26 11:41:05', '2025-11-26 11:41:05'),
+(99, 90, 11, 42, '909, avenue Théophile Cordier', 179, '2025-11-26 11:41:05', '2025-11-26 11:41:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `demande_localisations_clotures`
+--
+
+CREATE TABLE `demande_localisations_clotures` (
+  `id` bigint UNSIGNED NOT NULL,
+  `demande_cloture_id` bigint UNSIGNED NOT NULL,
+  `demande_id_original` bigint UNSIGNED NOT NULL,
+  `departement_id` bigint UNSIGNED NOT NULL,
+  `commune_id` bigint UNSIGNED NOT NULL,
+  `lieux` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `homme_touche` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `demande_localisations_clotures`
+--
+
+INSERT INTO `demande_localisations_clotures` (`id`, `demande_cloture_id`, `demande_id_original`, `departement_id`, `commune_id`, `lieux`, `homme_touche`, `created_at`, `updated_at`) VALUES
+(1, 46, 1, 4, 43, 'HOPITAL', 10, '2025-11-20 22:43:33', '2025-11-20 22:43:33'),
+(2, 46, 1, 5, 55, 'MAIRIE', 12, '2025-11-20 22:43:33', '2025-11-20 22:43:33'),
+(3, 47, 3, 10, 36, 'SALLE DES JEUNES', 5, '2025-11-21 00:47:24', '2025-11-21 00:47:24'),
+(4, 48, 4, 5, 55, 'SALLE DES ENFANTS', 50, '2025-11-21 01:12:29', '2025-11-21 01:12:29'),
+(5, 49, 5, 8, 77, 'SALLE DES ENFANTS', 50, '2025-11-21 01:15:17', '2025-11-21 01:15:17'),
+(6, 50, 6, 10, 33, 'SALLE DES ENFANTS', 50, '2025-11-21 01:39:06', '2025-11-21 01:39:06'),
+(7, 50, 6, 7, 66, 'MAIRIE', 5, '2025-11-21 01:39:06', '2025-11-21 01:39:06'),
+(8, 51, 7, 7, 4, 'HOPITAL', 20, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
+(9, 51, 7, 9, 26, 'DDAEP', 5, '2025-11-21 02:17:36', '2025-11-21 02:17:36'),
+(10, 52, 9, 1, 7, 'Djèbgadji', 60, '2025-11-20 09:58:38', '2025-11-20 09:58:38'),
+(11, 54, 12, 10, 36, 'Missrété', 100, '2025-11-23 21:19:42', '2025-11-23 21:19:42'),
+(12, 55, 13, 1, 7, 'Djèbgadji', 100, '2025-11-24 09:24:56', '2025-11-24 09:24:56'),
+(13, 53, 11, 9, 24, 'Santiago', 100, '2025-11-25 19:24:20', '2025-11-25 19:24:20'),
+(14, 53, 11, 6, 62, 'arafat', 200, '2025-11-25 19:24:20', '2025-11-25 19:24:20'),
+(16, 61, 40, 6, 61, '32, rue Lagarde', 17, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(17, 61, 40, 2, 13, '849, boulevard de Lopez', 42, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(18, 61, 40, 11, 41, '9, rue de Bertin', 91, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(19, 62, 41, 9, 25, '4, boulevard Guyot', 49, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(20, 62, 41, 12, 28, '15, avenue Denis Noel', 72, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(21, 62, 41, 12, 28, '4, place Lacroix', 63, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(22, 63, 42, 9, 25, '4, avenue de Fontaine', 34, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(23, 63, 42, 1, 8, '27, impasse de Masse', 28, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(24, 63, 42, 7, 68, '420, avenue de Benard', 54, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(25, 64, 43, 9, 24, '6, boulevard Barbier', 10, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(26, 64, 43, 7, 3, 'place Lucie Boutin', 50, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(27, 64, 43, 3, 19, '3, rue de Leleu', 79, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(28, 65, 44, 4, 49, '6, rue Girard', 70, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(29, 65, 44, 4, 43, '3, place de Marchal', 86, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(30, 66, 45, 9, 27, '936, chemin de Lemaire', 65, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(31, 66, 45, 10, 35, '65, avenue Hugues Morel', 43, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(32, 66, 45, 11, 42, '96, place Fischer', 23, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(33, 67, 46, 4, 45, '70, impasse Noël Gros', 74, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(34, 68, 47, 7, 69, '9, place Roger Pineau', 39, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(35, 68, 47, 6, 59, '27, rue Lemoine', 76, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(36, 68, 47, 8, 71, '13, chemin Loiseau', 86, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(37, 69, 48, 7, 3, '17, boulevard de Bourgeois', 90, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(38, 69, 48, 10, 32, '10, place Julien Payet', 52, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(39, 70, 49, 2, 14, '96, rue Schmitt', 49, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(40, 71, 50, 7, 67, '58, impasse Bernadette Fernandes', 21, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(41, 71, 50, 5, 56, '75, rue Bertrand Sauvage', 81, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(42, 72, 51, 1, 6, '30, rue Martine Ribeiro', 38, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(43, 72, 51, 9, 25, '5, place Roland Delattre', 18, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(44, 72, 51, 8, 76, '962, avenue de Merle', 42, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(45, 73, 52, 11, 41, '38, chemin Gautier', 44, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(46, 74, 53, 9, 24, '28, chemin Agathe Aubry', 46, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(47, 74, 53, 3, 22, '6, boulevard Caroline Gautier', 91, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(48, 74, 53, 12, 28, '42, place Jean', 47, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(49, 75, 54, 10, 32, '215, rue Lorraine Le Gall', 14, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(50, 75, 54, 5, 52, '875, chemin Laurence Sauvage', 86, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(51, 75, 54, 9, 27, '770, impasse Émile Dubois', 71, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(52, 76, 55, 9, 24, '60, boulevard de Albert', 88, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(53, 76, 55, 2, 14, '32, rue Denis Ferrand', 19, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(54, 76, 55, 5, 53, '91, avenue Pires', 41, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(55, 77, 56, 7, 66, '193, avenue Perrot', 18, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(56, 78, 57, 8, 70, 'rue Picard', 81, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(57, 78, 57, 1, 9, '46, chemin Suzanne Robert', 74, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(58, 79, 58, 5, 57, '92, avenue Rolland', 10, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(59, 79, 58, 12, 28, '16, rue Frédéric Foucher', 68, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(60, 79, 58, 7, 4, 'impasse Chauvet', 92, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(61, 80, 59, 8, 77, 'rue Olivie Pruvost', 81, '2025-11-26 10:00:31', '2025-11-26 10:00:31'),
+(62, 80, 59, 11, 39, '230, avenue Gilles Pichon', 38, '2025-11-26 10:00:31', '2025-11-26 10:00:31');
 
 -- --------------------------------------------------------
 
@@ -747,7 +949,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2025_11_24_174135_add_date_approbation_to_demandes_table', 3),
 (19, '2025_11_25_103051_add_date_transmission_to_demandes_table', 4),
 (20, '2025_11_26_000000_change_date_depot_rapport_to_datetime_in_demandes_table', 5),
-(21, '2025_11_25_133101_add_archive_fields_to_demandes_table', 6);
+(21, '2025_11_25_133101_add_archive_fields_to_demandes_table', 6),
+(22, '2025_11_26_073105_create_demandes_clotures_table', 7),
+(23, '2025_11_26_073934_create_demande_localisations_clotures_table', 7),
+(24, '2025_11_26_093305_remove_femme_touche_from_demande_localisations_clotures', 8);
 
 -- --------------------------------------------------------
 
@@ -800,10 +1005,14 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('3OWSQzLTvKXIskHfXUw7LSKYHqGOh6iGRogX8f6u', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiOVNMNTRVMDVvRThOcTdVendrT3N4eGJ0eTF3SEhBeDFXNG5uZTB4ZSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI2OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvaG9tZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzY0MDg1Njc2O31zOjIxOiJwYXNzd29yZF9oYXNoX3NhbmN0dW0iO3M6NjA6IiQyeSQxMCQ1U2JkYjY5T1g5MFVTNzNDc0hROExlTDdoSzY1dVhlZ0F0R3J1N3lCRkZIY1lyLy5TdjJaNiI7czo1OiJhbGVydCI7YTowOnt9fQ==', 1764160879),
+('5gSzuG0xkbgQy6ghnVCmjlfpMBGEcALDriULX54Y', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiaXh2VUlsZjNJZjA0MjVYNUg1Sll3ME9HbXU2RUdOb1J4UVh3VUVhMSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zdGF0aXN0aXF1ZXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO3M6NDoiYXV0aCI7YToxOntzOjIxOiJwYXNzd29yZF9jb25maXJtZWRfYXQiO2k6MTc2NDE1MDcwNzt9czoyMToicGFzc3dvcmRfaGFzaF9zYW5jdHVtIjtzOjYwOiIkMnkkMTAkVkFoVUJoR3BSNUp1L0t3WU1qUWFhT21JRDZHUklYQU5zL0pkL0VKazBEaHk3LmMxTkFIWm0iO30=', 1764156906),
 ('eW4v4IPj3WxzRHCnUI95N9vJEA4xBOXbQnjZ0tzl', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiT2dHNjc4TklnWmhPYk5VSDA5cXN4bjU1ODBYaTNyZDNOUkJzRUpFQiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9saXN0ZV9kZW1hbmRlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NjtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjQwNjM5NjY7fXM6MjE6InBhc3N3b3JkX2hhc2hfc2FuY3R1bSI7czo2MDoiJDJ5JDEwJDVTYmRiNjlPWDkwVVM3M0NzSFE4TGVMN2hLNjV1WGVnQXRHcnU3eUJGRkhjWXIvLlN2Mlo2Ijt9', 1764075267),
 ('IDQCB2AdVJkOAl5Tyhfd9Ang0ohhMpxfJyfgzgrC', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiZGNSU2pRWW1ETmY4aEQzNUNHMTM1S1ZwbndybVVZUWp0MzZaTUtJayI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM4OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGVtYW5kZV9hcmNoaXZlZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzY0MDgwNjc1O31zOjIxOiJwYXNzd29yZF9oYXNoX3NhbmN0dW0iO3M6NjA6IiQyeSQxMCRPTEpnTkZiMVFzdWdNQVJ3RW1MMzEuRXUwNjBzNk0veFFzZUZVRzFvUlNwLmowS3lZa3hObSI7fQ==', 1764080762),
 ('K9LYfMwlCIObHuUb4LXHQduuafMOIy41MjmJJIfG', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidkpKeW1RVHV6cXRXUnh4aUVRUEM0dHhja0RKR0xHWTFkdnYzOVY1WiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2RlbWFuZGVfc3VzcGVuZHUiO31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764077401),
-('N7SBVEF2lQOdqpjwH0w0WzNgV89iRkaPVnvQmlhg', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVndoWlRadUV4Q3AyZmxLOVZoNjdjY2U0d3EzR0tnMWZaY1p3bXZ0MyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fX0=', 1764084300);
+('OjSmaMKlpfhqhBzoxQFQ0UV6pBjUj35TK32QMhMV', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoib3owSnRlemlDc29ka25kTHo2eHVKTU00dXJoT3pSWUYwVGZjckx6TiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9mb3JtdWxhaXJlIjt9fQ==', 1764159796),
+('OLIdDjP3LH2WzxSK46cvYw8acQx1hlShMvNVJLrJ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiY0RVbkR1clBrQWVwSnVLVTdVMXhBSFVoang2S3h2NmE2VEJNVnFwdiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9mb3JtdWxhaXJlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764107498),
+('sguAleWq1l7decb99MwkqaOkpwZSrf94urHkBwZm', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiZ0NGTk8wU3N4TWZ4andKUHZNaUZXOWJIeG0ySjZRdFdxdFNaaDFlbyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zdGF0aXN0aXF1ZXMiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6NDoiYXV0aCI7YToxOntzOjIxOiJwYXNzd29yZF9jb25maXJtZWRfYXQiO2k6MTc2NDE0ODg5Mjt9czoyMToicGFzc3dvcmRfaGFzaF9zYW5jdHVtIjtzOjYwOiIkMnkkMTAkVVBPbVk4L3lGenBXRGZuVW1YYWpvdXJRLnBLUDlhRzUuVkdYMGJqbUlZM1dzOG51Tkt2Q3UiO3M6NToiYWxlcnQiO2E6MDp7fX0=', 1764160903);
 
 -- --------------------------------------------------------
 
@@ -877,6 +1086,14 @@ ALTER TABLE `demandes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `demandes_clotures`
+--
+ALTER TABLE `demandes_clotures`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `demandes_clotures_annee_exercice_cloture_index` (`annee_exercice_cloture`),
+  ADD KEY `demandes_clotures_demande_id_original_index` (`demande_id_original`);
+
+--
 -- Indexes for table `demande_localisations`
 --
 ALTER TABLE `demande_localisations`
@@ -884,6 +1101,16 @@ ALTER TABLE `demande_localisations`
   ADD KEY `demande_localisations_demande_id_foreign` (`demande_id`),
   ADD KEY `demande_localisations_departement_id_foreign` (`departement_id`),
   ADD KEY `demande_localisations_commune_id_foreign` (`commune_id`);
+
+--
+-- Indexes for table `demande_localisations_clotures`
+--
+ALTER TABLE `demande_localisations_clotures`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `demande_localisations_clotures_departement_id_foreign` (`departement_id`),
+  ADD KEY `demande_localisations_clotures_commune_id_foreign` (`commune_id`),
+  ADD KEY `demande_localisations_clotures_demande_cloture_id_index` (`demande_cloture_id`),
+  ADD KEY `demande_localisations_clotures_demande_id_original_index` (`demande_id_original`);
 
 --
 -- Indexes for table `departements`
@@ -973,13 +1200,25 @@ ALTER TABLE `corps`
 -- AUTO_INCREMENT for table `demandes`
 --
 ALTER TABLE `demandes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+
+--
+-- AUTO_INCREMENT for table `demandes_clotures`
+--
+ALTER TABLE `demandes_clotures`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `demande_localisations`
 --
 ALTER TABLE `demande_localisations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+
+--
+-- AUTO_INCREMENT for table `demande_localisations_clotures`
+--
+ALTER TABLE `demande_localisations_clotures`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `departements`
@@ -1003,7 +1242,7 @@ ALTER TABLE `metiers`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1040,6 +1279,14 @@ ALTER TABLE `demande_localisations`
   ADD CONSTRAINT `demande_localisations_commune_id_foreign` FOREIGN KEY (`commune_id`) REFERENCES `communes` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `demande_localisations_demande_id_foreign` FOREIGN KEY (`demande_id`) REFERENCES `demandes` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `demande_localisations_departement_id_foreign` FOREIGN KEY (`departement_id`) REFERENCES `departements` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `demande_localisations_clotures`
+--
+ALTER TABLE `demande_localisations_clotures`
+  ADD CONSTRAINT `demande_localisations_clotures_commune_id_foreign` FOREIGN KEY (`commune_id`) REFERENCES `communes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `demande_localisations_clotures_demande_cloture_id_foreign` FOREIGN KEY (`demande_cloture_id`) REFERENCES `demandes_clotures` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `demande_localisations_clotures_departement_id_foreign` FOREIGN KEY (`departement_id`) REFERENCES `departements` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `metiers`

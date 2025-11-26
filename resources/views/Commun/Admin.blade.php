@@ -90,13 +90,13 @@
           <li class="{{ request()->routeIs('demande.verifier') ? 'active' : '' }}">
             <a href="{{ route('demande.verifier') }}">
               <i class="now-ui-icons location_map-big"></i>
-              <p>Demande analysé</p>
+              <p>Demande analysée</p>
             </a>
           </li>
           <li class="{{ request()->routeIs('demande.approve') ? 'active' : '' }}">
             <a href="{{ route('demande.approve') }}">
               <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Demande Approuvée</p>
+              <p>Demande approuvée</p>
             </a>
           </li>
           @elseif (in_array(Auth::user()->email, ['dg@gmail.com', 'daf@gmail.com', 'spea@gmail.com']))
