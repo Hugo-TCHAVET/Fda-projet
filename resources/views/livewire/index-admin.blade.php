@@ -163,6 +163,71 @@
     <div class="content mt-5 font-poppins">
       <div class="row p-4">
 
+        <!-- Cards Montants et Statistiques -->
+        <div class="col-lg-4 mb-4">
+          <div class="dashboard-card p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title-custom">Montant Total Demandé</h5>
+                <h2 class="card-value">{{ number_format($montantTotalDemande, 0, ',', ' ') }} </h2>
+                <small style="color: #6c757d; font-size: 14px;">FCFA</small>
+              </div>
+              <div class="card-icon-wrapper" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); color: #f57c00;">
+                <i class='bx bx-money'></i>
+              </div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-item">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+          <div class="dashboard-card p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title-custom">Montant Total Appuyé</h5>
+                <h2 class="card-value">{{ number_format($montantTotalAppuye, 0, ',', ' ') }} </h2>
+                <small style="color: #6c757d; font-size: 14px;">FCFA</small>
+              </div>
+              <div class="card-icon-wrapper icon-green">
+                <i class='bx bx-check-circle'></i>
+              </div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-item">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+          <div class="dashboard-card p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title-custom">Total Demandes</h5>
+                <h2 class="card-value">{{ $totaldemandes }}</h2>
+              </div>
+              <div class="card-icon-wrapper icon-blue">
+                <i class='bx bx-list-ul'></i>
+              </div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-time-five'></i> En attente</span>
+                <span class="stat-count">{{ $totaldemandes - $demandesapprouvees }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-check'></i> Approuvées</span>
+                <span class="stat-count">{{ $demandesapprouvees }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Carte Formation -->
         <div class="col-lg-4 mb-4">
           <div class="dashboard-card p-4">

@@ -1,6 +1,28 @@
 @extends('Commun.Admin')
 
 @section('contenu')
+<style>
+    .card-body canvas {
+        max-height: 280px !important;
+        height: 280px !important;
+    }
+
+    .card-body {
+        min-height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .col-md-12 .card-body canvas {
+        max-height: 250px !important;
+        height: 250px !important;
+    }
+
+    .col-md-12 .card-body {
+        min-height: 320px;
+    }
+</style>
 <div class="main-panel" id="main-panel">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-transparent bg-primary navbar-absolute">
@@ -67,28 +89,10 @@
             <!-- SECTION 1: DOSSIERS REÇUS -->
             <h3 class="text-primary mt-5">1. Dossiers Reçus</h3>
             <div class="row">
-                <!-- G13: Carte Total -->
-                <div class="col-md-12">
-                    <div class="card card-stats">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-7">
-                                    <div class="numbers">
-                                        <p class="card-category">Effectif Total Artisans Prévus (Reçus)</p>
-                                        <h3 class="card-title">{{ $g13_effectif_total_recus }}</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition par Service (Dossiers Reçus)</h5>
+                            <h5 class="card-title">Répartition par service des dossiers reçus</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g1Chart"></canvas>
@@ -98,7 +102,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition par Type Demandeur (Dossiers Reçus)</h5>
+                            <h5 class="card-title">Répartition par type demandeur des dossiers reçus</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g2Chart"></canvas>
@@ -111,7 +115,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition par Branche (Dossiers Reçus)</h5>
+                            <h5 class="card-title">Répartition par branche des dossiers reçus</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g3Chart" height="100"></canvas>
@@ -124,7 +128,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Effectif des Artisans Prévus par Commune (Dossiers Reçus)</h5>
+                            <h5 class="card-title">Effectif des artisans prévus par commune des dossiers reçus</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g12Chart" height="100"></canvas>
@@ -142,7 +146,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition par Service (Approuvés)</h5>
+                            <h5 class="card-title">Répartition par service des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g4Chart"></canvas>
@@ -152,7 +156,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition par Type Demandeur (Approuvés)</h5>
+                            <h5 class="card-title">Répartition par type demandeur des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g5Chart"></canvas>
@@ -162,7 +166,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Ratio des Rapports Déposés</h5>
+                            <h5 class="card-title">Ratio des structures ayant déposé leur rapport / structures appuyées</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g15Chart"></canvas>
@@ -175,7 +179,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition et Effectifs par Branche (Approuvés)</h5>
+                            <h5 class="card-title">Répartition et effectifs par branche des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g6g9Chart" height="120"></canvas>
@@ -188,7 +192,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Effectif des Artisans par Service (Approuvés)</h5>
+                            <h5 class="card-title">Effectif des artisans par service des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g7Chart"></canvas>
@@ -198,7 +202,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Effectif des Artisans par Type Demandeur (Approuvés)</h5>
+                            <h5 class="card-title">Effectif des artisans par type demandeur des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g8Chart"></canvas>
@@ -211,7 +215,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Effectif des Artisans Prévus par Commune (Approuvés)</h5>
+                            <h5 class="card-title">Effectif des artisans prévus par commune des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g10Chart" height="100"></canvas>
@@ -221,10 +225,10 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Montant Total des Appuis Accordés par Service (Approuvés)</h5>
+                            <h5 class="card-title">Montant total des appuis accordés par service des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g14Chart" height="100"></canvas>
@@ -236,7 +240,7 @@
             <div class="row mt-4 mb-5 justify-content-center">
                 <div class="col-md-4 text-center">
                     <button class="btn btn-info btn-lg btn-block" onclick="downloadPDF()">
-                        <i class="now-ui-icons files_single-copy-04"></i> Télécharger le Rapport PDF
+                        <i class="now-ui-icons files_single-copy-04"></i> Télécharger
                     </button>
                 </div>
             </div>
@@ -246,11 +250,15 @@
 </div>
 
 <!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
+    // Enregistrer le plugin ChartDataLabels
+    Chart.register(ChartDataLabels);
+
     // Fonction Helper pour extraire labels et data
     function getData(collection, labelKey, dataKey) {
         return {
@@ -275,6 +283,28 @@
                 data: d1.data,
                 backgroundColor: colors
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, ctx) => {
+                        return value;
+                    },
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
         }
     });
 
@@ -288,6 +318,28 @@
                 data: d2.data,
                 backgroundColor: colors
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, ctx) => {
+                        return value;
+                    },
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
         }
     });
 
@@ -304,7 +356,9 @@
             }]
         },
         options: {
-            indexAxis: 'y',
+            maintainAspectRatio: false,
+            responsive: true,
+            indexAxis: 'x',
             scales: {
                 x: {
                     ticks: {
@@ -326,6 +380,10 @@
                 data: d12.data,
                 backgroundColor: '#FFCE56'
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true
         }
     });
 
@@ -339,6 +397,28 @@
                 data: d4.data,
                 backgroundColor: colors
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, ctx) => {
+                        return value;
+                    },
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
         }
     });
 
@@ -352,6 +432,28 @@
                 data: d5.data,
                 backgroundColor: colors
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, ctx) => {
+                        return value;
+                    },
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
         }
     });
 
@@ -378,6 +480,8 @@
             ]
         },
         options: {
+            maintainAspectRatio: false,
+            responsive: true,
             scales: {
                 y: {
                     type: 'linear',
@@ -399,13 +503,17 @@
     // G7: Service Approuvés Effectif (PolarArea)
     const d7 = getData(@json($g7_effectif_service_approuves), 'service', 'effectif');
     new Chart(document.getElementById('g7Chart'), {
-        type: 'polarArea',
+        type: 'doughnut',
         data: {
             labels: d7.labels,
             datasets: [{
                 data: d7.data,
                 backgroundColor: colors
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true
         }
     });
 
@@ -420,11 +528,16 @@
                 data: d8.data,
                 backgroundColor: '#4BC0C0'
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true
         }
     });
 
     // G10: Commune Approuvés Effectif (Bar)
     const d10 = getData(@json($g10_effectif_commune_approuves), 'nom', 'effectif');
+
     new Chart(document.getElementById('g10Chart'), {
         type: 'bar',
         data: {
@@ -434,6 +547,19 @@
                 data: d10.data,
                 backgroundColor: '#9966FF'
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true, // Assure que l'axe commence à 0
+                    max: 500, // Force l'échelle à 100
+                    ticks: {
+                        stepSize: 10
+                    }
+                }
+            }
         }
     });
 
@@ -452,6 +578,8 @@
             }]
         },
         options: {
+            maintainAspectRatio: false,
+            responsive: true,
             scales: {
                 y: {
                     ticks: {
@@ -474,13 +602,32 @@
             }]
         },
         options: {
+            maintainAspectRatio: false,
+            responsive: true,
             plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, ctx) => {
+                        return value;
+                    },
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom'
+                },
                 title: {
                     display: true,
                     text: 'Taux de retour rapports'
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 
     // Fonction Export PDF
@@ -496,7 +643,7 @@
 
         pdf.setFontSize(18);
         pdf.setTextColor(25, 135, 84);
-        pdf.text('Rapport Statistique FDA', margin, 20);
+        pdf.text('Graphiques statistiques FDA', margin, 20);
 
         pdf.setFontSize(10);
         pdf.setTextColor(100);
@@ -510,62 +657,62 @@
                 isHTML: true
             },
             {
-                title: 'Répartition par Service (Reçus)',
+                title: 'Répartition par Service pour les dossiers reçus)',
                 selector: '#g1Chart',
                 isHTML: false
             },
             {
-                title: 'Répartition par Type (Reçus)',
+                title: 'Répartition par Type pour les dossiers reçus)',
                 selector: '#g2Chart',
                 isHTML: false
             },
             {
-                title: 'Répartition par Branche (Reçus)',
+                title: 'Répartition par Branche pour les dossiers reçus)',
                 selector: '#g3Chart',
                 isHTML: false
             },
             {
-                title: 'Effectif par Commune (Reçus)',
+                title: 'Effectif par Commune pour les dossiers reçus)',
                 selector: '#g12Chart',
                 isHTML: false
             },
             {
-                title: 'Répartition par Service (Approuvés)',
+                title: 'Répartition par Service pour les dossiers approuvés)',
                 selector: '#g4Chart',
                 isHTML: false
             },
             {
-                title: 'Répartition par Type (Approuvés)',
+                title: 'Répartition par Type pour les dossiers approuvés)',
                 selector: '#g5Chart',
                 isHTML: false
             },
             {
-                title: 'Ratio Rapports Déposés',
+                title: 'Ratio Rapports Déposés pour les dossiers approuvés)',
                 selector: '#g15Chart',
                 isHTML: false
             },
             {
-                title: 'Branche - Dossiers & Effectifs',
+                title: 'Branche - Dossiers & Effectifs pour les dossiers approuvés)',
                 selector: '#g6g9Chart',
                 isHTML: false
             },
             {
-                title: 'Effectif par Service (Approuvés)',
+                title: 'Effectif par Service pour les dossiers approuvés)',
                 selector: '#g7Chart',
                 isHTML: false
             },
             {
-                title: 'Effectif par Type (Approuvés)',
+                title: 'Effectif par Type pour les dossiers approuvés)',
                 selector: '#g8Chart',
                 isHTML: false
             },
             {
-                title: 'Effectif par Commune (Approuvés)',
+                title: 'Effectif par Commune pour les dossiers approuvés)',
                 selector: '#g10Chart',
                 isHTML: false
             },
             {
-                title: 'Montant Total par Service',
+                title: 'Montant Total par Service pour les dossiers approuvés)',
                 selector: '#g14Chart',
                 isHTML: false
             }

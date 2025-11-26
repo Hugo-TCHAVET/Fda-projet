@@ -41,8 +41,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/pdf/{id}', [AdminController::class, 'generatePdfForDemande'])->name('demande.pdf');
 
     Route::get('/telecharger_piece/{id}', [AdminController::class, 'telecharger'])->name('demande.piece');
+
+    Route::get('/detail_demande_cloture/{id}', [AdminController::class, 'showCloture'])->name('demande.cloture.show');
+    Route::get('/pdf_cloture/{id}', [AdminController::class, 'generatePdfForDemandeCloture'])->name('demande.cloture.pdf');
+    Route::get('/telecharger_piece_cloture/{id}', [AdminController::class, 'telechargerCloture'])->name('demande.cloture.piece');
     Route::get('/demande_approuve', [AdminController::class, 'DemandeApprouve'])->name('demande.approve');
-    Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');
+    // Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');
+    Route::get('/exercices_clotures', [AdminController::class, 'ExercicesClotures'])->name('exercices.clotures');
     Route::get('/demande_suspendu', [AdminController::class, 'DemandeSuspendu'])->name('demande.suspendu');
     Route::get('/demande_verifier', [AdminController::class, 'DemandeVerifier'])->name('demande.verifier');
 

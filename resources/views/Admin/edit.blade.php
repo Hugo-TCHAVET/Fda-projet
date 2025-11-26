@@ -313,6 +313,31 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label-custom">Fichier du projet <small class="text-muted">(Optionnel)</small></label>
+                                            <div class="p-3 border border-dashed rounded bg-light">
+                                                <input type="file" name="piece" class="form-control" accept=".pdf">
+                                                <small class="text-muted d-block mt-2">Format PDF accepté uniquement (Max: 20 Mo). Laissez vide si vous ne voulez pas changer le fichier.</small>
+                                                @if($demande->piece)
+                                                <div class="mt-2">
+                                                    <small class="text-success">
+                                                        <i class='bx bx-file'></i> Fichier actuel:
+                                                        <a href="{{ asset('uploads/' . $demande->piece) }}" target="_blank" class="text-decoration-none">
+                                                            {{ basename($demande->piece) }}
+                                                        </a>
+                                                    </small>
+                                                </div>
+                                                @endif
+                                                @error('piece')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

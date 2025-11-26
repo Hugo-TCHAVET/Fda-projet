@@ -14,7 +14,7 @@
             <span class="navbar-toggler-bar bar3"></span>
           </button>
         </div>
-        <a class="navbar-brand" href="#pablo" style="font-weight: bold">Suspension de la demande </a>
+        <a class="navbar-brand" href="#pablo" style="font-weight: bold">Rejet de la demande </a>
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
         aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@
               <div class="row">
                 <div class="col-md-12 pr-1">
                   <div class="form-group">
-                    <label style="font-weight: bold">Message de suspension</label>
+                    <label style="font-weight: bold">Motif de rejet (facultatif)</label>
                     <textarea name="message" class="form-control" id="" cols="30" rows="10"></textarea>
 
                   </div>
@@ -93,7 +93,7 @@
               </div>
               <div>
                 <button type="submit"
-                  class="d-flex btn btn-primary justify-items-end">Enregistrer</button>
+                  class="d-flex btn btn-primary justify-items-end">Rejeter la demande</button>
               </div>
 
             </form>

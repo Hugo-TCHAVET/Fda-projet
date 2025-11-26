@@ -6,9 +6,13 @@ use App\Models\Corp;
 use App\Models\Brache;
 use App\Models\Metier;
 use App\Models\Demande;
+use App\Models\DemandeCloture;
+use App\Models\DemandeLocalisationCloture;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DemandeApprouve extends Component
 {
@@ -23,6 +27,12 @@ class DemandeApprouve extends Component
     public $demandeIdArchive;
     public $structureArchive;
     public $annee_exercice;
+
+    // Propriétés pour le modal de clôture
+    public $showModalCloture = false;
+    public $annee_cloture;
+    public $nbDemandesACloturer = 0;
+    public $budgetTotalACloturer = 0;
 
     public $demande;
     public $code;
@@ -76,6 +86,23 @@ class DemandeApprouve extends Component
             'annee_exercice.integer' => 'L\'année doit être un nombre entier.',
             'annee_exercice.min' => 'L\'année doit être supérieure ou égale à 2000.',
             'annee_exercice.max' => 'L\'année ne peut pas être supérieure à ' . (date('Y') + 1) . '.',
+        ];
+    }
+
+    protected function rulesCloture()
+    {
+        return [
+            'annee_cloture' => 'required|integer|min:2000|max:' . date('Y'),
+        ];
+    }
+
+    protected function messagesCloture()
+    {
+        return [
+            'annee_cloture.required' => 'L\'année de clôture est requise.',
+            'annee_cloture.integer' => 'L\'année doit être un nombre entier.',
+            'annee_cloture.min' => 'L\'année doit être supérieure ou égale à 2000.',
+            'annee_cloture.max' => 'L\'année ne peut pas être supérieure à ' . date('Y') . '.',
         ];
     }
 
@@ -212,6 +239,158 @@ class DemandeApprouve extends Component
             }
         } catch (\Exception $e) {
             $this->alert('error', 'Une erreur est survenue lors de l\'archivage.');
+        }
+    }
+
+    /**
+     * Ouvre le modal de clôture d'exercice
+     */
+    public function openClotureModal()
+    {
+        $this->annee_cloture = date('Y') - 1; // Année précédente par défaut
+        $this->calculerStatistiquesCloture();
+        $this->showModalCloture = true;
+    }
+
+    /**
+     * Calcule les statistiques avant clôture
+     */
+    public function calculerStatistiquesCloture()
+    {
+        if (!$this->annee_cloture) {
+            return;
+        }
+
+        $demandes = Demande::whereYear('created_at', $this->annee_cloture)->get();
+
+        $this->nbDemandesACloturer = $demandes->count();
+        $this->budgetTotalACloturer = $demandes->sum(function ($demande) {
+            return (float) str_replace(' ', '', $demande->buget_prevu ?? 0);
+        });
+    }
+
+    /**
+     * Met à jour les statistiques quand l'année change
+     */
+    public function updatedAnneeCloture()
+    {
+        $this->calculerStatistiquesCloture();
+    }
+
+    /**
+     * Ferme le modal de clôture
+     */
+    public function closeClotureModal()
+    {
+        $this->showModalCloture = false;
+        $this->reset(['annee_cloture', 'nbDemandesACloturer', 'budgetTotalACloturer']);
+        $this->resetValidation();
+    }
+
+    /**
+     * Clôture l'exercice pour une année donnée
+     */
+    public function cloturerExercice()
+    {
+        $this->validate($this->rulesCloture(), $this->messagesCloture());
+
+        try {
+            $demandesCount = Demande::whereYear('created_at', $this->annee_cloture)->count();
+
+            if ($demandesCount === 0) {
+                $this->alert('warning', 'Aucune demande trouvée pour l\'année ' . $this->annee_cloture . '.', [
+                    'position' => 'top-end',
+                    'timer' => 3000,
+                    'toast' => true,
+                ]);
+                return;
+            }
+
+            DB::transaction(function () {
+                $userId = auth()->id();
+                $now = now();
+
+                // Insertion bulk des demandes clôturées
+                DB::statement("
+                INSERT INTO demandes_clotures (
+                    demande_id_original, code, structure, service, type_demande, 
+                    branche, corps, metier, nom, prenom, sexe, ifu, contact,
+                    titre_activite, obejectif_activite, debut_activite, fin_activite,
+                    dure_activite, departement, commune, lieux, homme_touche, budget,
+                    piece, buget_prevu, rapport_depose, effectif_homme_forme, 
+                    effectif_femme_forme, date_depot_rapport, status, statut, statuts,
+                    valide, suspendre, rejeter, archivee, annee_exercice, 
+                    date_archivage, message, date_transmission, date_approbation,
+                    annee_exercice_cloture, date_cloture, user_id_cloture,
+                    created_at, updated_at
+                )
+                SELECT 
+                    id, code, structure, service, type_demande, branche, corps, 
+                    metier, nom, prenom, sexe, ifu, contact, titre_activite, 
+                    obejectif_activite, debut_activite, fin_activite, dure_activite,
+                    departement, commune, lieux, homme_touche, budget, piece, 
+                    buget_prevu, COALESCE(rapport_depose, 0), effectif_homme_forme,
+                    effectif_femme_forme, date_depot_rapport, status, statut, statuts,
+                    valide, suspendre, rejeter, COALESCE(archivee, 0), annee_exercice,
+                    date_archivage, message, date_transmission, date_approbation,
+                    ?, ?, ?, created_at, updated_at
+                FROM demandes
+                WHERE YEAR(created_at) = ?
+            ", [$this->annee_cloture, $now, $userId, $this->annee_cloture]);
+
+                // Insertion bulk des localisations clôturées
+                DB::statement("
+                INSERT INTO demande_localisations_clotures (
+                    demande_cloture_id, demande_id_original, departement_id, 
+                    commune_id, lieux, homme_touche, 
+                    created_at, updated_at
+                )
+                SELECT 
+                    dc.id, dl.demande_id, dl.departement_id, dl.commune_id,
+                    dl.lieux, dl.homme_touche,
+                    dl.created_at, dl.updated_at
+                FROM demande_localisations dl
+                INNER JOIN demandes d ON dl.demande_id = d.id
+                INNER JOIN demandes_clotures dc ON dc.demande_id_original = d.id
+                WHERE YEAR(d.created_at) = ?
+                AND dc.annee_exercice_cloture = ?
+            ", [$this->annee_cloture, $this->annee_cloture]);
+
+                // Suppression bulk des localisations
+                DB::statement("
+                DELETE dl FROM demande_localisations dl
+                INNER JOIN demandes d ON dl.demande_id = d.id
+                WHERE YEAR(d.created_at) = ?
+            ", [$this->annee_cloture]);
+
+                // Suppression bulk des demandes
+                DB::statement("
+                DELETE FROM demandes
+                WHERE YEAR(created_at) = ?
+            ", [$this->annee_cloture]);
+            });
+
+            $this->showModalCloture = false;
+            $this->reset(['annee_cloture', 'nbDemandesACloturer', 'budgetTotalACloturer']);
+            $this->resetValidation();
+            $this->resetPage();
+
+            $this->alert('success', "Exercice {$this->annee_cloture} clôturé avec succès ! {$demandesCount} demande(s) archivée(s).", [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur clôture exercice: ' . $e->getMessage(), [
+                'annee' => $this->annee_cloture,
+                'user_id' => auth()->id()
+            ]);
+
+            $this->alert('error', 'Une erreur est survenue lors de la clôture de l\'exercice.', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+            ]);
         }
     }
 

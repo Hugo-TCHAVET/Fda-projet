@@ -79,10 +79,8 @@
                   <thead>
                     <tr>
                       <th>Structure</th>
-                      <th>Contact</th>
-                      <th>Ifu</th>
+                      <th>Nom et Prénom</th>
                       <th>Budget</th>
-                      <th>Date Début</th>
                       <th>Statut</th>
                       <th class="text-center">Action</th>
                     </tr>
@@ -91,10 +89,9 @@
                     @forelse ($demandes as $demande)
                     <tr>
                       <td style="font-weight: 500; color: #333;">{{$demande->structure}}</td>
-                      <td>{{$demande->contact}}</td>
-                      <td>{{$demande->ifu}}</td>
-                      <td style="font-weight: bold;">{{$demande->budget}}</td>
-                      <td>{{$demande->debut_activite}}</td>
+
+                      <td>{{$demande->nom}} {{$demande->prenom}}</td>
+                      <td style="font-weight: bold;">{{ number_format($demande->budget, 0, ',', ' ') }} </td>
                       <td>
                         <span class="status-badge status-warning">
                           {{$demande->statut}}
@@ -110,13 +107,15 @@
                               <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                             </svg>
                           </a>
-                          <button wire:click="Transmetre({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
+                          <button onclick="confirmerTransmission({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
                             <i class="now-ui-icons ui-1_send"></i>
                           </button>
 
-                          <a href="{{route('demande.delete',$demande->id)}}" class="btn-action btn-delete" title="Rejeter">
-                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                          </a>
+                          <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                            </svg>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -291,10 +290,76 @@
       border-color: #e74c3c;
     }
 
-    .btn-delete:hover {
-      background-color: #e74c3c;
+    .btn-edit {
+      color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .btn-edit:hover {
+      background-color: #6c757d;
       color: #fff;
       transform: translateY(-2px);
+    }
+
+    .btn-delete {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-delete:hover {
+      background-color: #dc3545;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function confirmerTransmission(demandeId) {
+      Swal.fire({
+        title: 'Confirmation',
+        text: 'Êtes-vous sûr de vouloir transmettre cette demande ?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#009879',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, transmettre',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Livewire.find('{{ $_instance->id }}').call('Transmetre', demandeId);
+        }
+      });
+    }
+
+    function confirmerSuppression(demandeId) {
+      Swal.fire({
+        title: 'Confirmation de suppression',
+        text: 'Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const deleteUrl = "{{ url('/delete') }}/" + demandeId;
+          window.location.href = deleteUrl;
+        }
+      });
+    }
+  </script>
+
+  <style>
+    .swal-poppins {
+      font-family: 'Poppins', sans-serif !important;
     }
   </style>
 </div>

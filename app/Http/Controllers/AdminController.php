@@ -8,9 +8,11 @@ use App\Models\Brache;
 use App\Models\Metier;
 use App\Models\Commune;
 use App\Models\Demande;
+use App\Models\DemandeCloture;
 use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Notifications\SuspendreNotification;
 use Illuminate\Support\Facades\Notification;
@@ -39,6 +41,11 @@ class AdminController extends Controller
         return view('Admin.demandeArchivee');
     }
 
+    public function ExercicesClotures()
+    {
+        return view('Admin.exercicesClotures');
+    }
+
     public function DemandeSuspendu()
     {
         return view('Admin.demandeSuspendu');
@@ -62,6 +69,28 @@ class AdminController extends Controller
         return view('Admin.show', compact('demande', 'branche', 'corps', 'metier', 'commune', 'departement', 'localisations'));
     }
 
+    /**
+     * Affiche les détails d'une demande clôturée
+     */
+    public function showCloture($id)
+    {
+        $demande = DemandeCloture::find($id);
+
+        if (!$demande) {
+            Alert::toast('Demande clôturée introuvable', 'error')->position('top-end')->timerProgressBar();
+            return redirect()->route('exercices.clotures');
+        }
+
+        $branche = $demande->branche ? Brache::where('id', $demande->branche)->first() : null;
+        $corps = $demande->corps ? Corp::where('id', $demande->corps)->first() : null;
+        $metier = $demande->metier ? Metier::where('id', $demande->metier)->first() : null;
+        $departement = $demande->departement ? Departement::where('id', $demande->departement)->first() : null;
+        $commune = $demande->commune ? Commune::where('id', $demande->commune)->first() : null;
+        $localisations = $demande->localisations()->with(['departement', 'commune'])->get();
+
+        return view('Admin.show-cloture', compact('demande', 'branche', 'corps', 'metier', 'commune', 'departement', 'localisations'));
+    }
+
 
     public function telecharger($id)
     {
@@ -80,6 +109,28 @@ class AdminController extends Controller
         }
         //dd($demande);
 
+    }
+
+    /**
+     * Télécharge la pièce jointe d'une demande clôturée
+     */
+    public function telechargerCloture($id)
+    {
+        $demande = DemandeCloture::findOrFail($id);
+
+        if (!$demande->piece) {
+            Alert::toast('Aucune pièce jointe disponible', 'error')->position('top-end')->timerProgressBar();
+            return redirect()->route('exercices.clotures');
+        }
+
+        $filePath = 'uploads/' . $demande->piece;
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            Alert::toast('Le fichier demandé n\'existe pas', 'error')->position('top-end')->timerProgressBar();
+            return redirect()->route('exercices.clotures');
+        }
     }
 
     public function Suspendre($id)
@@ -117,10 +168,6 @@ class AdminController extends Controller
                     'suspendre' => 1,
                     'statut' => "Suspendus"
                 ]);
-
-                Notification::route('mail', $demande->email)
-                    ->notify(new SuspendreNotification((object)$demande));
-
 
                 Alert::toast('Message de suspension enrégistré avec succès', 'success')->position('top-end')->timerProgressBar();
                 return redirect()->route('liste.demande');
@@ -226,34 +273,80 @@ class AdminController extends Controller
         );
     }
 
+    /**
+     * Génère le PDF d'une demande clôturée
+     */
+    public function generatePdfForDemandeCloture($id)
+    {
+        $demande = DemandeCloture::find($id);
+
+        if (!$demande) {
+            Alert::toast('Demande clôturée introuvable', 'error')->position('top-end')->timerProgressBar();
+            return redirect()->route('exercices.clotures');
+        }
+
+        $branche = $demande->branche ? Brache::where('id', $demande->branche)->first() : null;
+        $corps = $demande->corps ? Corp::where('id', $demande->corps)->first() : null;
+        $metier = $demande->metier ? Metier::where('id', $demande->metier)->first() : null;
+        $departement = $demande->departement ? Departement::where('id', $demande->departement)->first() : null;
+        $commune = $demande->commune ? Commune::where('id', $demande->commune)->first() : null;
+
+        // Encoder le logo en base64 pour DomPDF
+        $logoPath = public_path('Client/assets/lofoFDA.png');
+        if (!file_exists($logoPath)) {
+            $logoPath = public_path('Client/assets/img/lofoFDA.png');
+        }
+        $logoBase64 = '';
+        if (file_exists($logoPath)) {
+            $logoData = file_get_contents($logoPath);
+            $logoBase64 = 'data:image/png;base64,' . base64_encode($logoData);
+        }
+
+        $dompdf = new Dompdf();
+
+        $view = view('Admin.pdf-cloture', compact('demande', 'branche', 'corps', 'metier', 'departement', 'commune', 'logoBase64'))->render();
+
+
+        $dompdf->loadHtml($view);
+        $dompdf->render();
+
+
+        return new Response(
+            $dompdf->stream('demande_cloture_' . $demande->structure . '_' . $demande->annee_exercice_cloture . '.pdf'),
+            200,
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
     public function statistiques()
     {
         // --- 1. DOSSIERS REÇUS (Toutes les demandes) ---
 
         // G1 : Répartition par service (Reçus)
-        $g1_service_recus = Demande::groupBy('service')
+        $g1_service_recus = Demande::Where('suspendre', '0')->groupBy('service')
             ->selectRaw('service, count(*) as count')
             ->get();
 
         // G2 : Répartition par type demandeur (Reçus)
-        $g2_demandeur_recus = Demande::groupBy('type_demande')
+        $g2_demandeur_recus = Demande::Where('suspendre', '0')->groupBy('type_demande')
             ->selectRaw('type_demande, count(*) as count')
             ->get();
 
         // G3 : Répartition par branche (Reçus)
         $g3_branche_recus = Brache::leftJoin('demandes', 'braches.id', '=', 'demandes.branche')
             ->groupBy('braches.id', 'braches.nom')
-            ->selectRaw('SUBSTRING(braches.nom, 1, 60) as nom, count(demandes.id) as count')
+            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, count(demandes.id) as count')
             ->get();
 
         // G12 : Effectif artisans prévus par commune (Reçus)
         $g12_effectif_commune_recus = Commune::leftJoin('demandes', 'communes.id', '=', 'demandes.commune')
+            ->where('demandes.suspendre', '0')
             ->groupBy('communes.id', 'communes.nom')
             ->selectRaw('communes.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
             ->get();
 
         // G13 : Effectif TOTAL artisans prévus formés (Reçus)
-        $g13_effectif_total_recus = Demande::sum('homme_touche');
+        $g13_effectif_total_recus = Demande::Where('suspendre', '0')->sum('homme_touche');
 
 
         // --- 2. DOSSIERS APPUYÉS / ACCEPTÉS (Statut = Approuvé) ---
@@ -297,11 +390,12 @@ class AdminController extends Controller
                 ->where('demandes.statuts', 'Approuvé');
         })
             ->groupBy('braches.id', 'braches.nom')
-            ->selectRaw('braches.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
+            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif, COUNT(demandes.id) as count')
             ->get();
 
+
         // G10 & G11 : Effectif artisans prévus formés par commune (Approuvés)
-        $g10_effectif_commune_approuves = Commune::leftJoin('demandes', function ($join) {
+        $g10_effectif_commune_approuves = Commune::rightJoin('demandes', function ($join) {
             $join->on('communes.id', '=', 'demandes.commune')
                 ->where('demandes.statuts', 'Approuvé');
         })
@@ -424,6 +518,7 @@ class AdminController extends Controller
             'fin_activite' => 'nullable|date',
             'dure_activite' => 'nullable',
             'budget' => 'required|numeric',
+            'piece' => 'nullable|file|mimes:pdf|max:20480',
             'localisations' => 'nullable|array',
             'localisations.*.departement_id' => 'nullable|exists:departements,id',
             'localisations.*.commune_id' => 'nullable|exists:communes,id',
@@ -434,8 +529,25 @@ class AdminController extends Controller
 
         $demande = Demande::findOrFail($id);
 
-        // Mise à jour des champs principaux
-        $demande->update($request->except('localisations'));
+        // Gestion du fichier (optionnel pour la modification)
+        if ($request->hasFile('piece') && $request->file('piece')->isValid()) {
+            // Supprimer l'ancien fichier s'il existe
+            if ($demande->piece && Storage::disk('uploads')->exists($demande->piece)) {
+                Storage::disk('uploads')->delete($demande->piece);
+            }
+
+            // Upload du nouveau fichier
+            $file = $request->file('piece');
+            $filePath = Storage::disk('uploads')->putFile('piece', $file);
+            $validated['piece'] = $filePath;
+        }
+
+        // Mise à jour des champs principaux (exclure localisations et piece si non fourni)
+        $updateData = $request->except(['localisations', 'piece']);
+        if (isset($validated['piece'])) {
+            $updateData['piece'] = $validated['piece'];
+        }
+        $demande->update($updateData);
 
         // Mise à jour des localisations
         if ($request->has('localisations')) {
@@ -449,6 +561,6 @@ class AdminController extends Controller
         }
 
         Alert::toast('Demande modifiée avec succès !', 'success')->position('top-end')->timerProgressBar();
-        return redirect()->back();
+        return redirect()->route('liste.demande');
     }
 }

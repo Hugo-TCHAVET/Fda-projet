@@ -139,9 +139,10 @@ class DemandeSuspendu extends Component
         $demande = Demande::find($demandeId);
         if ($demande) {
             $demande->update([
-                'valide' => 1, 
+                'valide' => 1,
                 'statut' => 'En cours de traitement',
-                'date_transmission' => now()
+                'date_transmission' => now(),
+                'suspendre' => 0
             ]);
             if (method_exists($this, 'alert')) {
                 $this->alert('success', 'Votre demande a été envoyée avec succès!', [

@@ -79,7 +79,7 @@
                   <thead>
                     <tr>
                       <th>Structure</th>
-                      <th>Contact</th>
+                      <th>Nom et Prénom</th>
                       <th>Budget de l'activité</th>
                       <th>Statut</th>
                       @if (!in_array(Auth::user()->email, ['dg@gmail.com', 'daf@gmail.com', 'do@gmail.com']))
@@ -91,7 +91,7 @@
                     @forelse ($demandes as $demande)
                     <tr>
                       <td style="font-weight: 500; color: #333;">{{$demande->structure}}</td>
-                      <td>{{$demande->contact}}</td>
+                      <td>{{$demande->nom}} {{$demande->prenom}}</td>
                       <td style="font-weight: bold; color: #2c3e50;">{{ number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
                       <td>
                         <span class="status-badge status-primary">
@@ -116,10 +116,16 @@
                           </button>
 
                           @if ($demande->message == null)
-                          <a href="{{route('demande.message',$demande->id)}}" class="btn-action btn-pause" title="Suspendre">
+                          <button onclick="confirmerRejet({{$demande->id}})" class="btn-action btn-pause" title="Rejeter">
                             <i class="now-ui-icons media-1_button-pause"></i>
-                          </a>
+                          </button>
                           @endif
+
+                          <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                            </svg>
+                          </button>
                         </div>
                       </td>
                       @endif
@@ -311,6 +317,17 @@
       color: #fff;
       transform: translateY(-2px);
     }
+
+    .btn-delete {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-delete:hover {
+      background-color: #dc3545;
+      color: #fff;
+      transform: translateY(-2px);
+    }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -331,6 +348,48 @@
       }).then((result) => {
         if (result.isConfirmed) {
           Livewire.find('{{ $_instance->id }}').call('Transmetre', demandeId);
+        }
+      });
+    }
+
+    function confirmerRejet(demandeId) {
+      Swal.fire({
+        title: 'Confirmation de rejet',
+        text: 'Êtes-vous sûr de vouloir rejeter cette demande ? Vous devrez fournir un message de rejet.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#f39c12',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, rejeter',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const rejectUrl = "{{ url('/suspendre_demande') }}/" + demandeId;
+          window.location.href = rejectUrl;
+        }
+      });
+    }
+
+    function confirmerSuppression(demandeId) {
+      Swal.fire({
+        title: 'Confirmation de suppression',
+        text: 'Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const deleteUrl = "{{ url('/delete') }}/" + demandeId;
+          window.location.href = deleteUrl;
         }
       });
     }

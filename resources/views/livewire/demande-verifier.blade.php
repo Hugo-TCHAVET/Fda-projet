@@ -77,7 +77,7 @@
                   <thead>
                     <tr>
                       <th>Structure</th>
-                      <th>Contact</th>
+                      <th>Nom et Prénom</th>
                       <th>Budget de l'activité</th>
                       <th>Date de réception</th>
                       <th>Statut</th>
@@ -88,8 +88,8 @@
                     @forelse ($demandes as $demande)
                     <tr>
                       <td style="font-weight: 500; color: #333;">{{$demande->structure}}</td>
-                      <td>{{$demande->contact}}</td>
-                      <td style="font-weight: bold;">{{$demande->budget}}</td>
+                      <td>{{$demande->nom}} {{$demande->prenom}}</td>
+                      <td style="font-weight: bold;">{{number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
                       <td style="font-weight: 500; color: #555;">
                         @if($demande->date_transmission)
                         {{ $demande->date_transmission->format('d/m/Y à H:i') }}
@@ -112,13 +112,11 @@
                             <i class="now-ui-icons ui-1_check"></i>
                           </a>
 
-                          <a href="{{route('demande.pdf',$demande->id)}}" class="btn-action btn-pdf" title="Imprimer PDF">
-                            <i class="now-ui-icons files_paper"></i>
-                          </a>
-
-                          <a href="{{route('demande.delete',$demande->id)}}" class="btn-action btn-delete" title="Rejeter">
-                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                          </a>
+                          <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                            </svg>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -308,6 +306,33 @@
       background-color: #c0392b;
       color: #fff;
       transform: translateY(-2px);
+    }
+  </style>
+  <script>
+    function confirmerSuppression(demandeId) {
+      Swal.fire({
+        title: 'Confirmation de suppression',
+        text: 'Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const deleteUrl = "{{ url('/delete') }}/" + demandeId;
+          window.location.href = deleteUrl;
+        }
+      });
+    }
+  </script>
+  <style>
+    .swal-poppins {
+      font-family: 'Poppins', sans-serif !important;
     }
   </style>
 </div>

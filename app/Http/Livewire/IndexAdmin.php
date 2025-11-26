@@ -92,6 +92,20 @@ class IndexAdmin extends Component
 
         $demandesapprouvees = Demande::where('valide', 2)->count();
 
+        // Montant total demandé (demandes non approuvées : valide != 2)
+        $montantTotalDemande = Demande::where('suspendre', '!=', 1)
+            ->get()
+            ->sum(function ($demande) {
+                return (float) $demande->budget;
+            });
+
+        // Montant total appuyé (demandes approuvées : valide == 2)
+        $montantTotalAppuye = Demande::where('valide', 2)
+            ->get()
+            ->sum(function ($demande) {
+                return (float) $demande->buget_prevu;
+            });
+
         return view('livewire.index-admin', compact(
             'nbreformation',
             'ongfinancier',
@@ -107,7 +121,9 @@ class IndexAdmin extends Component
             'nbrepromotion',
             'monthlyData',
             'totaldemandes',
-            'demandesapprouvees'
+            'demandesapprouvees',
+            'montantTotalDemande',
+            'montantTotalAppuye'
         ));
     }
 }

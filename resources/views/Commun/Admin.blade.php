@@ -86,6 +86,7 @@
               <p>Demande rejetée</p>
             </a>
           </li>
+
           @elseif (Auth::user()->email == 'sese@gmail.com'|Auth::user()->email == 'do@gmail.com')
           <li class="{{ request()->routeIs('demande.verifier') ? 'active' : '' }}">
             <a href="{{ route('demande.verifier') }}">
@@ -120,10 +121,16 @@
               <p>Post appui</p>
             </a>
           </li>
-          <li class="{{ request()->routeIs('demande.archivee') ? 'active' : '' }}">
-            <a href="{{ route('demande.archivee') }}">
-              <i class="now-ui-icons files_box"></i>
-              <p>Dossiers d'appui archivés</p>
+          {{-- <li class="{{ request()->routeIs('demande.archivee') ? 'active' : '' }}">
+          <a href="{{ route('demande.archivee') }}">
+            <i class="now-ui-icons files_box"></i>
+            <p>Dossiers d'appui archivés</p>
+          </a>
+          </li> --}}
+          <li class="{{request()->routeIs('exercices.clotures') ? 'active' : '' }}">
+            <a href="{{route('exercices.clotures')}}">
+              <i class="now-ui-icons business_chart-bar-32"></i>
+              <p>Dossiers d'appui cloturés</p>
             </a>
           </li>
           @endif
