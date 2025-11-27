@@ -55,7 +55,7 @@ class DemandeArchivee extends Component
 
         $demandes = $query->orderBy('date_archivage', 'desc')
             ->orderBy('date_approbation', 'desc')
-            ->paginate(6);
+            ->paginate(10);
 
         // Récupérer toutes les années disponibles pour le filtre (DISTINCT)
         $anneesDisponibles = Demande::where('archivee', true)

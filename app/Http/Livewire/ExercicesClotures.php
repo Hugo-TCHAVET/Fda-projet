@@ -136,7 +136,7 @@ class ExercicesClotures extends Component
 
         $demandes = $query->orderBy('date_cloture', 'desc')
             ->orderBy('date_approbation', 'desc')
-            ->paginate(6);
+            ->paginate(10);
 
         // Récupérer toutes les années disponibles pour le filtre
         $anneesDisponibles = DemandeCloture::select('annee_exercice_cloture')

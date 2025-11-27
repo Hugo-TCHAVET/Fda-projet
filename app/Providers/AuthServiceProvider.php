@@ -84,5 +84,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-formulaire', function ($user) {
             return $user->isSecretaire();
         });
+
+        //Gate pour transmettre les demandes
+        Gate::define('transmit-demandes', function ($user) {
+            return $user->isSecretaire();
+        });
     }
 }

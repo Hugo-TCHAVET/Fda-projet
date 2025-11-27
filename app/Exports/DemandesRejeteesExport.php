@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\DemandeCloture;
+use App\Models\Demande;
 use App\Models\Brache;
 use App\Models\Corp;
 use App\Models\Metier;
@@ -15,25 +15,12 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class DemandesClotureesExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
+class DemandesRejeteesExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
-    protected $anneeCloture;
-
-    public function __construct($anneeCloture = null)
-    {
-        $this->anneeCloture = $anneeCloture;
-    }
-
     public function collection()
     {
-        $query = DemandeCloture::query();
-
-        if ($this->anneeCloture) {
-            $query->where('annee_exercice_cloture', $this->anneeCloture);
-        }
-
-        return $query->orderBy('date_cloture', 'desc')
-            ->orderBy('date_approbation', 'desc')
+        return Demande::where('suspendre', 1)
+            ->orderBy('updated_at', 'desc')
             ->get();
     }
 
@@ -61,16 +48,7 @@ class DemandesClotureesExport implements FromCollection, WithHeadings, WithMappi
             'Lieux',
             'Personnes prévues',
             'Budget de l\'activité',
-            'Budget accordé',
-            'Rapport déposé',
-            'Effectif homme formé',
-            'Effectif femme formé',
-            'Date dépôt rapport',
             'Statut',
-            'Date transmission',
-            'Date approbation',
-            'Année exercice clôture',
-            'Date clôture',
         ];
     }
 
@@ -123,7 +101,7 @@ class DemandesClotureesExport implements FromCollection, WithHeadings, WithMappi
         };
 
         return [
-            $demande->structure ?? 'N/A',
+            $demande->structure,
             $serviceLibelle,
             $typeDemandeLibelle,
             $brancheNom ?? 'N/A',
@@ -144,23 +122,14 @@ class DemandesClotureesExport implements FromCollection, WithHeadings, WithMappi
             $demande->lieux ?? 'N/A',
             $demande->homme_touche ?? '0',
             number_format((float) str_replace(' ', '', $demande->budget ?? 0), 0, ',', ' '),
-            number_format((float) str_replace(' ', '', $demande->buget_prevu ?? 0), 0, ',', ' '),
-            $demande->rapport_depose ? 'Oui' : 'Non',
-            $demande->effectif_homme_forme ?? '0',
-            $demande->effectif_femme_forme ?? '0',
-            $demande->date_depot_rapport ? $demande->date_depot_rapport->format('d/m/Y H:i') : 'N/A',
-            $demande->statuts ?? 'Non Approuvé',
-            $demande->date_transmission ? $demande->date_transmission->format('d/m/Y H:i') : 'N/A',
-            $demande->date_approbation ? $demande->date_approbation->format('d/m/Y H:i') : 'N/A',
-            $demande->annee_exercice_cloture ?? 'N/A',
-            $demande->date_cloture ? $demande->date_cloture->format('d/m/Y H:i') : 'N/A',
+            $demande->statuts ?? 'Rejeté',
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
         return [
-            1 => ['font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']], 'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => 'dc3545']]],
+            1 => ['font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']], 'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => '009879']]],
         ];
     }
 }

@@ -212,18 +212,28 @@
                                 <div class="col-md-6">
                                     <div class="info-group">
                                         <span class="info-label">Service</span>
-                                        <div class="info-value">{{$demande->service}}</div>
+                                        <div class="info-value">{{$demande->service ==='Assistance' ? 'Activités de Promotion' : 'Formation / Renforcement de capacités'}}</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="info-group">
-                                        <span class="info-label">Type</span>
-                                        <div class="info-value">{{$demande->type_demande}}</div>
+                                        <span class="info-label">Type Demandeur</span>
+                                        <div class="info-value">
+                                            @if($demande->type_demande === 'professionnel')
+                                            Association / Organisations professionnelles
+                                            @elseif($demande->type_demande === 'structure')
+                                            Structure formelle
+                                            @elseif($demande->type_demande === 'ONG')
+                                            Organisations Non Gouvernementales (ONG)
+                                            @else
+                                            {{ $demande->type_demande }}
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="info-group">
-                                        <span class="info-label">Qualification</span>
+                                        <span class="info-label">Branche / Corps métier / Métier</span>
                                         <div class="info-value">
                                             {{ $branche ? $branche->nom : 'N/A' }} >
                                             {{ $corps ? $corps->nom : 'N/A' }} >

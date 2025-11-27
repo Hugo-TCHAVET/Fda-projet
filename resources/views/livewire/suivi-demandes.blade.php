@@ -115,7 +115,7 @@
                                             <td>
                                                 <span style="font-weight: 500; color: #666;">
                                                     @if($demande->date_approbation)
-                                                    {{ \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y H:i') }}
+                                                    {{ \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y') }}
                                                     @else
                                                     <span class="text-muted">-</span>
                                                     @endif
@@ -124,7 +124,7 @@
                                             <td>
                                                 <span style="font-weight: 500; color: #666;">
                                                     @if($demande->date_depot_rapport)
-                                                    {{ \Carbon\Carbon::parse($demande->date_depot_rapport)->format('d/m/Y H:i') }}
+                                                    {{ \Carbon\Carbon::parse($demande->date_depot_rapport)->format('d/m/Y') }}
                                                     @else
                                                     <span class="text-muted">-</span>
                                                     @endif
@@ -133,10 +133,10 @@
                                             <td>
                                                 @if($demande->valide == 2 || $demande->statuts == 'Approuvé')
                                                 <span class="status-badge status-approved">Approuvé</span>
-                                                @elseif($demande->valide == 1)
-                                                <span class="status-badge status-verified">Vérifié</span>
-                                                @else
-                                                <span class="status-badge status-other">{{ $demande->statut ?? 'En cours' }}</span>
+                                                @elseif($demande->suspendre == 1)
+                                                <span class="status-badge badge-danger">Rejété</span>
+                                                @elseif($demande->valide == 1 && $demande->suspendre == 0)
+                                                <span class="status-badge badge-info">En cours</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -282,11 +282,11 @@
             border: 1px solid #badbcc;
         }
 
-        .status-verified {
+        /* .status-verified {
             background-color: #fff3cd;
             color: #856404;
             border: 1px solid #ffeeba;
-        }
+        } */
 
         .status-other {
             background-color: #cfe2ff;

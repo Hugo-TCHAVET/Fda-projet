@@ -128,11 +128,11 @@ class ClientController extends Controller
                         $demande->localisations()->create($localisation);
                     });
             });
-
-            return redirect()->route('liste.demande')->with('toast.success', 'Votre demande a été envoyée avec succès!');
+            Alert::toast('Votre demande a été enregistrée avec succès', 'success')->position('top-end')->timerProgressBar();
+            return redirect()->route('liste.demande');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la création de la demande: ' . $e->getMessage());
-            return redirect()->back()->with('toast.error', 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer.');
+            return redirect()->back()->with('toast.error', 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer!');
         }
     }
 
@@ -262,7 +262,7 @@ class ClientController extends Controller
         if ($demande) {
             return view('Client.recherchedemande', compact('demande'));
         } else {
-            Alert::toast('Le Code de suivie que vous avez insérer est incorrecte', 'error')->position('top-end')->timerProgressBar();
+            Alert::toast('Le Code de suivie que vous avez inséré est incorrect', 'error')->position('top-end')->timerProgressBar();
             return back();
         }
     }

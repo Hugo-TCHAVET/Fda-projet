@@ -11,6 +11,8 @@ use App\Models\Brache;
 use App\Models\Corp;
 use App\Models\Metier;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DemandesRejeteesExport;
 
 class DemandeSuspendu extends Component
 {
@@ -18,9 +20,6 @@ class DemandeSuspendu extends Component
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = ['refreshComponent' => '$refresh'];
-
-
-
 
 
     public $code;
@@ -129,7 +128,7 @@ class DemandeSuspendu extends Component
     {
 
 
-        $demandes = Demande::where('suspendre', 1)->paginate(6);
+        $demandes = Demande::where('suspendre', 1)->paginate(10);
 
         return view('livewire.demande-suspendu', compact('demandes'));
     }
@@ -153,5 +152,10 @@ class DemandeSuspendu extends Component
                 ]);
             }
         }
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new DemandesRejeteesExport, 'demandes_rejetees.xlsx');
     }
 }

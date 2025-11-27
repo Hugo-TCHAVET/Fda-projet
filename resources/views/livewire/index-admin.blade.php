@@ -224,6 +224,10 @@
                 <span class="stat-label"><i class='bx bx-check'></i> Approuvées</span>
                 <span class="stat-count">{{ $demandesapprouvees }}</span>
               </div>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-check'></i> Rejetées</span>
+                <span class="stat-count">{{ $demandesrejetees }}</span>
+              </div>
             </div>
           </div>
         </div>

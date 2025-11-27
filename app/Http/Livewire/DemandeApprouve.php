@@ -414,7 +414,7 @@ class DemandeApprouve extends Component
             ->where('buget_prevu', '!=', null)
             ->where('archivee', false) // Exclure les archivées
             ->orderBy('date_approbation', 'desc')
-            ->paginate(6);
+            ->paginate(10);
 
         return view('livewire.demande-approuve', compact('demandes'));
     }

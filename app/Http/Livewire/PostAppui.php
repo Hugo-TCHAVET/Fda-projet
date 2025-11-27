@@ -19,6 +19,7 @@ class PostAppui extends Component
     public $structure;
     public $effectif_homme_forme;
     public $effectif_femme_forme;
+    public $date_depot_rapport;
     public $showModal = false;
 
     // Statistiques
@@ -26,11 +27,17 @@ class PostAppui extends Component
     public $structuresAvecRapport = 0;
     public $ratio = 0.0;
 
+    public function mount()
+    {
+        $this->date_depot_rapport = now()->format('Y-m-d');
+    }
+
     protected function rules()
     {
         return [
             'effectif_homme_forme' => 'required|integer|min:0',
             'effectif_femme_forme' => 'required|integer|min:0',
+            'date_depot_rapport' => 'required|date',
         ];
     }
 
@@ -41,6 +48,7 @@ class PostAppui extends Component
         'effectif_femme_forme.required' => 'Le nombre de femmes formées est requis.',
         'effectif_femme_forme.integer' => 'Le nombre de femmes formées doit être un nombre entier.',
         'effectif_femme_forme.min' => 'Le nombre de femmes formées ne peut pas être négatif.',
+        'date_depot_rapport.required' => 'La date de dépôt du rapport est requise.',
     ];
 
     /**
@@ -55,6 +63,7 @@ class PostAppui extends Component
             $this->structure = $demande->structure;
             $this->effectif_homme_forme = $demande->effectif_homme_forme ?? '';
             $this->effectif_femme_forme = $demande->effectif_femme_forme ?? '';
+            $this->date_depot_rapport = $demande->date_depot_rapport ? $demande->date_depot_rapport->format('Y-m-d') : now()->format('Y-m-d');
             $this->showModal = true;
         } else {
             $this->alert('error', 'Demande introuvable.');
@@ -67,7 +76,7 @@ class PostAppui extends Component
     public function closeModal()
     {
         $this->showModal = false;
-        $this->reset(['demandeId', 'structure', 'effectif_homme_forme', 'effectif_femme_forme']);
+        $this->reset(['demandeId', 'structure', 'effectif_homme_forme', 'effectif_femme_forme', 'date_depot_rapport']);
         $this->resetValidation();
     }
 
@@ -86,7 +95,7 @@ class PostAppui extends Component
                     'rapport_depose' => true,
                     'effectif_homme_forme' => $this->effectif_homme_forme,
                     'effectif_femme_forme' => $this->effectif_femme_forme,
-                    'date_depot_rapport' => now(),
+                    'date_depot_rapport' => $this->date_depot_rapport,
                 ]);
 
                 $this->alert('success', 'Rapport post-appui enregistré avec succès !');
@@ -107,7 +116,7 @@ class PostAppui extends Component
             ->where('buget_prevu', '!=', null)
             ->orderBy('date_depot_rapport', 'desc')
             ->orderBy('created_at', 'desc')
-            ->paginate(6);
+            ->paginate(10);
 
         // Calculer les statistiques
         $this->totalStructures = Demande::where('valide', 2)

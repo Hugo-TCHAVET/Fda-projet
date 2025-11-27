@@ -192,6 +192,14 @@
               @csrf
 
               <div class="form-group mb-4">
+                <label class="form-label-custom">Date d'approbation</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text"><i class='bx bx-calendar'></i></span>
+                  <input type="date" name="date_approbation" value="{{ date('Y-m-d') }}" class="form-control form-control-lg" required>
+                </div>
+              </div>
+
+              <div class="form-group mb-4">
                 <label class="form-label-custom">Montant Accordé</label>
                 <div class="input-group input-group-lg">
                   <span class="input-group-text"><i class='bx bx-coin-stack'></i></span>

@@ -20,6 +20,18 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mb-3">
+                                    <label style="font-size: 0.9em; color: #555;">Date de dépôt du rapport <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control @error('date_depot_rapport') is-invalid @enderror"
+                                        wire:model="date_depot_rapport" value="{{ date('Y-m-d') }}" style="border-radius: 8px; padding: 10px;">
+                                    @error('date_depot_rapport')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
                                     <label style="font-size: 0.9em; color: #555;">Nombre d'hommes formés <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control @error('effectif_homme_forme') is-invalid @enderror"
                                         wire:model="effectif_homme_forme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">

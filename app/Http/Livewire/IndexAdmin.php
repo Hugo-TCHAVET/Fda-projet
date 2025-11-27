@@ -10,8 +10,8 @@ class IndexAdmin extends Component
 {
     public function render()
     {
-        $nbreformation = Demande::where('service', "Formation")->where('suspendre', '!=', 1)->count();
-        $nbrepromotion = Demande::where('service', "Assistance")->where('suspendre', '!=', 1)->count();
+        $nbreformation = Demande::where('service', "Formation")->where('valide', '>=', 1)->count();
+        $nbrepromotion = Demande::where('service', "Assistance")->where('valide', '>=', 1)->count();
         // $nbrefinancier = Demande::where('service', "Financier")->count();
 
 
@@ -43,29 +43,35 @@ class IndexAdmin extends Component
 
         $proformation = Demande::where('service', "Formation")
             ->where('type_demande', "professionnel")
+            ->where('valide', '>=', 1)
             ->count();
 
         $strformation = Demande::where('service', "Formation")
             ->where('type_demande', "structure")
+            ->where('valide', '>=', 1)
             ->count();
 
         $ongformation = Demande::where('service', "Formation")
             ->where('type_demande', "ONG")
+            ->where('valide', '>=', 1)
             ->count();
 
 
 
         $propromotion = Demande::where('service', "Assistance")
             ->where('type_demande', "professionnel")
+            ->where('valide', '>=', 1)
             ->count();
 
 
         $strpromotion = Demande::where('service', "Assistance")
             ->where('type_demande', "structure")
+            ->where('valide', '>=', 1)
             ->count();
 
         $ongpromotion = Demande::where('service', "Assistance")
             ->where('type_demande', "ONG")
+            ->where('valide', '>=', 1)
             ->count();
 
 
@@ -86,14 +92,15 @@ class IndexAdmin extends Component
         //     ->where('type_demande', "ONG")
         //     ->count();
 
-        $nbrepromotion = Demande::where('service', "Assistance")->count();
+        $nbrepromotion = Demande::where('service', "Assistance")->where('valide', '>=', 1)->count();
 
-        $totaldemandes = Demande::count();
+        $totaldemandes = Demande::where('valide', '>=', 1)->count();
 
         $demandesapprouvees = Demande::where('valide', 2)->count();
+        $demandesrejetees = Demande::where('suspendre', 1)->count();
 
-        // Montant total demandé (demandes non approuvées : valide != 2)
-        $montantTotalDemande = Demande::where('suspendre', '!=', 1)
+        // Montant total demandé (demandes non approuvées : valide = 2 || valide = 1)
+        $montantTotalDemande = Demande::where('valide', '>=', 1)
             ->get()
             ->sum(function ($demande) {
                 return (float) $demande->budget;
@@ -122,6 +129,7 @@ class IndexAdmin extends Component
             'monthlyData',
             'totaldemandes',
             'demandesapprouvees',
+            'demandesrejetees',
             'montantTotalDemande',
             'montantTotalAppuye'
         ));

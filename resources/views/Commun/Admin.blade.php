@@ -61,7 +61,7 @@
 
         </a>
         <a href="{{ route('home') }}" class="simple-text logo-normal">
-          <p style="font-size: 40px;font-weight: bold">FDA</p>
+          <img src="{{ asset('Client/assets/img/lofoFDA.png') }}" alt="Logo FDA" style="width: 100px; height: 100px;">
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">

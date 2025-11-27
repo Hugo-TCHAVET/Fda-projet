@@ -177,6 +177,27 @@
             border-radius: 4px;
             display: inline-block;
         }
+
+        .bg-success {
+            background-color: #009879;
+            color: #fff !important;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .bg-danger {
+            background-color: #e74c3c;
+            color: #fff !important;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .bg-secondary {
+            background-color: #6c757d;
+            color: #fff !important;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -226,14 +247,23 @@
                     </tr>
                     <tr>
                         <td class="label">Service</td>
-                        <td class="value">{{ $demande->service }}</td>
+                        <td class="value">{{$demande->service ==='Assistance' ? 'Activités de Promotion' : 'Formation / Renforcement de capacités'}}</td>
                     </tr>
                     <tr>
                         <td class="label">Type demandeur</td>
-                        <td class="value">{{ $demande->type_demande }}</td>
+                        <td class="value">@if($demande->type_demande === 'professionnel')
+                            Association / Organisations professionnelles
+                            @elseif($demande->type_demande === 'structure')
+                            Structure formelle
+                            @elseif($demande->type_demande === 'ONG')
+                            Organisations Non Gouvernementales (ONG)
+                            @else
+                            {{ $demande->type_demande }}
+                            @endif
+                        </td>
                     </tr>
                     <tr>
-                        <td class="label">Classification</td>
+                        <td class="label">Branche / Corps / Métier</td>
                         <td class="value">
                             {{ $branche ? $branche->nom : 'N/A' }} /
                             {{ $corps ? $corps->nom : 'N/A' }} /
@@ -304,13 +334,29 @@
                         <td class="value">{{ $demande->homme_touche }} personnes</td>
                     </tr>
                     <tr>
-                        <td class="label">Budget Prévisionnel</td>
+                        <td class="label">Statut</td>
+                        <td class="value ">
+                            <span class="{{ $demande->statuts === 'Approuvé' ? 'bg-success' : 'bg-danger' }}">{{ $demande->statuts === 'Approuvé' ? 'Approuvé' : 'Rejeté' }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Budget de l'activité</td>
+                        <td class="value">
+                            <span class="bg-secondary">
+                                {{ number_format((float)$demande->buget, 0, ',', ' ') }} FCFA
+                            </span>
+                        </td>
+                    </tr>
+                    @if($demande->statuts === 'Approuvé')
+                    <tr>
+                        <td class="label">Budget accordé</td>
                         <td class="value">
                             <span class="budget-highlight">
                                 {{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA
                             </span>
                         </td>
                     </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

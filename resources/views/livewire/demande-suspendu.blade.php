@@ -70,8 +70,18 @@
         <div class="col-md-12">
           <div class="card modern-card">
             <div class="card-header">
-              <h4 class="card-title">Gestion des Suspensions</h4>
-              <p class="card-category">Liste des demandes actuellement suspendues</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h4 class="card-title">Gestion des Suspensions</h4>
+                  <p class="card-category">Liste des demandes actuellement suspendues</p>
+                </div>
+                <div class="d-flex gap-2 justify-content-end">
+                  <button wire:click="exportExcel" class="btn btn-success" style="border-radius: 8px; padding: 8px 20px;">
+                    <i class="now-ui-icons files_single-copy-04" style="margin-right: 5px;"></i>
+                    Exporter en Excel
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -116,6 +126,14 @@
                               <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
                             </svg>
                           </button>
+                          <a href="{{ route('demande.pdf', $demande->id) }}" class="btn-action btn-pdf" title="Imprimer en PDF">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                              <polyline points="14 2 14 8 20 8"></polyline>
+                              <line x1="12" y1="18" x2="12" y2="12"></line>
+                              <polyline points="9 15 12 18 15 15"></polyline>
+                            </svg>
+                          </a>
                         </div>
                       </td>
                     </tr>
@@ -261,6 +279,18 @@
       background-color: #fff;
       border: 1px solid transparent;
       cursor: pointer;
+    }
+
+    .btn-pdf {
+      background-color: #fff;
+      color: #e74c3c;
+      border: 1px solid #e74c3c;
+    }
+
+    .btn-pdf:hover {
+      background-color: #e74c3c;
+      color: #fff;
+      transform: translateY(-2px);
     }
 
     .btn-view {

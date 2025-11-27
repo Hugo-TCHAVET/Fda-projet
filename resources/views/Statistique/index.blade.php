@@ -155,7 +155,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition par branche des dossiers reçus</h5>
+                            <h5 class="card-title">Répartition par branche des dossiers reçus vs approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g3Chart" height="100"></canvas>
@@ -219,7 +219,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title" Effectifs par branche des dossiers approuvés</h5>
+                            <h5 class="card-title"> Effectifs par branche des dossiers approuvés</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g6g9Chart" height="120"></canvas>
@@ -285,7 +285,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Comparaison Effectif Prévu vs Effectif Post-Rapport par Département</h5>
+                            <h5 class="card-title">Comparatif nombre d'artisans prévus vs artisans touchés par département</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g16Chart" height="100"></canvas>
@@ -295,7 +295,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Répartition Homme/Femme réellement formés par Département</h5>
+                            <h5 class="card-title">Répartition des artisans formés par genre et par département</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="g17Chart" height="100"></canvas>
@@ -360,7 +360,7 @@
         },
         // Mappings pour les types de demandeurs
         type_demande: {
-            'professionnel': 'Professionnelles A/O',
+            'professionnel': 'Association / O P Artisans',
             'structure': 'Structures formelles',
             // 'Type1': 'Label Personnalisé Type 1',
             // 'Type2': 'Label Personnalisé Type 2',
@@ -486,25 +486,50 @@
         }
     });
 
-    // G3: Branche Reçus (Bar Horizontal)
-    const d3 = getDataWithCustomLabels(@json($g3_branche_recus), 'nom', 'count');
+    // G3: Branche Reçus vs Approuvés (Bar Grouped)
+    const g3Data = @json($g3_branche_recus);
+    // Helper pour appliquer les labels personnalisés sans perdre la structure
+    const g3Labels = g3Data.map(i => {
+        const mapping = LABEL_MAPPINGS['nom'] || {};
+        return mapping[i.nom] || i.nom;
+    });
+    const g3Recus = g3Data.map(i => i.recus);
+    const g3Approuves = g3Data.map(i => i.approuves);
+
     new Chart(document.getElementById('g3Chart'), {
         type: 'bar',
         data: {
-            labels: d3.labels,
+            labels: g3Labels,
             datasets: [{
-                label: '',
-                data: d3.data,
-                backgroundColor: '#36A2EB'
-            }]
+                    label: 'Dossiers Reçus',
+                    data: g3Recus,
+                    backgroundColor: '#36A2EB'
+                },
+                {
+                    label: 'Dossiers Approuvés',
+                    data: g3Approuves,
+                    backgroundColor: '#FF9F40'
+                }
+            ]
         },
         options: {
             maintainAspectRatio: false,
             responsive: true,
             indexAxis: 'x',
             plugins: {
-                legend: {
-                    display: false
+                legend: legendConfig, // Utiliser la config de légende existante
+                datalabels: {
+                    display: true,
+                    color: '#000',
+                    font: {
+                        weight: 'bold',
+                        size: 10
+                    },
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: (value) => {
+                        return value > 0 ? value : '';
+                    }
                 }
             },
             scales: {
@@ -514,10 +539,15 @@
                     })
                 },
                 y: {
-                    ticks: axisTicksConfig
+                    ticks: {
+                        stepSize: 1,
+                        font: axisTicksConfig.font
+                    },
+                    beginAtZero: true
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 
     // G12: Commune Reçus (Bar)
@@ -742,11 +772,8 @@
                     ticks: axisTicksConfig
                 },
                 y: {
-                    beginAtZero: true, // Assure que l'axe commence à 0
-                    max: 500, // Force l'échelle à 100
-                    ticks: Object.assign({}, axisTicksConfig, {
-                        stepSize: 10
-                    })
+                    beginAtZero: true,
+                    ticks: axisTicksConfig
                 }
             }
         }

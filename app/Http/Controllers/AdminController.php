@@ -66,7 +66,7 @@ class AdminController extends Controller
         $departement = Departement::where('id', $demande->departement)->first();
         $commune = Commune::where('id', $demande->commune)->first();
         $localisations = $demande->localisations()->with(['departement', 'commune'])->get();
-        return view('Admin.show', compact('demande', 'branche', 'corps', 'metier', 'commune', 'departement', 'localisations'));
+        return view('Admin.show', compact('demande', 'branche', 'corps', 'metier', 'commune', 'departement', 'localisations', 'id'));
     }
 
     /**
@@ -148,7 +148,7 @@ class AdminController extends Controller
         $demande = Demande::find($id);
 
         $demande->delete();
-        Alert::toast('Demande supprimer avec succès', 'success')->position('top-end')->timerProgressBar();
+        Alert::toast('Demande supprimée avec succès', 'success')->position('top-end')->timerProgressBar();
         return redirect()->back();
     }
 
@@ -169,15 +169,15 @@ class AdminController extends Controller
                     'statut' => "Suspendus"
                 ]);
 
-                Alert::toast('Message de suspension enrégistré avec succès', 'success')->position('top-end')->timerProgressBar();
+                Alert::toast('Message de suspension enregistré avec succès', 'success')->position('top-end')->timerProgressBar();
                 return redirect()->route('demande.suspendu');
             } else {
-                Alert::toast('Une erreur est survenue lors de l\'enrengistrement du message', 'error')->position('top-end')->timerProgressBar();
+                Alert::toast('Une erreur est survenue lors de l\'enregistrement du message', 'error')->position('top-end')->timerProgressBar();
                 return redirect()->back();
             }
         } catch (\Exception $e) {
 
-            Alert::toast('Une erreur est survenue lors de l\'enrengistrement', 'error')->position('top-end')->timerProgressBar();
+            Alert::toast('Une erreur est survenue lors de l\'enregistrement', 'error')->position('top-end')->timerProgressBar();
             return redirect()->back();
         }
     }
@@ -197,6 +197,7 @@ class AdminController extends Controller
 
         $validatedData = $request->validate([
             'buget_prevu' => ['required', 'numeric'], // Ajout d'une validation pour que le budget soit un nombre
+            'date_approbation' => ['required', 'date'],
         ]);
         //dd('valider');
 
@@ -211,20 +212,20 @@ class AdminController extends Controller
                         'buget_prevu' => $validatedData['buget_prevu'],
                         'valide' => 2,
                         'statuts' => "Approuvé",
-                        'date_approbation' => now(),
+                        'date_approbation' => $validatedData['date_approbation'],
                     ]);
-                    Alert::toast('Budget enrégistré avec succès', 'success')->position('top-end')->timerProgressBar();
-                    return redirect()->route('demande.verifier');
+                    Alert::toast('Budget enregistré avec succès', 'success')->position('top-end')->timerProgressBar();
+                    return redirect()->route('post-appui');
                 } else {
-                    Alert::toast('Le budget prevue est superieur a celle du budget demandé par l\'artisan', 'error')->position('top-end')->timerProgressBar();
+                    Alert::toast('Le budget accordé est supérieur au budget demandé par l\'artisan', 'error')->position('top-end')->timerProgressBar();
                     return redirect()->back();
                 }
             } else {
-                Alert::toast('Une erreur est survenue lors de l\'enrengistrement du budget', 'error')->position('top-end')->timerProgressBar();
+                Alert::toast('Une erreur est survenue lors de l\'enregistrement du budget', 'error')->position('top-end')->timerProgressBar();
                 return redirect()->back();
             }
         } catch (\Exception $e) {
-            Alert::toast('Une erreur est survenue lors de l\'enrengistrement', 'error')->position('top-end')->timerProgressBar();
+            Alert::toast('Une erreur est survenue lors de l\'enregistrement', 'error')->position('top-end')->timerProgressBar();
             return redirect()->back();
         }
     }
@@ -323,24 +324,25 @@ class AdminController extends Controller
         // --- 1. DOSSIERS REÇUS (Toutes les demandes) ---
 
         // G1 : Répartition par service (Reçus)
-        $g1_service_recus = Demande::Where('suspendre', '0')->groupBy('service')
+        $g1_service_recus = Demande::Where('valide', '>=', '1')->groupBy('service')
             ->selectRaw('service, count(*) as count')
             ->get();
 
         // G2 : Répartition par type demandeur (Reçus)
-        $g2_demandeur_recus = Demande::Where('suspendre', '0')->groupBy('type_demande')
+        $g2_demandeur_recus = Demande::Where('valide', '>=', '1')->groupBy('type_demande')
             ->selectRaw('type_demande, count(*) as count')
             ->get();
 
-        // G3 : Répartition par branche (Reçus)
-        $g3_branche_recus = Brache::leftJoin('demandes', 'braches.id', '=', 'demandes.branche')
+        // G3 : Répartition par branche (Reçus vs Approuvés)
+        $g3_branche_recus = Brache::rightJoin('demandes', 'braches.id', '=', 'demandes.branche')
+            ->where('demandes.valide', '>=', '1')
             ->groupBy('braches.id', 'braches.nom')
-            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, count(demandes.id) as count')
+            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, count(demandes.id) as recus, sum(CASE WHEN demandes.statuts = "Approuvé" THEN 1 ELSE 0 END) as approuves')
             ->get();
 
         // G12 : Effectif artisans prévus par commune (Reçus)
         $g12_effectif_commune_recus = Commune::leftJoin('demandes', 'communes.id', '=', 'demandes.commune')
-            ->where('demandes.suspendre', '0')
+            ->where('demandes.valide', '>=', '1')
             ->groupBy('communes.id', 'communes.nom')
             ->selectRaw('communes.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
             ->get();
@@ -364,7 +366,7 @@ class AdminController extends Controller
             ->get();
 
         // G6 : Répartition par branche (Approuvés)
-        $g6_branche_approuves = Brache::leftJoin('demandes', function ($join) {
+        $g6_branche_approuves = Brache::rightJoin('demandes', function ($join) {
             $join->on('braches.id', '=', 'demandes.branche')
                 ->where('demandes.statuts', 'Approuvé');
         })
@@ -382,6 +384,7 @@ class AdminController extends Controller
         $g8_effectif_demandeur_approuves = Demande::where('statuts', 'Approuvé')
             ->groupBy('type_demande')
             ->selectRaw('type_demande, SUM(effectif_homme_forme+effectif_femme_forme) as effectif')
+            ->having('effectif', '>', 0)
             ->get();
 
         // G9 : Effectif artisans prévus formés par branche (Approuvés)
@@ -394,13 +397,13 @@ class AdminController extends Controller
             ->get();
 
 
-        // G10 & G11 : Effectif artisans prévus formés par commune (Approuvés)
-        $g10_effectif_commune_approuves = Commune::rightJoin('demandes', function ($join) {
-            $join->on('communes.id', '=', 'demandes.commune')
-                ->where('demandes.statuts', 'Approuvé');
-        })
+        // G10 : Effectif artisans formés par commune (Approuvés) - Via table de liaison pour précision géographique
+        $g10_effectif_commune_approuves = Commune::join('demande_localisations', 'communes.id', '=', 'demande_localisations.commune_id')
+            ->join('demandes', 'demande_localisations.demande_id', '=', 'demandes.id')
+            ->where('demandes.statuts', 'Approuvé')
             ->groupBy('communes.id', 'communes.nom')
-            ->selectRaw('communes.nom, COALESCE(SUM(demandes.effectif_homme_forme+demandes.effectif_femme_forme), 0) as effectif')
+            ->selectRaw('communes.nom, SUM(demande_localisations.homme_touche) as effectif')
+            ->having('effectif', '>', 0)
             ->get();
 
         // G14 : Montant total des appuis accordés par service (Approuvés)
@@ -420,7 +423,7 @@ class AdminController extends Controller
         ];
 
         // G16 : Comparaison Effectif Prévu vs Effectif Post-Rapport par Département
-        $g16_prevu_vs_touche = Departement::leftJoin('demandes', function ($join) {
+        $g16_prevu_vs_touche = Departement::rightJoin('demandes', function ($join) {
             $join->on('departements.id', '=', 'demandes.departement')
                 ->where('demandes.statuts', 'Approuvé');
         })
@@ -432,7 +435,7 @@ class AdminController extends Controller
             ->get();
 
         // G17 : Répartition Homme/Femme réellement formés par Département
-        $g17_homme_femme = Departement::leftJoin('demandes', function ($join) {
+        $g17_homme_femme = Departement::rightJoin('demandes', function ($join) {
             $join->on('departements.id', '=', 'demandes.departement')
                 ->where('demandes.statuts', 'Approuvé');
         })

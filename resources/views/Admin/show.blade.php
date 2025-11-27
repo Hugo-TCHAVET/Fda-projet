@@ -105,6 +105,65 @@
     .navbar-brand {
         font-family: 'Poppins', sans-serif;
     }
+
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        text-decoration: none !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+
+    .btn-view {
+        color: #009879;
+        border-color: #009879;
+    }
+
+    .btn-view:hover {
+        background-color: #009879;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-check {
+        color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    .btn-check:hover {
+        background-color: #27ae60;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-pause {
+        color: #f39c12;
+        border-color: #f39c12;
+    }
+
+    .btn-pause:hover {
+        background-color: #f39c12;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        color: #c0392b;
+        border-color: #c0392b;
+    }
+
+    .btn-delete:hover {
+        background-color: #c0392b;
+        color: #fff;
+        transform: translateY(-2px);
+    }
 </style>
 
 <div class="main-panel" id="main-panel">
@@ -197,18 +256,28 @@
                                 <div class="col-md-6">
                                     <div class="info-group">
                                         <span class="info-label">Service</span>
-                                        <div class="info-value">{{$demande->service}}</div>
+                                        <div class="info-value">{{$demande->service ==='Assistance' ? 'Activités de Promotion' : 'Formation / Renforcement de capacités'}}</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="info-group">
-                                        <span class="info-label">Type</span>
-                                        <div class="info-value">{{$demande->type_demande}}</div>
+                                        <span class="info-label">Type Demandeur</span>
+                                        <div class="info-value">
+                                            @if($demande->type_demande === 'professionnel')
+                                            Association / Organisations professionnelles
+                                            @elseif($demande->type_demande === 'structure')
+                                            Structure formelle
+                                            @elseif($demande->type_demande === 'ONG')
+                                            Organisations Non Gouvernementales (ONG)
+                                            @else
+                                            {{ $demande->type_demande }}
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="info-group">
-                                        <span class="info-label">Qualification</span>
+                                        <span class="info-label">Branche / Corps métier / Métier</span>
                                         <div class="info-value">
                                             {{ $branche ? $branche->nom : 'N/A' }} >
                                             {{ $corps ? $corps->nom : 'N/A' }} >
@@ -365,12 +434,134 @@
                             @endif
                         </div>
                     </div>
+                    <div class="d-flex justify-content-start gap-4">
+                        @if($demande->statuts !== 'Approuvé')
+                        @can('process-demandes')
+                        <a href="{{route('demande.budget',$demande->id)}}" class="btn-action btn-view" title="Valider">
+                            <i class="now-ui-icons ui-1_check"></i>
+                        </a>
+                        @endcan
+
+                        @can('view-liste-demandes')
+                        <a href="{{route('demande.edit',$demande->id)}}" class="btn-action btn-edit" title="Modifier">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                            </svg>
+                        </a>
+                        @endcan
+
+                        @can('transmit-demandes')
+                        <button onclick="confirmerTransmission({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
+                            <i class="now-ui-icons ui-1_send"></i>
+                        </button>
+                        @endcan
+                        @can('process-demandes')
+                        <button onclick="confirmerRejet({{$demande->id}})" class="btn-action btn-pause" title="Rejeter">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                            </svg>
+                        </button>
+                        @endcan
+                        @can('manage-demandes')
+                        <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                            </svg>
+                        </button>
+                        @endcan
+                        @endif
+                    </div>
 
                 </div>
             </div>
 
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmerTransmission(demandeId) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: 'Êtes-vous sûr de vouloir transmettre cette demande ?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#009879',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, transmettre',
+                cancelButtonText: 'Annuler',
+                customClass: {
+                    popup: 'swal-poppins'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.find('{{ $id }}').call('Transmetre', demandeId);
+                }
+            });
+        }
+
+        function confirmerSuppression(demandeId) {
+            Swal.fire({
+                title: 'Confirmation de suppression',
+                text: 'Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler',
+                customClass: {
+                    popup: 'swal-poppins'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const deleteUrl = "{{ url('/delete') }}/" + demandeId;
+                    window.location.href = deleteUrl;
+                }
+            });
+        }
+
+        function confirmerRejet(demandeId) {
+            Swal.fire({
+                title: 'Confirmation de rejet',
+                text: 'Êtes-vous sûr de vouloir rejeter cette demande ? Vous devrez fournir un message de rejet.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f39c12',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Oui, rejeter',
+                cancelButtonText: 'Annuler',
+                customClass: {
+                    popup: 'swal-poppins'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const rejectUrl = "{{ url('/suspendre_demande') }}/" + demandeId;
+                    window.location.href = rejectUrl;
+                }
+            });
+        }
+
+        function confirmerRejet(demandeId) {
+            Swal.fire({
+                title: 'Confirmation de rejet',
+                text: 'Êtes-vous sûr de vouloir rejeter cette demande ? Vous devrez fournir un message de rejet.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f39c12',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Oui, rejeter',
+                cancelButtonText: 'Annuler',
+                customClass: {
+                    popup: 'swal-poppins'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const rejectUrl = "{{ url('/suspendre_demande') }}/" + demandeId;
+                    window.location.href = rejectUrl;
+                }
+            });
+        }
+    </script>
 
     @include('Admin.footer')
 </div>

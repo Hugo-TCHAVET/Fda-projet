@@ -122,7 +122,7 @@ class SuiviDemandes extends Component
             })
             ->orderBy('rapport_depose', 'desc') // Show rapports deposited first (1 before 0)
             ->orderBy('updated_at', 'desc')
-            ->paginate(6);
+            ->paginate(10);
 
         return view('livewire.suivi-demandes', compact('demandes'));
     }
