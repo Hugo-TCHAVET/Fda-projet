@@ -28,6 +28,7 @@ class User extends Authenticatable
         'email',
         'password',
         'code',
+        'role',
     ];
 
     /**
@@ -59,4 +60,32 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function isSecretaire(): bool
+    {
+        return $this->role === 'secretaire';
+    }
+
+    public function isVerificateur(): bool
+    {
+        return $this->role === 'verificateur';
+    }
+
+    public function isDirecteur(): bool
+    {
+        return $this->role === 'directeur';
+    }
+
+    public function isClient(): bool
+    {
+        return $this->role === 'client';
+    }
+
+    /**
+     * Vérifier si l'utilisateur a l'un des rôles spécifiés
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return in_array($this->role, $roles);
+    }
 }

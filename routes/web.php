@@ -25,35 +25,86 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('Admin.index');
-    });
+    })->name('home');
 
-    Route::get('/liste_demande', [AdminController::class, 'ListeDemande'])->name('liste.demande');
-    Route::get('/detail_demande/{id}', [AdminController::class, 'show'])->name('demande.show');
-    Route::get('/suspendre_demande/{id}', [AdminController::class, 'Suspendre'])->name('demande.message');
-    Route::post('/suspendre/{id}', [AdminController::class, 'updateMessage'])->name('demande.suspendre');
-    Route::get('/delete/{id}', [AdminController::class, 'delete'])->name('demande.delete');
+    // Routes protégées par Gates
+    Route::get('/liste_demande', [AdminController::class, 'ListeDemande'])
+        ->name('liste.demande')
+        ->middleware('can:view-liste-demandes');
 
-    Route::get('/edit_demande/{id}', [AdminController::class, 'edit'])->name('demande.edit');
-    Route::put('/update_demande/{id}', [AdminController::class, 'updateDemande'])->name('update.demande');
+    Route::get('/demande_verifier', [AdminController::class, 'DemandeVerifier'])
+        ->name('demande.verifier')
+        ->middleware('can:view-demandes-verifiees');
 
-    Route::get('/budget_demande/{id}', [AdminController::class, 'Budget'])->name('demande.budget');
-    Route::post('/budget/{id}', [AdminController::class, 'updateBudget'])->name('demande.prixbudget');
-    Route::get('/pdf/{id}', [AdminController::class, 'generatePdfForDemande'])->name('demande.pdf');
+    Route::get('/demande_approuve', [AdminController::class, 'DemandeApprouve'])
+        ->name('demande.approve')
+        ->middleware('can:view-demandes-approuvees');
 
-    Route::get('/telecharger_piece/{id}', [AdminController::class, 'telecharger'])->name('demande.piece');
+    Route::get('/demande_suspendu', [AdminController::class, 'DemandeSuspendu'])
+        ->name('demande.suspendu')
+        ->middleware('can:view-demandes-suspendues');
 
-    Route::get('/detail_demande_cloture/{id}', [AdminController::class, 'showCloture'])->name('demande.cloture.show');
-    Route::get('/pdf_cloture/{id}', [AdminController::class, 'generatePdfForDemandeCloture'])->name('demande.cloture.pdf');
-    Route::get('/telecharger_piece_cloture/{id}', [AdminController::class, 'telechargerCloture'])->name('demande.cloture.piece');
-    Route::get('/demande_approuve', [AdminController::class, 'DemandeApprouve'])->name('demande.approve');
+    Route::get('/suivi-demandes', [AdminController::class, 'suiviDemandes'])
+        ->name('suivi.demandes')
+        ->middleware('can:view-suivi-demandes');
+
+    Route::get('/statistiques', [AdminController::class, 'statistiques'])
+        ->name('statistiques.admin')
+        ->middleware('can:view-statistiques');
+
+    Route::get('/post-appui', [AdminController::class, 'postAppui'])
+        ->name('post-appui')
+        ->middleware('can:view-post-appui');
+
+    Route::get('/exercices_clotures', [AdminController::class, 'ExercicesClotures'])
+        ->name('exercices.clotures')
+        ->middleware('can:view-dossiers-clotures');
+
+    // Routes communes (accessibles selon les permissions définies)
+    Route::get('/detail_demande/{id}', [AdminController::class, 'show'])
+        ->name('demande.show')
+        ->middleware('can:view-demande-details');
+    Route::get('/suspendre_demande/{id}', [AdminController::class, 'Suspendre'])
+        ->name('demande.message')
+        ->middleware('can:process-demandes');
+    Route::post('/suspendre/{id}', [AdminController::class, 'updateMessage'])
+        ->name('demande.suspendre')
+        ->middleware('can:process-demandes');
+    Route::get('/delete/{id}', [AdminController::class, 'delete'])
+        ->name('demande.delete')
+        ->middleware('can:manage-demandes');
+
+    Route::get('/edit_demande/{id}', [AdminController::class, 'edit'])
+        ->name('demande.edit')
+        ->middleware('can:manage-demandes');
+    Route::put('/update_demande/{id}', [AdminController::class, 'updateDemande'])
+        ->name('update.demande')
+        ->middleware('can:manage-demandes');
+
+    Route::get('/budget_demande/{id}', [AdminController::class, 'Budget'])
+        ->name('demande.budget')
+        ->middleware('can:process-demandes');
+    Route::post('/budget/{id}', [AdminController::class, 'updateBudget'])
+        ->name('demande.prixbudget')
+        ->middleware('can:process-demandes');
+    Route::get('/pdf/{id}', [AdminController::class, 'generatePdfForDemande'])
+        ->name('demande.pdf')
+        ->middleware('can:manage-demandes');
+
+    Route::get('/telecharger_piece/{id}', [AdminController::class, 'telecharger'])
+        ->name('demande.piece')
+        ->middleware('can:manage-demandes');
+
+    Route::get('/detail_demande_cloture/{id}', [AdminController::class, 'showCloture'])
+        ->name('demande.cloture.show')
+        ->middleware('can:view-dossiers-clotures');
+    Route::get('/pdf_cloture/{id}', [AdminController::class, 'generatePdfForDemandeCloture'])
+        ->name('demande.cloture.pdf')
+        ->middleware('can:view-dossiers-clotures');
+    Route::get('/telecharger_piece_cloture/{id}', [AdminController::class, 'telechargerCloture'])
+        ->name('demande.cloture.piece')
+        ->middleware('can:view-dossiers-clotures');
     // Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');
-    Route::get('/exercices_clotures', [AdminController::class, 'ExercicesClotures'])->name('exercices.clotures');
-    Route::get('/demande_suspendu', [AdminController::class, 'DemandeSuspendu'])->name('demande.suspendu');
-    Route::get('/demande_verifier', [AdminController::class, 'DemandeVerifier'])->name('demande.verifier');
-
-    Route::get('/statistiques', [AdminController::class, 'statistiques'])->name('statistiques.admin');
-    Route::get('/post-appui', [AdminController::class, 'postAppui'])->name('post-appui');
-    Route::get('/suivi-demandes', [AdminController::class, 'suiviDemandes'])->name('suivi.demandes');
 });
 
 

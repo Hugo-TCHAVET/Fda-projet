@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Commune;
+use App\Models\Departement;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/departements', function () {
+    $departements = Departement::orderBy('nom', 'asc')->get();
+    return response()->json($departements);
+});
+
 Route::get('/communes/{departement_id}', function ($departement_id) {
-    $communes = Commune::where('departement_id', $departement_id)->get();
+    $communes = Commune::where('departement_id', $departement_id)
+        ->orderBy('nom', 'asc')
+        ->get();
     return response()->json($communes);
 });
 
