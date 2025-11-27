@@ -129,10 +129,10 @@ class ClientController extends Controller
                     });
             });
 
-            return redirect()->back()->with('success', 'Votre demande a été envoyée avec succès!');
+            return redirect()->route('liste.demande')->with('toast.success', 'Votre demande a été envoyée avec succès!');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la création de la demande: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer.');
+            return redirect()->back()->with('toast.error', 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer.');
         }
     }
 

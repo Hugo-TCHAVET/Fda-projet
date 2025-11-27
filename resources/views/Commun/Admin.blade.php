@@ -150,6 +150,14 @@
             </a>
           </li>
           @endcan
+          @can('view-formulaire')
+          <li class="{{request()->routeIs('client.formulaire') ? 'active' : '' }}">
+            <a href="{{route('client.formulaire')}}">
+              <i class="now-ui-icons education_atom"></i>
+              <p>Nouvelle demande</p>
+            </a>
+          </li>
+          @endcan
         </ul>
       </div>
 

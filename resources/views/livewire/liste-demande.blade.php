@@ -69,9 +69,17 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card modern-card">
-            <div class="card-header">
-              <h4 class="card-title">Liste des demandes d'appui</h4>
-              <p class="card-category">Gestion des demandes d'appui entrantes</p>
+            <div class="row  p-3 ">
+              <div class="card-header col-3">
+                <h4 class="card-title">Liste des demandes d'appui</h4>
+                <p class="card-category">Gestion des demandes d'appui entrantes</p>
+              </div>
+              <div class="col-6"></div>
+              <div class="col-3 text-end">
+                <a href="{{route('client.formulaire')}}" class="btn btn-success" style="border-radius: 8px; padding: 8px 20px;">
+                  Nouvelle demande
+                </a>
+              </div>
             </div>
             <div class="card-body">
               <div class="table-responsive">

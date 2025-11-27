@@ -223,6 +223,7 @@
             </div>
 
             <!-- Affichage des alertes -->
+            </script>
             @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
                 <i class="bx bx-check-circle me-2"></i> {{ session('success') }}
@@ -372,7 +373,7 @@
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="contact">Contact </label>
-                                        <input type="text" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Ex: +2290167854592">
+                                        <input type="text" name="contact" class="form-control" id="contact" value="{{ old('contact') }}" placeholder="Ex: 0167854592">
 
                                         @error('contact') <span class="text-danger small mt-1 d-block">{{ $message }}</span> @enderror
                                     </div>

@@ -62,18 +62,13 @@
 
       <!-- Boutons d'action (Call to Action) -->
       <div class="flex flex-col sm:flex-row gap-4 mt-8">
-        <a href="{{ route('client.formulaire') }}"
+        <a href="{{ route('login') }}"
           class="group flex items-center justify-center px-8 py-4 text-lg font-bold text-slate-900 bg-[#198754] rounded-lg shadow-lg hover:bg-amber-400 transition-all duration-300 hover:-translate-y-1">
-          <span>Demander un appui</span>
+          <span> Se connecter</span>
           <!-- Petite flèche qui bouge au survol -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
-        </a>
-
-        <a href="{{ route('login') }}"
-          class="flex items-center justify-center px-8 py-4 text-lg font-medium text-white border border-gray-600 rounded-lg hover:bg-white/10 hover:border-white transition-all duration-300">
-          Se connecter
         </a>
       </div>
 

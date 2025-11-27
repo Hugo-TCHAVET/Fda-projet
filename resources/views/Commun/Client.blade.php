@@ -39,25 +39,28 @@
   <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
   <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
   <!-- ======= Header ======= -->
-  <header id="header" class="d-flex flex-column justify-content-center fixed  z-50">
+  @cannot('view-formulaire')
 
+  <header id="header" class="d-flex flex-column justify-content-center fixed z-50">
     <nav id="navbar" class="navbar nav-menu">
       <ul>
-        <li><a wire:navigation href="{{url('/')}}" class="{{ request()->is('/') ? 'active' : '' }}"><i
-              class="bx bx-home"></i> <span>Accueil</span></a></li>
-        <li><a href="{{route('client.about')}}" class="{{ request()->routeIs('client.about') ? 'active' : '' }}"><i
-              class="bx bx-user"></i> <span>A propos</span></a></li>
-        <li><a href="{{route('client.service')}}" class="{{ request()->routeIs('client.service') ? 'active' : '' }}"><i
-              class="bx bx-server"></i> <span>Nos Services</span></a></li>
-        <li><a href="{{route('client.contact')}}" class="{{ request()->routeIs('client.contact') ? 'active' : '' }}"><i
-              class="bx bx-envelope"></i> <span>Contactez nous</span></a></li>
-        <!-- <li><a href="{{route('client.demande')}}" class="{{ request()->routeIs('client.demande') ? 'active' : '' }}"><i
-              class="bx bx-book-content"></i> <span>Suivre la demande</span></a></li> -->
-
+        <li><a wire:navigation href="{{url('/')}}" class="{{ request()->is('/') ? 'active' : '' }}">
+            <i class="bx bx-home"></i> <span>Accueil</span></a>
+        </li>
+        <li><a href="{{route('client.about')}}" class="{{ request()->routeIs('client.about') ? 'active' : '' }}">
+            <i class="bx bx-user"></i> <span>A propos</span></a>
+        </li>
+        <li><a href="{{route('client.service')}}" class="{{ request()->routeIs('client.service') ? 'active' : '' }}">
+            <i class="bx bx-server"></i> <span>Nos Services</span></a>
+        </li>
+        <li><a href="{{route('client.contact')}}" class="{{ request()->routeIs('client.contact') ? 'active' : '' }}">
+            <i class="bx bx-envelope"></i> <span>Contactez nous</span></a>
+        </li>
       </ul>
-    </nav><!-- .nav-menu -->
+    </nav>
+  </header>
 
-  </header><!-- End Header -->
+  @endcannot
 
   <!-- ======= Hero Section ======= -->
   <!-- End Hero -->

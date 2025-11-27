@@ -104,13 +104,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/telecharger_piece_cloture/{id}', [AdminController::class, 'telechargerCloture'])
         ->name('demande.cloture.piece')
         ->middleware('can:view-dossiers-clotures');
+
+    Route::get('/formulaire', [ClientController::class, 'Formulaire'])->name('client.formulaire')->middleware('can:view-formulaire');
     // Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');
 });
 
 
 Route::get('/service', [ClientController::class, 'index'])->name('client.service');
-Route::get('/formulaire', [ClientController::class, 'Formulaire'])->name('client.formulaire');
-Route::get('/suivre_demande', [ClientController::class, 'SuivreDemande'])->name('client.demande');
+
+// Route::get('/suivre_demande', [ClientController::class, 'SuivreDemande'])->name('client.demande');
 Route::post('/demande/store', [ClientController::class, 'store'])->name('demande.store');
 Route::get('/demande/modifier/{id}', [ClientController::class, 'modifier'])->name('demande.modifier');
 Route::put('/demande/update/{id}', [ClientController::class, 'update'])->name('demande.update');

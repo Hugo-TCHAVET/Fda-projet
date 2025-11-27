@@ -220,6 +220,7 @@ class DemandeVerifier extends Component
     {
 
         $demandes = Demande::where('valide', 1)
+            ->where('suspendre', 0)
             ->orderBy('date_transmission', 'desc')
             ->paginate(6);
 

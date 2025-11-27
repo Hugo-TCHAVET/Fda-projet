@@ -79,5 +79,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-demande-details', function ($user) {
             return $user->isSecretaire() || $user->isVerificateur() || $user->isDirecteur();
         });
+
+        //Gate pour voir le formulaire
+        Gate::define('view-formulaire', function ($user) {
+            return $user->isSecretaire();
+        });
     }
 }

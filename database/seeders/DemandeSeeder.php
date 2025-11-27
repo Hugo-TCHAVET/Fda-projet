@@ -45,6 +45,6 @@ class DemandeSeeder extends Seeder
             }
         }
 
-        $this->command->info('10 demandes avec leurs localisations ont été créées avec succès !');
+        $this->command->info('5 demandes avec leurs localisations ont été créées avec succès !');
     }
 }
