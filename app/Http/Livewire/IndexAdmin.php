@@ -12,7 +12,7 @@ class IndexAdmin extends Component
     {
         $nbreformation = Demande::where('service', "Formation")->where('suspendre', '!=', 1)->count();
         $nbrepromotion = Demande::where('service', "Assistance")->where('suspendre', '!=', 1)->count();
-        $nbrefinancier = Demande::where('service', "Financier")->count();
+        // $nbrefinancier = Demande::where('service', "Financier")->count();
 
 
         $currentYear = Carbon::now()->year;
@@ -20,7 +20,7 @@ class IndexAdmin extends Component
         $monthlyData = [
             'formation' => [],
             'promotion' => [],
-            'financier' => []
+            // 'financier' => []
         ];
 
 
@@ -33,10 +33,10 @@ class IndexAdmin extends Component
                 ->whereYear('created_at', $currentYear)
                 ->whereMonth('created_at', $month)
                 ->count();
-            $monthlyData['financier'][] = Demande::where('service', "Financier")
-                ->whereYear('created_at', $currentYear)
-                ->whereMonth('created_at', $month)
-                ->count();
+            // $monthlyData['financier'][] = Demande::where('service', "Financier")
+            //     ->whereYear('created_at', $currentYear)
+            //     ->whereMonth('created_at', $month)
+            //     ->count();
         }
 
 
@@ -71,20 +71,20 @@ class IndexAdmin extends Component
 
 
 
-        $profinancier = Demande::where('service', "Financier")
-            ->where('type_demande', "professionnel")
-            ->count();
+        // $profinancier = Demande::where('service', "Financier")
+        //     ->where('type_demande', "professionnel")
+        //     ->count();
 
 
 
-        $strfinancier = Demande::where('service', "Financier")
-            ->where('type_demande', "structure")
-            ->count();
+        // $strfinancier = Demande::where('service', "Financier")
+        //     ->where('type_demande', "structure")
+        //     ->count();
 
 
-        $ongfinancier = Demande::where('service', "Financier")
-            ->where('type_demande', "ONG")
-            ->count();
+        // $ongfinancier = Demande::where('service', "Financier")
+        //     ->where('type_demande', "ONG")
+        //     ->count();
 
         $nbrepromotion = Demande::where('service', "Assistance")->count();
 
@@ -108,16 +108,16 @@ class IndexAdmin extends Component
 
         return view('livewire.index-admin', compact(
             'nbreformation',
-            'ongfinancier',
-            'strfinancier',
-            'profinancier',
+            // 'ongfinancier',
+            // 'strfinancier',
+            // 'profinancier',
             'ongpromotion',
             'strpromotion',
             'propromotion',
             'ongformation',
             'strformation',
             'proformation',
-            'nbrefinancier',
+            // 'nbrefinancier',
             'nbrepromotion',
             'monthlyData',
             'totaldemandes',

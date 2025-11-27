@@ -16,7 +16,7 @@
               <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <a class="navbar-brand" href="#pablo">Liste des demandes approuvées</a>
+          <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">Liste des demandes approuvées</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
           aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,12 +76,18 @@
                   <h4 class="card-title">Gestion des demandes</h4>
                   <p class="card-category">Liste de toutes les demandes validées et approuvées</p>
                 </div>
-                @if(Auth::user()->email == 'sese@gmail.com')
-                <button wire:click="openClotureModal" class="btn btn-danger" style="border-radius: 8px; padding: 8px 20px;">
-                  <i class="now-ui-icons files_box" style="margin-right: 5px;"></i>
-                  Clôturer exercice
-                </button>
-                @endif
+                <div class="d-flex gap-2">
+                  <button wire:click="exportExcel" class="btn btn-success" style="border-radius: 8px; padding: 8px 20px;">
+                    <i class="now-ui-icons files_single-copy-04" style="margin-right: 5px;"></i>
+                    Exporter en Excel
+                  </button>
+                  @if(Auth::user()->email == 'sese@gmail.com')
+                  <button wire:click="openClotureModal" class="btn btn-danger" style="border-radius: 8px; padding: 8px 20px;">
+                    <i class="now-ui-icons files_box" style="margin-right: 5px;"></i>
+                    Clôturer exercice
+                  </button>
+                  @endif
+                </div>
               </div>
             </div>
             <div class="card-body">

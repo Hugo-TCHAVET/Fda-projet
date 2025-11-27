@@ -16,7 +16,7 @@
               <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <a class="navbar-brand" href="#pablo">Liste des Demandes Vérifiées</a>
+          <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">Liste des Demandes Vérifiées</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
           aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,6 +111,12 @@
                           <a href="{{route('demande.budget',$demande->id)}}" class="btn-action btn-view" title="Valider">
                             <i class="now-ui-icons ui-1_check"></i>
                           </a>
+
+                          <button onclick="confirmerRejet({{$demande->id}})" class="btn-action btn-pause" title="Rejeter">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                            </svg>
+                          </button>
 
                           <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -297,6 +303,17 @@
       transform: translateY(-2px);
     }
 
+    .btn-pause {
+      color: #f39c12;
+      border-color: #f39c12;
+    }
+
+    .btn-pause:hover {
+      background-color: #f39c12;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
     .btn-delete {
       color: #c0392b;
       border-color: #c0392b;
@@ -326,6 +343,27 @@
         if (result.isConfirmed) {
           const deleteUrl = "{{ url('/delete') }}/" + demandeId;
           window.location.href = deleteUrl;
+        }
+      });
+    }
+
+    function confirmerRejet(demandeId) {
+      Swal.fire({
+        title: 'Confirmation de rejet',
+        text: 'Êtes-vous sûr de vouloir rejeter cette demande ? Vous devrez fournir un message de rejet.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#f39c12',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, rejeter',
+        cancelButtonText: 'Annuler',
+        customClass: {
+          popup: 'swal-poppins'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const rejectUrl = "{{ url('/suspendre_demande') }}/" + demandeId;
+          window.location.href = rejectUrl;
         }
       });
     }

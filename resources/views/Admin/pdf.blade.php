@@ -231,7 +231,7 @@
                         <td class="value">{{ $demande->type_demande }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Classification</td>
+                        <td class="label">Branche / Corps / Métier</td>
                         <td class="value">
                             {{ $branche ? $branche->nom : 'N/A' }} /
                             {{ $corps ? $corps->nom : 'N/A' }} /
@@ -282,7 +282,7 @@
                         <td class="label">Calendrier</td>
                         <td class="value">
                             Du {{ $demande->debut_activite }} au {{ $demande->fin_activite }} <br>
-                            <span style="color: #777; font-size: 11px;">(Durée : {{ $demande->dure_activite }})</span>
+                            <span style="color: #777; font-size: 11px;">(Durée : {{ $demande->dure_activite }} jours)</span>
                         </td>
                     </tr>
                     <tr>
@@ -298,7 +298,7 @@
                         <td class="value">{{ $demande->homme_touche }} personnes</td>
                     </tr>
                     <tr>
-                        <td class="label">Budget Prévisionnel</td>
+                        <td class="label">Budget demandé</td>
                         <td class="value">
                             <span class="budget-highlight">
                                 {{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA

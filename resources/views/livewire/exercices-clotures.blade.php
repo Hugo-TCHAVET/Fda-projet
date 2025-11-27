@@ -15,7 +15,7 @@
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand" href="#pablo">Exercices Clôturés</a>
+                    <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">Exercices Clôturés</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                     aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
                     <div class="dashboard-card p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="card-title-custom">Montant Total Demandé</h5>
+                                <h5 class="card-title-custom">Montant total demandé</h5>
                                 <h2 class="card-value">{{ number_format($montantTotalDemande, 0, ',', ' ') }}</h2>
                                 <small style="color: #6c757d; font-size: 14px;">FCFA</small>
                             </div>
@@ -89,7 +89,7 @@
                     <div class="dashboard-card p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="card-title-custom">Montant Total Appuyé</h5>
+                                <h5 class="card-title-custom">Montant total accordé</h5>
                                 <h2 class="card-value">{{ number_format($montantTotalAppuye, 0, ',', ' ') }}</h2>
                                 <small style="color: #6c757d; font-size: 14px;">FCFA</small>
                             </div>
@@ -120,7 +120,7 @@
                     <div class="dashboard-card p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="card-title-custom">Formation</h5>
+                                <h5 class="card-title-custom">Formation / Renforcement de capacités</h5>
                                 <h2 class="card-value">{{ $nbreformation }}</h2>
                             </div>
                             <div class="card-icon-wrapper icon-blue">
@@ -129,11 +129,11 @@
                         </div>
                         <div class="stat-list">
                             <div class="stat-item">
-                                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Association / Organisation Professionnelle</span>
                                 <span class="stat-count">{{ $proformation }}</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                                <span class="stat-label"><i class='bx bx-building-house'></i> Structure Formelle</span>
                                 <span class="stat-count">{{ $strformation }}</span>
                             </div>
                             <div class="stat-item">
@@ -149,7 +149,7 @@
                     <div class="dashboard-card p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="card-title-custom">Assistance & Promotion</h5>
+                                <h5 class="card-title-custom">Activités de Promotion</h5>
                                 <h2 class="card-value">{{ $nbrepromotion }}</h2>
                             </div>
                             <div class="card-icon-wrapper icon-green">
@@ -158,11 +158,11 @@
                         </div>
                         <div class="stat-list">
                             <div class="stat-item">
-                                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Association / Organisation Professionnelle</span>
                                 <span class="stat-count">{{ $propromotion }}</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                                <span class="stat-label"><i class='bx bx-building-house'></i> Structure Formelle</span>
                                 <span class="stat-count">{{ $strpromotion }}</span>
                             </div>
                             <div class="stat-item">
@@ -183,8 +183,14 @@
                                 <h4 class="card-title">Demandes Clôturées @if($anneeFiltre) - Exercice {{ $anneeFiltre }} @endif</h4>
                                 <p class="card-category">Consultation des demandes clôturées par année d'exercice</p>
                             </div>
-                            <div class="form-group" style="width: 300px;">
-                                <input wire:model.debounce.300ms="search" type="text" class="form-control" placeholder="Rechercher une demande...">
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="form-group" style="width: 300px; margin: 0;">
+                                    <input wire:model.debounce.300ms="search" type="text" class="form-control" placeholder="Rechercher une demande...">
+                                </div>
+                                <button wire:click="exportExcel" class="btn btn-success" style="border-radius: 8px; padding: 8px 20px; white-space: nowrap;">
+                                    <i class="now-ui-icons files_single-copy-04" style="margin-right: 5px;"></i>
+                                    Exporter en Excel
+                                </button>
                             </div>
                         </div>
                         <div class="card-body">

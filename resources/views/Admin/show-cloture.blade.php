@@ -132,7 +132,7 @@
                 <a href="{{ route('exercices.clotures') }}" class="btn btn-sm btn-outline-light rounded-circle me-2" style="width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" title="Retour">
                     <i class='bx bx-arrow-back' style="font-size: 18px;"></i>
                 </a>
-                <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 20px;">
+                <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">
                     Détail de la demande clôturée
                 </a>
             </div>

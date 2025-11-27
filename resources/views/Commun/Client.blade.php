@@ -10,7 +10,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-
+  <link rel="icon" type="image/x-icon" href="{{ url('/favicon.ico') }}">
 
   <!-- Google Fonts -->
   <link
@@ -51,8 +51,8 @@
               class="bx bx-server"></i> <span>Nos Services</span></a></li>
         <li><a href="{{route('client.contact')}}" class="{{ request()->routeIs('client.contact') ? 'active' : '' }}"><i
               class="bx bx-envelope"></i> <span>Contactez nous</span></a></li>
-        <li><a href="{{route('client.demande')}}" class="{{ request()->routeIs('client.demande') ? 'active' : '' }}"><i
-              class="bx bx-book-content"></i> <span>Suivre la demande</span></a></li>
+        <!-- <li><a href="{{route('client.demande')}}" class="{{ request()->routeIs('client.demande') ? 'active' : '' }}"><i
+              class="bx bx-book-content"></i> <span>Suivre la demande</span></a></li> -->
 
       </ul>
     </nav><!-- .nav-menu -->

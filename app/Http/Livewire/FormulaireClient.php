@@ -295,7 +295,7 @@ class FormulaireClient extends Component
 
     public function render()
     {
-        $departements = Departement::all();
+        $departements = Departement::orderBy('nom', 'asc')->get();
         $branches = Brache::all();
 
         $communes = isset($this->departement)
@@ -307,9 +307,7 @@ class FormulaireClient extends Component
             : collect();
 
         $metiers = isset($this->corps)
-            ? Metier::where('corp_id', $this->corps)
-            ->where('branche_id', $this->branche)
-            ->get()
+            ? Metier::where('corp_id', $this->corps)->get()
             : collect();
 
         $date = Carbon::now()->format('Y-m-d');

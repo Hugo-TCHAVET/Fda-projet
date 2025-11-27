@@ -3,9 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\DemandeCloture;
+use App\Exports\DemandesClotureesExport;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExercicesClotures extends Component
 {
@@ -31,6 +33,20 @@ class ExercicesClotures extends Component
     public function updatingAnneeFiltre()
     {
         $this->resetPage();
+    }
+
+    /**
+     * Exporte les demandes clôturées en Excel
+     */
+    public function exportExcel()
+    {
+        $fileName = 'demandes_cloturees';
+        if ($this->anneeFiltre) {
+            $fileName .= '_' . $this->anneeFiltre;
+        }
+        $fileName .= '_' . date('Y-m-d_His') . '.xlsx';
+
+        return Excel::download(new DemandesClotureesExport($this->anneeFiltre), $fileName);
     }
 
     public function render()

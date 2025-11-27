@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <!-- <link rel="apple-touch-icon" sizes="76x76" href="Admin/assets/img/apple-icon.png"> -->
-  <!-- <link rel="icon" type="image/png" href="Admin/assets/img/favicon.png"> -->
+  <link rel="icon" type="image/x-icon" href="{{ url('/favicon.ico') }}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     FDA
@@ -73,54 +72,71 @@
               <p>Tableau de Bord</p>
             </a>
           </li>
-          @if (Auth::user()->email == 'secretaire@gmail.com')
+
+          @can('view-liste-demandes')
           <li class="{{ request()->routeIs('liste.demande') ? 'active' : '' }}">
             <a href="{{ route('liste.demande') }}">
               <i class="now-ui-icons education_atom"></i>
               <p>Liste des demandes</p>
             </a>
           </li>
-          <li class="{{ request()->routeIs('demande.suspendu') ? 'active' : '' }}">
-            <a href="{{ route('demande.suspendu') }}">
-              <i class="now-ui-icons location_map-big"></i>
-              <p>Demande rejetée</p>
-            </a>
-          </li>
+          @endcan
 
-          @elseif (Auth::user()->email == 'sese@gmail.com'|Auth::user()->email == 'do@gmail.com')
+          @can('view-demandes-verifiees')
           <li class="{{ request()->routeIs('demande.verifier') ? 'active' : '' }}">
             <a href="{{ route('demande.verifier') }}">
               <i class="now-ui-icons location_map-big"></i>
               <p>Demande analysée</p>
             </a>
           </li>
+          @endcan
+
+          @can('view-demandes-approuvees')
           <li class="{{ request()->routeIs('demande.approve') ? 'active' : '' }}">
             <a href="{{ route('demande.approve') }}">
               <i class="now-ui-icons ui-1_bell-53"></i>
               <p>Demande approuvée</p>
             </a>
           </li>
-          @elseif (in_array(Auth::user()->email, ['dg@gmail.com', 'daf@gmail.com', 'spea@gmail.com']))
+          @endcan
+
+          @can('view-demandes-suspendues')
+          <li class="{{ request()->routeIs('demande.suspendu') ? 'active' : '' }}">
+            <a href="{{ route('demande.suspendu') }}">
+              <i class="now-ui-icons location_map-big"></i>
+              <p>Demande rejetée</p>
+            </a>
+          </li>
+          @endcan
+
+          @can('view-suivi-demandes')
           <li class="{{ request()->routeIs('suivi.demandes') ? 'active' : '' }}">
             <a href="{{ route('suivi.demandes') }}">
               <i class="now-ui-icons ui-1_zoom-bold"></i>
               <p>Suivi des demandes</p>
             </a>
           </li>
-          @endif
-          @if (Auth::user()->email == 'sese@gmail.com' || Auth::user()->email == 'spea@gmail.com' || Auth::user()->email == 'dg@gmail.com' || Auth::user()->email == 'daf@gmail.com' || Auth::user()->email == 'do@gmail.com')
+          @endcan
+
+          @can('view-statistiques')
           <li class="{{ request()->routeIs('statistiques.admin') ? 'active' : '' }}">
             <a href="{{ route('statistiques.admin') }}">
               <i class="now-ui-icons business_chart-bar-32"></i>
               <p>Statistiques</p>
             </a>
           </li>
+          @endcan
+
+          @can('view-post-appui')
           <li class="{{ request()->routeIs('post-appui') ? 'active' : '' }}">
             <a href="{{ route('post-appui') }}">
               <i class="now-ui-icons business_money-coins"></i>
               <p>Post appui</p>
             </a>
           </li>
+          @endcan
+
+          @can('view-dossiers-clotures')
           {{-- <li class="{{ request()->routeIs('demande.archivee') ? 'active' : '' }}">
           <a href="{{ route('demande.archivee') }}">
             <i class="now-ui-icons files_box"></i>
@@ -133,7 +149,7 @@
               <p>Dossiers d'appui cloturés</p>
             </a>
           </li>
-          @endif
+          @endcan
         </ul>
       </div>
 

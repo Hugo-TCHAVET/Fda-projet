@@ -16,7 +16,7 @@
               <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <a class="navbar-brand" href="#pablo">Liste des Demandes Suspendues</a>
+          <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">Liste des demandes rejetées</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
           aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">

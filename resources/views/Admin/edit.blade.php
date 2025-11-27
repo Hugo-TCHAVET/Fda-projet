@@ -83,7 +83,7 @@
                 <a href="{{ url()->previous() }}" class="btn btn-sm btn-outline-light rounded-circle me-2" style="width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" title="Retour">
                     <i class='bx bx-arrow-back' style="font-size: 18px;"></i>
                 </a>
-                <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 20px;">
+                <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">
                     Modifier la demande
                 </a>
             </div>
@@ -355,11 +355,11 @@
                                     @endphp
 
                                     @foreach($locs as $index => $loc)
-                                    <div class="localisation-item border rounded p-3 mb-3 bg-light position-relative">
+                                    <div class="localisation-item border rounded p-3 mb-3 bg-light position-relative" data-index="{{ $index }}">
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
                                                 <label class="small text-muted">Département</label>
-                                                <select name="localisations[{{$index}}][departement_id]" class="form-control form-control-sm">
+                                                <select name="localisations[{{$index}}][departement_id]" class="form-control form-control-sm departement-select" data-index="{{ $index }}">
                                                     <option value="">Choisir...</option>
                                                     @foreach($departements as $dept)
                                                     <option value="{{ $dept->id }}" {{ $loc->departement_id == $dept->id ? 'selected' : '' }}>{{ $dept->nom }}</option>
@@ -368,11 +368,13 @@
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label class="small text-muted">Commune</label>
-                                                <select name="localisations[{{$index}}][commune_id]" class="form-control form-control-sm">
+                                                <select name="localisations[{{$index}}][commune_id]" class="form-control form-control-sm commune-select" data-index="{{ $index }}">
                                                     <option value="">Choisir...</option>
-                                                    @foreach($communes as $com)
+                                                    @if($loc->departement_id)
+                                                    @foreach($communes->where('departement_id', $loc->departement_id) as $com)
                                                     <option value="{{ $com->id }}" {{ $loc->commune_id == $com->id ? 'selected' : '' }}>{{ $com->nom }}</option>
                                                     @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="col-md-12 mb-2">
@@ -405,4 +407,60 @@
 
     @include('Admin.footer')
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestion du chargement dynamique des communes selon le département sélectionné
+        document.querySelectorAll('.departement-select').forEach(function(departementSelect) {
+            const index = departementSelect.getAttribute('data-index');
+            const communeSelect = document.querySelector(`.commune-select[data-index="${index}"]`);
+            const communeInitiale = communeSelect.value; // Sauvegarder la commune initialement sélectionnée
+
+            departementSelect.addEventListener('change', function() {
+                const departementId = this.value;
+
+                // Réinitialiser le select de commune
+                communeSelect.innerHTML = '<option value="">Choisir...</option>';
+
+                if (departementId) {
+                    // Afficher un indicateur de chargement
+                    communeSelect.disabled = true;
+                    communeSelect.innerHTML = '<option value="">Chargement...</option>';
+
+                    // Faire l'appel API
+                    fetch(`/api/communes/${departementId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Réinitialiser le select
+                            communeSelect.innerHTML = '<option value="">Choisir...</option>';
+
+                            // Ajouter les communes
+                            data.forEach(function(commune) {
+                                const option = document.createElement('option');
+                                option.value = commune.id;
+                                option.textContent = commune.nom;
+                                communeSelect.appendChild(option);
+                            });
+
+                            // Réactiver le select
+                            communeSelect.disabled = false;
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors du chargement des communes:', error);
+                            communeSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+                            communeSelect.disabled = false;
+                        });
+                } else {
+                    communeSelect.disabled = false;
+                }
+            });
+
+            // Si un département est déjà sélectionné au chargement, charger ses communes
+            // mais seulement si la commune n'est pas déjà chargée (pour éviter de perdre la sélection)
+            if (departementSelect.value && !communeInitiale) {
+                departementSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+</script>
 @endsection

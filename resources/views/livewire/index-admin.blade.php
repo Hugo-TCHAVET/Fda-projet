@@ -110,7 +110,7 @@
               <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <a class="navbar-brand text-white font-poppins" href="#pablo" style="font-weight: 600;">Tableau de Bord</a>
+          <a class="navbar-brand text-white font-poppins" style="font-weight: bold; font-size: 1.2rem;">Tableau de Bord</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
           aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -168,7 +168,7 @@
           <div class="dashboard-card p-4">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <h5 class="card-title-custom">Montant Total Demandé</h5>
+                <h5 class="card-title-custom">Montant total demandé</h5>
                 <h2 class="card-value">{{ number_format($montantTotalDemande, 0, ',', ' ') }} </h2>
                 <small style="color: #6c757d; font-size: 14px;">FCFA</small>
               </div>
@@ -188,7 +188,7 @@
           <div class="dashboard-card p-4">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <h5 class="card-title-custom">Montant Total Appuyé</h5>
+                <h5 class="card-title-custom">Montant total accordé</h5>
                 <h2 class="card-value">{{ number_format($montantTotalAppuye, 0, ',', ' ') }} </h2>
                 <small style="color: #6c757d; font-size: 14px;">FCFA</small>
               </div>
@@ -233,7 +233,7 @@
           <div class="dashboard-card p-4">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <h5 class="card-title-custom">Formation</h5>
+                <h5 class="card-title-custom">Formation / Renforcement de capacités</h5>
                 <h2 class="card-value">{{$nbreformation}}</h2>
               </div>
               <div class="card-icon-wrapper icon-blue">
@@ -243,11 +243,11 @@
 
             <div class="stat-list">
               <div class="stat-item">
-                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Association / Organisation Professionnelle</span>
                 <span class="stat-count">{{$proformation}}</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                <span class="stat-label"><i class='bx bx-building-house'></i> Structure Formelle</span>
                 <span class="stat-count">{{$strformation}}</span>
               </div>
               <div class="stat-item">
@@ -263,7 +263,7 @@
           <div class="dashboard-card p-4">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <h5 class="card-title-custom">Assistance & Promotion</h5>
+                <h5 class="card-title-custom">Activités de Promotion</h5>
                 <h2 class="card-value">{{$nbrepromotion}}</h2>
               </div>
               <div class="card-icon-wrapper icon-green">
@@ -273,11 +273,11 @@
 
             <div class="stat-list">
               <div class="stat-item">
-                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+                <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Association / Organisation Professionnelle</span>
                 <span class="stat-count">{{$propromotion}}</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+                <span class="stat-label"><i class='bx bx-building-house'></i> Structure Formelle</span>
                 <span class="stat-count">{{$strpromotion}}</span>
               </div>
               <div class="stat-item">
@@ -288,7 +288,7 @@
           </div>
         </div>
 
-        <!-- Carte Financement (Masquée comme dans l'original mais stylisée si décommentée) -->
+        {{-- <!-- Carte Financement (Masquée comme dans l'original mais stylisée si décommentée) -->
         <!-- 
         <div class="col-lg-4 mb-4">
           <div class="dashboard-card p-4">
@@ -296,34 +296,34 @@
                 <div>
                     <h5 class="card-title-custom">Financement</h5>
                     <h2 class="card-value">{{$nbrefinancier}}</h2>
-                </div>
-                <div class="card-icon-wrapper" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); color: #f57c00;">
-                    <i class='bx bx-coin-stack'></i>
-                </div>
-            </div>
-            <div class="stat-list">
-                <div class="stat-item">
-                    <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
-                    <span class="stat-count">{{$profinancier}}</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
-                    <span class="stat-count">{{$strfinancier}}</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label"><i class='bx bx-world'></i> ONG</span>
-                    <span class="stat-count">{{$ongfinancier}}</span>
-                </div>
-            </div>
-          </div>
-        </div> 
-        -->
-
       </div>
-
+      <div class="card-icon-wrapper" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); color: #f57c00;">
+        <i class='bx bx-coin-stack'></i>
+      </div>
     </div>
-    @include('Admin.footer')
+    <div class="stat-list">
+      <div class="stat-item">
+        <span class="stat-label"><i class='bx bx-briefcase-alt-2'></i> Professionnel</span>
+        <span class="stat-count">{{$profinancier}}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label"><i class='bx bx-building-house'></i> Structure</span>
+        <span class="stat-count">{{$strfinancier}}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label"><i class='bx bx-world'></i> ONG</span>
+        <span class="stat-count">{{$ongfinancier}}</span>
+      </div>
+    </div>
   </div>
+</div>
+-->--}}
+
+</div>
+
+</div>
+@include('Admin.footer')
+</div>
 
 
 </div>

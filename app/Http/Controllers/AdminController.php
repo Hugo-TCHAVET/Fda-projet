@@ -170,7 +170,7 @@ class AdminController extends Controller
                 ]);
 
                 Alert::toast('Message de suspension enrégistré avec succès', 'success')->position('top-end')->timerProgressBar();
-                return redirect()->route('liste.demande');
+                return redirect()->route('demande.suspendu');
             } else {
                 Alert::toast('Une erreur est survenue lors de l\'enrengistrement du message', 'error')->position('top-end')->timerProgressBar();
                 return redirect()->back();
@@ -375,13 +375,13 @@ class AdminController extends Controller
         // G7 : Effectif artisans prévus par service (Approuvés)
         $g7_effectif_service_approuves = Demande::where('statuts', 'Approuvé')
             ->groupBy('service')
-            ->selectRaw('service, SUM(homme_touche) as effectif')
+            ->selectRaw('service, SUM(effectif_homme_forme+effectif_femme_forme) as effectif')
             ->get();
 
         // G8 : Effectif artisans prévus formés par type demandeur (Approuvés)
         $g8_effectif_demandeur_approuves = Demande::where('statuts', 'Approuvé')
             ->groupBy('type_demande')
-            ->selectRaw('type_demande, SUM(homme_touche) as effectif')
+            ->selectRaw('type_demande, SUM(effectif_homme_forme+effectif_femme_forme) as effectif')
             ->get();
 
         // G9 : Effectif artisans prévus formés par branche (Approuvés)
@@ -390,7 +390,7 @@ class AdminController extends Controller
                 ->where('demandes.statuts', 'Approuvé');
         })
             ->groupBy('braches.id', 'braches.nom')
-            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif, COUNT(demandes.id) as count')
+            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, COALESCE(SUM(demandes.effectif_homme_forme+demandes.effectif_femme_forme), 0) as effectif, COUNT(demandes.id) as count')
             ->get();
 
 
@@ -400,7 +400,7 @@ class AdminController extends Controller
                 ->where('demandes.statuts', 'Approuvé');
         })
             ->groupBy('communes.id', 'communes.nom')
-            ->selectRaw('communes.nom, COALESCE(SUM(demandes.homme_touche), 0) as effectif')
+            ->selectRaw('communes.nom, COALESCE(SUM(demandes.effectif_homme_forme+demandes.effectif_femme_forme), 0) as effectif')
             ->get();
 
         // G14 : Montant total des appuis accordés par service (Approuvés)
@@ -419,6 +419,30 @@ class AdminController extends Controller
             'rapports_manquants' => $count_approuves - $count_rapports
         ];
 
+        // G16 : Comparaison Effectif Prévu vs Effectif Post-Rapport par Département
+        $g16_prevu_vs_touche = Departement::leftJoin('demandes', function ($join) {
+            $join->on('departements.id', '=', 'demandes.departement')
+                ->where('demandes.statuts', 'Approuvé');
+        })
+            ->groupBy('departements.id', 'departements.nom')
+            ->orderBy('departements.nom', 'asc')
+            ->selectRaw('departements.nom, 
+            COALESCE(SUM(CAST(demandes.homme_touche AS UNSIGNED)), 0) as prevu,
+            COALESCE(SUM(COALESCE(demandes.effectif_homme_forme, 0) + COALESCE(demandes.effectif_femme_forme, 0)), 0) as touche')
+            ->get();
+
+        // G17 : Répartition Homme/Femme réellement formés par Département
+        $g17_homme_femme = Departement::leftJoin('demandes', function ($join) {
+            $join->on('departements.id', '=', 'demandes.departement')
+                ->where('demandes.statuts', 'Approuvé');
+        })
+            ->groupBy('departements.id', 'departements.nom')
+            ->orderBy('departements.nom', 'asc')
+            ->selectRaw('departements.nom,
+            COALESCE(SUM(demandes.effectif_homme_forme), 0) as homme,
+            COALESCE(SUM(demandes.effectif_femme_forme), 0) as femme')
+            ->get();
+
         return view('Statistique.index', compact(
             'g1_service_recus',
             'g2_demandeur_recus',
@@ -433,7 +457,9 @@ class AdminController extends Controller
             'g9_effectif_branche_approuves',
             'g10_effectif_commune_approuves',
             'g14_montant_service_approuves',
-            'g15_ratio_data'
+            'g15_ratio_data',
+            'g16_prevu_vs_touche',
+            'g17_homme_femme'
         ));
     }
 
@@ -491,7 +517,7 @@ class AdminController extends Controller
         $branches = Brache::all();
         $corp = Corp::all();
         $metiers = Metier::all();
-        $departements = Departement::all();
+        $departements = Departement::orderBy('nom', 'asc')->get();
         $communes = Commune::all();
         $localisations = $demande->localisations; // Relation avec les localisations
 

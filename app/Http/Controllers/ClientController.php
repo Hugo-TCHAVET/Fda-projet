@@ -29,7 +29,7 @@ class ClientController extends Controller
         $branches = Brache::all();
         $corp = Corp::all();
         $metiers = Metier::all();
-        $departements = Departement::all();
+        $departements = Departement::orderBy('nom', 'asc')->get();
         $communes = Commune::all();
 
         return view('Client.formulaire', compact('branches', 'corp', 'metiers', 'departements', 'communes'));
@@ -66,7 +66,7 @@ class ClientController extends Controller
                     'size:13',
                     'regex:/^[0-9]+$/',
                 ],
-                'contact' => 'nullable|integer',
+                'contact' => 'nullable|string',
                 'titre_activite' => 'required|string',
                 'obejectif_activite' => 'required|string',
                 'debut_activite' => 'nullable|date',
@@ -142,7 +142,7 @@ class ClientController extends Controller
         $branches = Brache::all();
         $corp = Corp::all();
         $metiers = Metier::all();
-        $departements = Departement::all();
+        $departements = Departement::orderBy('nom', 'asc')->get();
         $communes = Commune::all();
 
         // Vérifier que la demande existe et a les données nécessaires

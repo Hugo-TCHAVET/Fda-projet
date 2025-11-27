@@ -8,11 +8,13 @@ use App\Models\Metier;
 use App\Models\Demande;
 use App\Models\DemandeCloture;
 use App\Models\DemandeLocalisationCloture;
+use App\Exports\DemandesApprouveesExport;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DemandeApprouve extends Component
 {
@@ -285,6 +287,16 @@ class DemandeApprouve extends Component
         $this->showModalCloture = false;
         $this->reset(['annee_cloture', 'nbDemandesACloturer', 'budgetTotalACloturer']);
         $this->resetValidation();
+    }
+
+    /**
+     * Exporte les demandes approuvées en Excel
+     */
+    public function exportExcel()
+    {
+        $fileName = 'demandes_approuvees_' . date('Y-m-d_His') . '.xlsx';
+
+        return Excel::download(new DemandesApprouveesExport(), $fileName);
     }
 
     /**

@@ -115,11 +115,11 @@
                             <i class="now-ui-icons ui-1_send"></i>
                           </button>
 
-                          @if ($demande->message == null)
+                          {{--@if ($demande->message == null)
                           <button onclick="confirmerRejet({{$demande->id}})" class="btn-action btn-pause" title="Rejeter">
-                            <i class="now-ui-icons media-1_button-pause"></i>
+                          <i class="now-ui-icons media-1_button-pause"></i>
                           </button>
-                          @endif
+                          @endif --}}
 
                           <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
