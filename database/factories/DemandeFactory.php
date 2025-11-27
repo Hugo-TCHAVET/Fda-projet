@@ -42,7 +42,7 @@ class DemandeFactory extends Factory
         $budgetPrevu = $this->faker->numberBetween(50000, $budget);
 
         // Dates dans l'année en cours pour pouvoir clôturer
-        $createdAt = $this->faker->dateTimeBetween('2024-01-01', '2024-12-31');
+        $createdAt = $this->faker->dateTimeBetween(now()->startOfYear(), now()->endOfYear());
 
         return [
             'code' => strtoupper($this->faker->bothify('?##-????-????-????')),

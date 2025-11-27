@@ -20,7 +20,7 @@ class DemandeSeeder extends Seeder
 
         // Créer 10 demandes
         $demandes = Demande::factory()
-            ->count(10)
+            ->count(5)
             ->create();
 
         // Pour chaque demande, créer 0 à 2 localisations
