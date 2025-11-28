@@ -781,6 +781,9 @@
 
     // G14: Montant (Bar)
     const d14 = getDataWithCustomLabels(@json($g14_montant_service_approuves), 'service', 'montant');
+    // Calculer le maximum et ajouter une marge de 15% pour éviter que les labels soient coupés
+    const d14Max = Math.max(...d14.data) * 1.15;
+
     new Chart(document.getElementById('g14Chart'), {
         type: 'bar',
         data: {
@@ -819,6 +822,7 @@
                     ticks: axisTicksConfig
                 },
                 y: {
+                    suggestedMax: d14Max,
                     ticks: Object.assign({}, axisTicksConfig, {
                         stepSize: 1000000,
                         callback: function(value) {
