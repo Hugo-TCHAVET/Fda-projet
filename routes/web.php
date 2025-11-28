@@ -19,7 +19,7 @@ use App\Http\Controllers\ClientController;
 
 Route::get('/', function () {
     return view('Client.index');
-});
+})->middleware('guest');
 
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -118,8 +118,8 @@ Route::get('/demande/modifier/{id}', [ClientController::class, 'modifier'])->nam
 Route::put('/demande/update/{id}', [ClientController::class, 'update'])->name('demande.update');
 Route::get('/contact', [ClientController::class, 'Contact'])->name('client.contact');
 Route::get('/A_propos', [ClientController::class, 'About'])->name('client.about');
-Route::post('/recherche_demande', [ClientController::class, 'RechercheDemande'])->name('recherche-demande');
-Route::post('/nous_contacter', [ClientController::class, 'nousContacter'])->name('contact.submit');
+// Route::post('/recherche_demande', [ClientController::class, 'RechercheDemande'])->name('recherche-demande');
+// Route::post('/nous_contacter', [ClientController::class, 'nousContacter'])->name('contact.submit');
 
 
 Auth::routes();

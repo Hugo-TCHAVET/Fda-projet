@@ -72,7 +72,7 @@
         </a>
       </div>
 
-      <!-- Réseaux Sociaux (Style minimaliste) -->
+      {{-- <!-- Réseaux Sociaux (Style minimaliste) -->
       <div class="mt-12 flex items-center gap-6 text-gray-400">
         <span class="text-sm uppercase tracking-widest opacity-60">Suivez-nous</span>
         <div class="h-px w-12 bg-gray-700"></div> <!-- Ligne séparatrice -->
@@ -82,7 +82,7 @@
           <a href="#" class="hover:text-amber-500 transition-colors transform hover:scale-110"><i class="bx bxl-instagram"></i></a>
           <a href="#" class="hover:text-amber-500 transition-colors transform hover:scale-110"><i class="bx bxl-linkedin"></i></a>
         </div>
-      </div>
+      </div>--}}
 
     </div>
   </section>

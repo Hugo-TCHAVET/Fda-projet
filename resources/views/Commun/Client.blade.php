@@ -44,18 +44,18 @@
   <header id="header" class="d-flex flex-column justify-content-center fixed z-50">
     <nav id="navbar" class="navbar nav-menu">
       <ul>
-        <li><a wire:navigation href="{{url('/')}}" class="{{ request()->is('/') ? 'active' : '' }}">
-            <i class="bx bx-home"></i> <span>Accueil</span></a>
-        </li>
-        <li><a href="{{route('client.about')}}" class="{{ request()->routeIs('client.about') ? 'active' : '' }}">
-            <i class="bx bx-user"></i> <span>A propos</span></a>
+        {{-- <li><a wire:navigation href="{{url('/')}}" class="{{ request()->is('/') ? 'active' : '' }}">
+        <i class="bx bx-home"></i> <span>Accueil</span></a>
+        </li>--}}
+        {{-- <li><a href="{{route('client.about')}}" class="{{ request()->routeIs('client.about') ? 'active' : '' }}">
+        <i class="bx bx-user"></i> <span>A propos</span></a>
         </li>
         <li><a href="{{route('client.service')}}" class="{{ request()->routeIs('client.service') ? 'active' : '' }}">
             <i class="bx bx-server"></i> <span>Nos Services</span></a>
-        </li>
-        <li><a href="{{route('client.contact')}}" class="{{ request()->routeIs('client.contact') ? 'active' : '' }}">
-            <i class="bx bx-envelope"></i> <span>Contactez nous</span></a>
-        </li>
+        </li>--}}
+        {{-- <li><a href="{{route('client.contact')}}" class="{{ request()->routeIs('client.contact') ? 'active' : '' }}">
+        <i class="bx bx-envelope"></i> <span>Contactez nous</span></a>
+        </li>--}}
       </ul>
     </nav>
   </header>
