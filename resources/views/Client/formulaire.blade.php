@@ -306,7 +306,7 @@
                                         <select name="type_demande" id="type_demande" class="form-control" required>
                                             <option value="">Choisissez le Type</option>
                                             <option value="professionnel" {{ old('type_demande') == 'professionnel' ? 'selected' : '' }}>Association / Organisations professionnelles</option>
-                                            <option value="structure" {{ old('type_demande') == 'structure' ? 'selected' : '' }}>Structure</option>
+                                            <option value="structure" {{ old('type_demande') == 'structure' ? 'selected' : '' }}>Structure formelle</option>
                                             <option value="ONG" {{ old('type_demande') == 'ONG' ? 'selected' : '' }}>Organisations Non Gouvernementales (ONG)</option>
                                         </select>
                                         @error('type_demande') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
