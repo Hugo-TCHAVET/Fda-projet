@@ -27,15 +27,15 @@
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
           <ul class="navbar-nav">
             <li class="mr-3">
-              @if (Auth::user()->email == 'spea@gmail.com')
+              @if (Auth::user()->email == 'spea@apps.fda.bj')
               <h2 style="font-weight: bold; margin:0;">SPEA</h2>
-              @elseif (Auth::user()->email == 'sese@gmail.com')
+              @elseif (Auth::user()->email == 'sese@apps.fda.bj')
               <h2 style="font-weight: bold; margin:0;">SESE</h2>
-              @elseif (Auth::user()->email == 'dg@gmail.com')
+              @elseif (Auth::user()->email == 'dg@apps.fda.bj')
               <h2 style="font-weight: bold; margin:0;">DG</h2>
-              @elseif (Auth::user()->email == 'daf@gmail.com')
+              @elseif (Auth::user()->email == 'daf@apps.fda.bj')
               <h2 style="font-weight: bold; margin:0;">DAF</h2>
-              @elseif (Auth::user()->email == 'do@gmail.com')
+              @elseif (Auth::user()->email == 'do@apps.fda.bj')
               <h2 style="font-weight: bold; margin:0;">DO</h2>
               @endif
             </li>
@@ -81,7 +81,7 @@
                     <i class="now-ui-icons files_single-copy-04" style="margin-right: 5px;"></i>
                     Exporter en Excel
                   </button>
-                  @if(Auth::user()->email == 'sese@gmail.com')
+                  @if(Auth::user()->email == 'sese@apps.fda.bj')
                   <button wire:click="openClotureModal" class="btn btn-danger" style="border-radius: 8px; padding: 8px 20px;">
                     <i class="now-ui-icons files_box" style="margin-right: 5px;"></i>
                     Clôturer exercice

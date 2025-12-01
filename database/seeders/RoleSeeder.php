@@ -15,8 +15,8 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->where('email', 'secretaire@gmail.com')->update(['role' => 'secretaire']);
-        DB::table('users')->whereIn('email', ['sese@gmail.com', 'do@gmail.com'])->update(['role' => 'verificateur']);
-        DB::table('users')->whereIn('email', ['spea@gmail.com', 'dg@gmail.com', 'daf@gmail.com'])->update(['role' => 'directeur']);
+        DB::table('users')->where('email', 'secretaire@apps.fda.bj')->update(['role' => 'secretaire']);
+        DB::table('users')->whereIn('email', ['sese@apps.fda.bj', 'do@apps.fda.bj'])->update(['role' => 'verificateur']);
+        DB::table('users')->whereIn('email', ['spea@apps.fda.bj', 'dg@gmail.com', 'daf@apps.fda.bj'])->update(['role' => 'directeur']);
     }
 }

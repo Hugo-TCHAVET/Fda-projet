@@ -122,17 +122,17 @@
 
           <ul class="navbar-nav">
             <li class="mr-3 text-white">
-              @if (Auth::user()->email == 'spea@gmail.com')
+              @if (Auth::user()->email == 'spea@apps.fda.bj')
               <h2 class="mb-0" style="font-weight: bold; color: white;">SPEA</h2>
-              @elseif (Auth::user()->email == 'secretaire@gmail.com')
+              @elseif (Auth::user()->email == 'secretaire@apps.fda.bj')
               <h2 class="mb-0" style="font-weight: bold; color: white;">SECRETAIRE</h2>
-              @elseif (Auth::user()->email == 'sese@gmail.com')
+              @elseif (Auth::user()->email == 'sese@apps.fda.bj')
               <h2 class="mb-0" style="font-weight: bold; color: white;">SESE</h2>
-              @elseif (Auth::user()->email == 'dg@gmail.com')
+              @elseif (Auth::user()->email == 'dg@apps.fda.bj')
               <h2 class="mb-0" style="font-weight: bold; color: white;">DG</h2>
-              @elseif (Auth::user()->email == 'daf@gmail.com')
+              @elseif (Auth::user()->email == 'daf@apps.fda.bj')
               <h2 class="mb-0" style="font-weight: bold; color: white;">DAF</h2>
-              @elseif (Auth::user()->email == 'do@gmail.com')
+              @elseif (Auth::user()->email == 'do@apps.fda.bj')
               <h2 class="mb-0" style="font-weight: bold; color: white;">DO</h2>
               @endif
             </li>

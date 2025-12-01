@@ -26,15 +26,15 @@
 
         <ul class="navbar-nav">
           <li class="mr-3">
-            @if (Auth::user()->email == 'spea@gmail.com')
+            @if (Auth::user()->email == 'spea@apps.fda.bj')
             <h2 style="font-weight: bold">SPEA</h2>
-            @elseif (Auth::user()->email == 'sese@gmail.com')
+            @elseif (Auth::user()->email == 'sese@apps.fda.bj')
             <h2 style="font-weight: bold">SESE</h2>
-            @elseif (Auth::user()->email == 'dg@gmail.com')
+            @elseif (Auth::user()->email == 'dg@apps.fda.bj')
             <h2 style="font-weight: bold">DG</h2>
-            @elseif (Auth::user()->email == 'daf@gmail.com')
+            @elseif (Auth::user()->email == 'daf@apps.fda.bj')
             <h2 style="font-weight: bold">DAF</h2>
-            @elseif (Auth::user()->email == 'do@gmail.com')
+            @elseif (Auth::user()->email == 'do@apps.fda.bj')
             <h2 style="font-weight: bold">DO</h2>
 
 

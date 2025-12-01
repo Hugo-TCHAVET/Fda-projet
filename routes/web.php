@@ -125,6 +125,6 @@ Route::get('/A_propos', [ClientController::class, 'About'])->name('client.about'
 // Route::post('/nous_contacter', [ClientController::class, 'nousContacter'])->name('contact.submit');
 
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
