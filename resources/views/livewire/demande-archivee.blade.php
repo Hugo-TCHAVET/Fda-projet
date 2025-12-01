@@ -98,7 +98,7 @@
                                             <th>Structure</th>
                                             <th>Contact</th>
                                             <th>Budget de l'activité</th>
-                                            <th>Budget attribué</th>
+                                            <th>Appui financier accordé</th>
                                             <th>Date d'approbation</th>
                                             <th>Année d'exercice</th>
                                             <th>Date d'archivage</th>

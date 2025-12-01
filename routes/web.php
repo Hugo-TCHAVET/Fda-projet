@@ -64,6 +64,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/detail_demande/{id}', [AdminController::class, 'show'])
         ->name('demande.show')
         ->middleware('can:view-demande-details');
+    Route::get('/transmettre_demande/{id}', [AdminController::class, 'transmettre'])
+        ->name('demande.transmettre')
+        ->middleware('can:transmit-demandes');
     Route::get('/suspendre_demande/{id}', [AdminController::class, 'Suspendre'])
         ->name('demande.message')
         ->middleware('can:process-demandes');

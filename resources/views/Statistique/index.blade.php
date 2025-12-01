@@ -183,7 +183,7 @@
             <h3 class="text-success">2. Dossiers Appuyés / Acceptés</h3>
 
             <div class="row" id="pdf-row-4">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title">Répartition par service des dossiers approuvés</h5>
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title">Répartition par type demandeur des dossiers approuvés</h5>
@@ -203,7 +203,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+            </div>
+
+            <div class="row" id="pdf-row-4-b">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title">Ratio des structures ayant déposé leur rapport / structures appuyées</h5>
@@ -360,7 +363,7 @@
         },
         // Mappings pour les types de demandeurs
         type_demande: {
-            'professionnel': 'Association / O P Artisans',
+            'professionnel': 'Associations / OP Artisans',
             'structure': 'Structures formelles',
             // 'Type1': 'Label Personnalisé Type 1',
             // 'Type2': 'Label Personnalisé Type 2',
@@ -400,6 +403,7 @@
     const legendConfig = {
         position: 'bottom',
         labels: {
+            color: '#000',
             font: {
                 size: 16,
                 weight: 'bold',
@@ -413,6 +417,7 @@
 
     // Configuration centralisée des axes (abscisses et ordonnées) - police en gras et taille augmentée
     const axisTicksConfig = {
+        color: '#000',
         font: {
             size: 14,
             weight: 'bold',
@@ -520,15 +525,18 @@
                 legend: legendConfig, // Utiliser la config de légende existante
                 datalabels: {
                     display: true,
-                    color: '#000',
+                    color: '#fff',
                     font: {
                         weight: 'bold',
-                        size: 10
+                        size: 12
                     },
                     anchor: 'end',
-                    align: 'top',
+                    align: 'start',
                     formatter: (value) => {
                         return value > 0 ? value : '';
+                    },
+                    padding: {
+                        top: 5
                     }
                 }
             },
@@ -552,6 +560,8 @@
 
     // G12: Commune Reçus (Bar)
     const d12 = getDataWithCustomLabels(@json($g12_effectif_commune_recus), 'nom', 'effectif');
+    const d12Max = Math.max(...d12.data) * 1.35;
+
     new Chart(document.getElementById('g12Chart'), {
         type: 'bar',
         data: {
@@ -568,6 +578,22 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                datalabels: {
+                    display: true,
+                    color: '#000',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    anchor: 'end',
+                    align: 'start',
+                    formatter: (value) => {
+                        return value !== 0 ? value : '';
+                    },
+                    padding: {
+                        top: 5
+                    }
                 }
             },
             scales: {
@@ -575,10 +601,13 @@
                     ticks: axisTicksConfig
                 },
                 y: {
+                    beginAtZero: true,
+                    suggestedMax: d12Max,
                     ticks: axisTicksConfig
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 
     // G4: Service Approuvés (Pie)
@@ -712,11 +741,24 @@
         options: {
             maintainAspectRatio: false,
             responsive: true
-        }
+        },
+        plugins: {
+            datalabels: {
+                display: true,
+                color: '#000',
+                font: {
+                    weight: 'bold',
+                    size: 14
+                },
+
+            }
+        },
     });
 
     // G8: Demandeur Approuvés Effectif (Bar)
     const d8 = getDataWithCustomLabels(@json($g8_effectif_demandeur_approuves), 'type_demande', 'effectif');
+    const d8Max = Math.max(...d8.data) * 1.15;
+
     new Chart(document.getElementById('g8Chart'), {
         type: 'bar',
         data: {
@@ -733,6 +775,22 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                datalabels: {
+                    display: true,
+                    color: '#000',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    anchor: 'end',
+                    align: 'start',
+                    formatter: (value) => {
+                        return value !== 0 ? value : '';
+                    },
+                    padding: {
+                        top: 5
+                    }
                 }
             },
             scales: {
@@ -740,14 +798,18 @@
                     ticks: axisTicksConfig
                 },
                 y: {
+                    beginAtZero: true,
+                    suggestedMax: d8Max,
                     ticks: axisTicksConfig
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 
     // G10: Commune Approuvés Effectif (Bar)
     const d10 = getDataWithCustomLabels(@json($g10_effectif_commune_approuves), 'nom', 'effectif');
+    const d10Max = Math.max(...d10.data) * 1.15;
 
     new Chart(document.getElementById('g10Chart'), {
         type: 'bar',
@@ -765,6 +827,22 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    anchor: 'end',
+                    align: 'start',
+                    formatter: (value) => {
+                        return value !== 0 ? value : '';
+                    },
+                    padding: {
+                        top: 5
+                    }
                 }
             },
             scales: {
@@ -773,10 +851,12 @@
                 },
                 y: {
                     beginAtZero: true,
+                    suggestedMax: d10Max,
                     ticks: axisTicksConfig
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 
     // G14: Montant (Bar)
@@ -865,7 +945,12 @@
                 legend: legendConfig,
                 title: {
                     display: true,
-                    text: 'Taux de retour rapports'
+                    text: 'Taux de retour rapports',
+                    color: '#000',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    }
                 }
             }
         },
@@ -1054,7 +1139,11 @@
             },
             {
                 selector: '#pdf-row-4',
-                title: 'Répartition par Service, Type et Ratio (Dossiers Approuvés)'
+                title: 'Répartition par Service, Type (Dossiers Approuvés)'
+            },
+            {
+                selector: '#pdf-row-4-b',
+                title: 'Ratio des structures (Dossiers Approuvés)'
             },
             {
                 selector: '#pdf-row-5',

@@ -133,12 +133,31 @@ class AdminController extends Controller
         }
     }
 
-    public function Suspendre($id)
+    public function suspendre($id)
     {
 
         $demande = Demande::find($id);
 
         return view('Admin.suspendre', compact('demande'));
+    }
+
+    public function transmettre($id)
+    {
+        $demande = Demande::find($id);
+
+        if ($demande) {
+            $demande->update([
+                'valide' => 1,
+                'statut' => "En cours de traitement",
+                'date_transmission' => now()
+            ]);
+            Alert::toast('Demande transmise avec succès!', 'success')->position('top-end')->timerProgressBar();
+            return redirect()->route('liste.demande');
+            // return redirect()->back();
+        } else {
+            Alert::toast('Demande introuvable', 'error')->position('top-end')->timerProgressBar();
+            return redirect()->back();
+        }
     }
 
 

@@ -56,11 +56,11 @@
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
-      <div class="logo">
+      <div class="logo ">
         <a href="{{ route('home') }}" class="simple-text logo-mini">
 
         </a>
-        <a href="{{ route('home') }}" class="simple-text logo-normal">
+        <a href="{{ route('home') }}" class="simple-text logo-normal ">
           <img src="{{ asset('Client/assets/img/lofoFDA.png') }}" alt="Logo FDA" style="width: 100px; height: 100px;">
         </a>
       </div>

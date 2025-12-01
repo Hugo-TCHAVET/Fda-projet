@@ -98,7 +98,7 @@
                       <th>Structure</th>
                       <th>Nom et Prénom</th>
                       <th>Budget de l'activité</th>
-                      <th>Budget attribué</th>
+                      <th>Appui financier accordé</th>
                       <th>Date d'approbation</th>
                       <th>Statut</th>
                       <th class="text-center">Actions</th>
@@ -121,7 +121,7 @@
                       </td>
                       <td>
                         <span style="font-weight: 500; color: #666;">
-                          {{ $demande->date_approbation ? \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y H:i') : 'N/A' }}
+                          {{ $demande->date_approbation ? \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y') : 'N/A' }}
                         </span>
                       </td>
                       <td>

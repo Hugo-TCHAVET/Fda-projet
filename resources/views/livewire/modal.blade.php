@@ -315,7 +315,7 @@
                         @csrf
 
                         <div class="card-header">
-                            <h5 class="title">Budget Attribué</h5>
+                            <h5 class="title">Appui financier accordé</h5>
                         </div>
                         <div class="row">
                             <div class="col-md-12 pr-1">

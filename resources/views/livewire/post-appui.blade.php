@@ -177,7 +177,7 @@
                                         <tr>
                                             <th>Structure</th>
                                             <th>Budget de l'activité</th>
-                                            <th>Budget attribué</th>
+                                            <th>Appui financier accordé</th>
                                             <th>Statut rapport</th>
                                             <th>Date de dépôt</th>
                                             <th class="text-center">Action</th>

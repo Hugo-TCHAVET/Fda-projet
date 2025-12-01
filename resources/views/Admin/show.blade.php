@@ -182,7 +182,7 @@
                     <i class='bx bx-arrow-back' style="font-size: 18px;"></i>
                 </a>
                 <a class="navbar-brand" style="font-weight: bold; font-size: 1.2rem;">
-                    Détail de la demande
+                    Détails de la demande
                 </a>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
@@ -494,7 +494,8 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.find('{{ $id }}').call('Transmetre', demandeId);
+                    const transmitUrl = "{{ url('/transmettre_demande') }}/" + demandeId;
+                    window.location.href = transmitUrl;
                 }
             });
         }

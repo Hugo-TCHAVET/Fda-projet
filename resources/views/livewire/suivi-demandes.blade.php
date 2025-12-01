@@ -86,7 +86,7 @@
                                         <tr>
                                             <th>Structure</th>
                                             <th>Budget de l'activité</th>
-                                            <th>Budget alloué</th>
+                                            <th>Appui financier accordé</th>
                                             <th>Date d'approbation</th>
                                             <th>Date dépôt rapport</th>
                                             <th>État</th>

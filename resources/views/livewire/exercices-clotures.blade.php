@@ -219,7 +219,7 @@
                                             <th>Structure</th>
                                             <th>Nom et Prénom</th>
                                             <th>Budget de l'activité</th>
-                                            <th>Budget attribué</th>
+                                            <th>Appui financier accordé</th>
                                             <th>Date d'approbation</th>
                                             <th>Date de clôture</th>
                                             <th class="text-center">Actions</th>
