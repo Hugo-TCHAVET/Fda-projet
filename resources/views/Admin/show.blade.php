@@ -387,9 +387,13 @@
                                         <strong><i class='bx bxs-file-pdf'></i> Pièce Jointe</strong>
                                         <p class="small mb-0">Document justificatif du projet</p>
                                     </div>
+                                    @if($demande->piece)
                                     <a href="{{route('demande.piece',$demande->id)}}" class="btn btn-warning btn-sm rounded-pill text-white">
                                         <i class='bx bx-download'></i> Télécharger
                                     </a>
+                                    @else
+                                    <span class="text-muted">Aucun fichier joint</span>
+                                    @endif
                                 </div>
                             </div>
 

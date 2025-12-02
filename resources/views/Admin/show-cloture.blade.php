@@ -245,7 +245,7 @@
                                     <div class="info-group">
                                         <span class="info-label">Date de clôture</span>
                                         <div class="info-value">
-                                            {{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y H:i') : 'N/A' }}
+                                            {{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y') : 'N/A' }}
                                         </div>
                                     </div>
                                 </div>

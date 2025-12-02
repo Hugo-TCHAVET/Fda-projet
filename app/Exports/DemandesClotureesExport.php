@@ -61,7 +61,7 @@ class DemandesClotureesExport implements FromCollection, WithHeadings, WithMappi
             'Lieux',
             'Personnes prévues',
             'Budget de l\'activité',
-            'Budget accordé',
+            'Appui financier accordé',
             'Rapport déposé',
             'Effectif homme formé',
             'Effectif femme formé',
@@ -148,12 +148,12 @@ class DemandesClotureesExport implements FromCollection, WithHeadings, WithMappi
             $demande->rapport_depose ? 'Oui' : 'Non',
             $demande->effectif_homme_forme ?? '0',
             $demande->effectif_femme_forme ?? '0',
-            $demande->date_depot_rapport ? $demande->date_depot_rapport->format('d/m/Y H:i') : 'N/A',
+            $demande->date_depot_rapport ? $demande->date_depot_rapport->format('d/m/Y') : 'N/A',
             $demande->statuts ?? 'Non Approuvé',
-            $demande->date_transmission ? $demande->date_transmission->format('d/m/Y H:i') : 'N/A',
-            $demande->date_approbation ? $demande->date_approbation->format('d/m/Y H:i') : 'N/A',
+            $demande->date_transmission ? $demande->date_transmission->format('d/m/Y') : 'N/A',
+            $demande->date_approbation ? $demande->date_approbation->format('d/m/Y') : 'N/A',
             $demande->annee_exercice_cloture ?? 'N/A',
-            $demande->date_cloture ? $demande->date_cloture->format('d/m/Y H:i') : 'N/A',
+            $demande->date_cloture ? $demande->date_cloture->format('d/m/Y') : 'N/A',
         ];
     }
 

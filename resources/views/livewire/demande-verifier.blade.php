@@ -92,7 +92,7 @@
                       <td style="font-weight: bold;">{{number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
                       <td style="font-weight: 500; color: #555;">
                         @if($demande->date_transmission)
-                        {{ $demande->date_transmission->format('d/m/Y à H:i') }}
+                        {{ $demande->date_transmission->format('d/m/Y') }}
                         @else
                         <span style="color: #999;">Non disponible</span>
                         @endif

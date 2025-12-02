@@ -21,6 +21,7 @@ use App\Mail\ContactMail;
 use Exception;
 use FFI\Exception as FFIException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
@@ -86,8 +87,8 @@ class ClientController extends Controller
             ]);
 
             // Génération du code unique
-            $faker = Faker::create();
-            $code = strtoupper($faker->bothify('?##-????-????-????'));
+
+            $code = Str::upper(Str::random(17));
 
             // Gestion du fichier
             if ($request->hasFile('piece') && $request->file('piece')->isValid()) {

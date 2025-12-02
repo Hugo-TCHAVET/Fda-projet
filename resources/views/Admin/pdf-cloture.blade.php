@@ -343,13 +343,13 @@
                         <td class="label">Budget de l'activité</td>
                         <td class="value">
                             <span class="bg-secondary">
-                                {{ number_format((float)$demande->buget, 0, ',', ' ') }} FCFA
+                                {{ number_format((float)$demande->budget, 0, ',', ' ') }} FCFA
                             </span>
                         </td>
                     </tr>
                     @if($demande->statuts === 'Approuvé')
                     <tr>
-                        <td class="label">Budget accordé</td>
+                        <td class="label">Appui financier accordé</td>
                         <td class="value">
                             <span class="budget-highlight">
                                 {{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA

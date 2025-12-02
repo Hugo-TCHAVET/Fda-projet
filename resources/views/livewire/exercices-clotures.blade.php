@@ -236,12 +236,12 @@
                                             </td>
                                             <td>
                                                 <span style="font-weight: 500; color: #666;">
-                                                    {{ $demande->date_approbation ? \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y H:i') : 'N/A' }}
+                                                    {{ $demande->date_approbation ? \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y') : 'N/A' }}
                                                 </span>
                                             </td>
                                             <td>
                                                 <span style="font-weight: 500; color: #dc3545;">
-                                                    {{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y H:i') : 'N/A' }}
+                                                    {{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y') : 'N/A' }}
                                                 </span>
                                             </td>
                                             <td class="text-center">

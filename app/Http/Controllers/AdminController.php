@@ -234,9 +234,9 @@ class AdminController extends Controller
                         'date_approbation' => $validatedData['date_approbation'],
                     ]);
                     Alert::toast('Budget enregistré avec succès', 'success')->position('top-end')->timerProgressBar();
-                    return redirect()->route('post-appui');
+                    return redirect()->route('demande.approve');
                 } else {
-                    Alert::toast('Le budget accordé est supérieur au budget demandé par l\'artisan', 'error')->position('top-end')->timerProgressBar();
+                    Alert::toast('L\'appui financier accordé est supérieur au budget demandé par l\'artisan', 'error')->position('top-end')->timerProgressBar();
                     return redirect()->back();
                 }
             } else {

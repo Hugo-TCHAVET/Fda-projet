@@ -50,7 +50,7 @@ class DemandesApprouveesExport implements FromCollection, WithHeadings, WithMapp
             'Lieux',
             'Personnes prévues',
             'Budget de l\'activité',
-            'Budget accordé',
+            'Appui financier accordé',
             'Date d\'approbation',
             'Statut',
         ];
@@ -127,7 +127,7 @@ class DemandesApprouveesExport implements FromCollection, WithHeadings, WithMapp
             $demande->homme_touche ?? '0',
             number_format((float) str_replace(' ', '', $demande->budget ?? 0), 0, ',', ' '),
             number_format((float) str_replace(' ', '', $demande->buget_prevu ?? 0), 0, ',', ' '),
-            $demande->date_approbation ? $demande->date_approbation->format('d/m/Y H:i') : 'N/A',
+            $demande->date_approbation ? $demande->date_approbation->format('d/m/Y') : 'N/A',
             $demande->statuts ?? 'N/A',
         ];
     }
