@@ -22,7 +22,7 @@
                                 <div class="form-group mb-3">
                                     <label style="font-size: 0.9em; color: #555;">Date de dépôt du rapport <span class="text-danger">*</span></label>
                                     <input type="date" class="form-control @error('date_depot_rapport') is-invalid @enderror"
-                                        wire:model="date_depot_rapport" value="{{ date('Y-m-d') }}" style="border-radius: 8px; padding: 10px;">
+                                        wire:model.lazy="date_depot_rapport" value="{{ date('Y-m-d') }}" style="border-radius: 8px; padding: 10px;">
                                     @error('date_depot_rapport')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -34,7 +34,7 @@
                                 <div class="form-group mb-3">
                                     <label style="font-size: 0.9em; color: #555;">Nombre d'hommes formés <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control @error('effectif_homme_forme') is-invalid @enderror"
-                                        wire:model="effectif_homme_forme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">
+                                        wire:model.lazy="effectif_homme_forme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">
                                     @error('effectif_homme_forme')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -46,8 +46,59 @@
                                 <div class="form-group mb-3">
                                     <label style="font-size: 0.9em; color: #555;">Nombre de femmes formées <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control @error('effectif_femme_forme') is-invalid @enderror"
-                                        wire:model="effectif_femme_forme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">
+                                        wire:model.lazy="effectif_femme_forme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">
                                     @error('effectif_femme_forme')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-size: 0.9em; color: #555;">Dont hommes handicapés @unless($handicapFacultatif)<span class="text-danger">*</span>@endunless</label>
+                                    <input type="number" class="form-control @error('effectif_handicape_homme') is-invalid @enderror"
+                                        wire:model.lazy="effectif_handicape_homme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">
+                                    @error('effectif_handicape_homme')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-size: 0.9em; color: #555;">Dont femmes handicapées @unless($handicapFacultatif)<span class="text-danger">*</span>@endunless</label>
+                                    <input type="number" class="form-control @error('effectif_handicape_femme') is-invalid @enderror"
+                                        wire:model.lazy="effectif_handicape_femme" min="0" placeholder="0" style="border-radius: 8px; padding: 10px;">
+                                    @error('effectif_handicape_femme')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        @if ($handicapFacultatif)
+                        <p class="text-muted" style="font-size: 0.85em; margin-top: -8px;">Rapport déposé avant le suivi du handicap : laissez ces deux champs vides si l'information n'est pas connue.</p>
+                        @endif
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label style="font-size: 0.9em; color: #555;">Observations</label>
+                                    <textarea class="form-control @error('observations_rapport') is-invalid @enderror"
+                                        wire:model.lazy="observations_rapport" rows="3" style="border-radius: 8px; padding: 10px;"></textarea>
+                                    @error('observations_rapport')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label style="font-size: 0.9em; color: #555;">Rapport (PDF, 10 Mo max)</label>
+                                    <input type="file" accept="application/pdf" class="form-control @error('rapport_fichier') is-invalid @enderror"
+                                        wire:model="rapport_fichier" style="border-radius: 8px; padding: 10px;">
+                                    <small class="text-muted">Sans nouveau fichier, le rapport déjà joint est conservé.</small>
+                                    <div wire:loading wire:target="rapport_fichier" class="text-muted" style="font-size: 0.85em;">Envoi du fichier...</div>
+                                    @error('rapport_fichier')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -55,7 +106,7 @@
                         </div>
                         <div class="modal-footer" style="border-top: none; padding: 0; margin-top: 20px;">
                             <button type="button" class="btn btn-secondary" wire:click="closeModal" style="border-radius: 8px;">Annuler</button>
-                            <button type="submit" class="btn btn-success" style="border-radius: 8px; background-color: #009879; border-color: #009879;">Enregistrer</button>
+                            <button type="submit" wire:loading.attr="disabled" wire:target="rapport_fichier" class="btn btn-success" style="border-radius: 8px; background-color: #009879; border-color: #009879;">Enregistrer</button>
                         </div>
                     </form>
                 </div>
@@ -208,6 +259,16 @@
                                                     <button wire:click="edit({{ $demande->id }})" class="btn-action btn-edit" title="Déposer/Éditer rapport">
                                                         <i class="now-ui-icons files_paper"></i>
                                                     </button>
+                                                    @if ($demande->rapport_depose)
+                                                    <a href="{{ route('rapport.fiche', $demande->id) }}" target="_blank" class="btn-action btn-edit" title="Fiche de fin d'allocation (PDF)">
+                                                        <i class="now-ui-icons education_paper"></i>
+                                                    </a>
+                                                    @endif
+                                                    @if ($demande->rapport_fichier)
+                                                    <a href="{{ route('rapport.fichier', $demande->id) }}" class="btn-action btn-edit" title="Télécharger le rapport déposé">
+                                                        <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                                                    </a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

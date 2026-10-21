@@ -22,6 +22,25 @@ class Demande extends Model
         'updated_at' => 'datetime',
     ];
 
+    private const LIBELLES_SERVICE = [
+        'Assistance' => 'Activités de Promotion',
+        'Formation' => 'Formation / Renforcement de capacités',
+        'Financier' => 'Appui Financier',
+    ];
+
+    public static function libelleService(?string $service): string
+    {
+        return self::LIBELLES_SERVICE[$service] ?? ($service ?: 'Non renseigné');
+    }
+
+    // rapport_fichier can be overwritten through other forms: only trust paths inside rapports/.
+    public function cheminRapportSur(): ?string
+    {
+        $chemin = $this->rapport_fichier;
+
+        return $chemin && str_starts_with($chemin, 'rapports/') && !str_contains($chemin, '..') ? $chemin : null;
+    }
+
     public function branche()
     {
         return $this->belongsTo(Brache::class);

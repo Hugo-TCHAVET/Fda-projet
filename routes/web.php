@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\RapportAllocationController;
 
 
 /*
@@ -107,6 +108,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/telecharger_piece_cloture/{id}', [AdminController::class, 'telechargerCloture'])
         ->name('demande.cloture.piece')
         ->middleware('can:view-dossiers-clotures');
+
+    Route::get('/rapport_allocation/{id}/fiche', [RapportAllocationController::class, 'fiche'])
+        ->name('rapport.fiche')
+        ->middleware('can:view-post-appui');
+    Route::get('/rapport_allocation/{id}/fichier', [RapportAllocationController::class, 'fichier'])
+        ->name('rapport.fichier')
+        ->middleware('can:view-post-appui');
 
     Route::get('/formulaire', [ClientController::class, 'Formulaire'])->name('client.formulaire')->middleware('can:view-formulaire');
     // Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');

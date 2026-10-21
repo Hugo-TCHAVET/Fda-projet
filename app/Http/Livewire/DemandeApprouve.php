@@ -330,8 +330,10 @@ class DemandeApprouve extends Component
                     titre_activite, obejectif_activite, debut_activite, fin_activite,
                     dure_activite, departement, commune, lieux, homme_touche, budget,
                     piece, buget_prevu, rapport_depose, effectif_homme_forme, 
-                    effectif_femme_forme, date_depot_rapport, status, statut, statuts,
-                    valide, suspendre, rejeter, archivee, annee_exercice, 
+                    effectif_femme_forme, date_depot_rapport, effectif_handicape_homme,
+                    effectif_handicape_femme, observations_rapport, rapport_fichier,
+                    status, statut, statuts,
+                    valide, suspendre, rejeter, archivee, annee_exercice,
                     date_archivage, message, date_transmission, date_approbation,
                     annee_exercice_cloture, date_cloture, user_id_cloture,
                     created_at, updated_at
@@ -342,7 +344,9 @@ class DemandeApprouve extends Component
                     obejectif_activite, debut_activite, fin_activite, dure_activite,
                     departement, commune, lieux, homme_touche, budget, piece, 
                     buget_prevu, COALESCE(rapport_depose, 0), effectif_homme_forme,
-                    effectif_femme_forme, date_depot_rapport, status, statut, statuts,
+                    effectif_femme_forme, date_depot_rapport, effectif_handicape_homme,
+                    effectif_handicape_femme, observations_rapport, rapport_fichier,
+                    status, statut, statuts,
                     valide, suspendre, rejeter, COALESCE(archivee, 0), annee_exercice,
                     date_archivage, message, date_transmission, date_approbation,
                     ?, ?, ?, created_at, updated_at
