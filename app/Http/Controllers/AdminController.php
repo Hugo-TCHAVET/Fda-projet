@@ -9,6 +9,7 @@ use App\Models\Metier;
 use App\Models\Commune;
 use App\Models\Demande;
 use App\Models\DemandeCloture;
+use App\Services\StatistiquesBeneficiaires;
 use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -406,16 +407,6 @@ class AdminController extends Controller
             ->having('effectif', '>', 0)
             ->get();
 
-        // G9 : Effectif artisans prévus formés par branche (Approuvés)
-        $g9_effectif_branche_approuves = Brache::leftJoin('demandes', function ($join) {
-            $join->on('braches.id', '=', 'demandes.branche')
-                ->where('demandes.statuts', 'Approuvé');
-        })
-            ->groupBy('braches.id', 'braches.nom')
-            ->selectRaw('SUBSTRING(braches.nom, 1, 40) as nom, COALESCE(SUM(demandes.effectif_homme_forme+demandes.effectif_femme_forme), 0) as effectif, COUNT(demandes.id) as count')
-            ->get();
-
-
         // G10 : Effectif artisans formés par commune (Approuvés) - Via table de liaison pour précision géographique
         $g10_effectif_commune_approuves = Commune::join('demande_localisations', 'communes.id', '=', 'demande_localisations.commune_id')
             ->join('demandes', 'demande_localisations.demande_id', '=', 'demandes.id')
@@ -465,6 +456,13 @@ class AdminController extends Controller
             COALESCE(SUM(demandes.effectif_femme_forme), 0) as femme')
             ->get();
 
+        $beneficiaires = StatistiquesBeneficiaires::pourDemandes();
+        $benef_couverture = $beneficiaires->couverture();
+        $benef_sexe = $beneficiaires->parSexe();
+        $benef_handicap = $beneficiaires->parHandicap();
+        $benef_branche = $beneficiaires->repartition('branche');
+        $benef_service = $beneficiaires->repartition('service');
+
         return view('Statistique.index', compact(
             'g1_service_recus',
             'g2_demandeur_recus',
@@ -476,12 +474,16 @@ class AdminController extends Controller
             'g6_branche_approuves',
             'g7_effectif_service_approuves',
             'g8_effectif_demandeur_approuves',
-            'g9_effectif_branche_approuves',
             'g10_effectif_commune_approuves',
             'g14_montant_service_approuves',
             'g15_ratio_data',
             'g16_prevu_vs_touche',
-            'g17_homme_femme'
+            'g17_homme_femme',
+            'benef_couverture',
+            'benef_sexe',
+            'benef_handicap',
+            'benef_branche',
+            'benef_service'
         ));
     }
 

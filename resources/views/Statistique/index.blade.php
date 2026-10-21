@@ -222,10 +222,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title"> Effectifs par branche des dossiers approuvés</h5>
+                            <h5 class="card-title">Nombre de dossiers approuvés par branche</h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="g6g9Chart" height="120"></canvas>
+                            <canvas id="g6Chart" height="120"></canvas>
                         </div>
                     </div>
                 </div>
@@ -307,6 +307,114 @@
                 </div>
             </div>
 
+            <!-- SECTION 4: BÉNÉFICIAIRES -->
+            @php
+            $formatTaux = fn ($taux) => $taux === null ? 'n/d' : number_format($taux, 1, ',', ' ') . ' %';
+            $couvertureTexte = 'calculé sur ' . $benef_couverture['rapports'] . ' rapports / ' . $benef_couverture['allocations'] . ' allocations';
+            @endphp
+            <h3 class="text-primary mt-5">4. Bénéficiaires (rapports post-appui)</h3>
+            <p class="text-muted">Allocations = demandes approuvées (budget validé). Bénéficiaires = personnes formées déclarées dans les rapports post-appui. Exercice en cours uniquement.</p>
+
+            <div class="row" id="pdf-row-10">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Bénéficiaires par sexe</h5>
+                        </div>
+                        <div class="card-body flex-column align-items-stretch">
+                            <canvas id="benefSexeChart"></canvas>
+                            <table class="table table-sm mt-3">
+                                <tbody>
+                                    <tr><td>Hommes</td><td>{{ $benef_sexe['hommes'] }}</td><td>{{ $formatTaux($benef_sexe['taux_hommes']) }}</td></tr>
+                                    <tr><td>Femmes</td><td>{{ $benef_sexe['femmes'] }}</td><td>{{ $formatTaux($benef_sexe['taux_femmes']) }}</td></tr>
+                                    <tr><td><strong>Total</strong></td><td><strong>{{ $benef_sexe['total'] }}</strong></td><td></td></tr>
+                                </tbody>
+                            </table>
+                            <small class="text-muted">{{ $couvertureTexte }}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Bénéficiaires par situation de handicap</h5>
+                        </div>
+                        <div class="card-body flex-column align-items-stretch">
+                            <canvas id="benefHandicapChart"></canvas>
+                            <table class="table table-sm mt-3">
+                                <tbody>
+                                    <tr><td>Personnes handicapées</td><td>{{ $benef_handicap['handicapes'] }}</td><td>{{ $formatTaux($benef_handicap['taux_handicapes']) }}</td></tr>
+                                    <tr><td>Personnes non handicapées</td><td>{{ $benef_handicap['non_handicapes'] }}</td><td>{{ $formatTaux($benef_handicap['taux_non_handicapes']) }}</td></tr>
+                                    <tr><td><strong>Total renseigné</strong></td><td><strong>{{ $benef_handicap['total_renseigne'] }}</strong></td><td></td></tr>
+                                </tbody>
+                            </table>
+                            <small class="text-muted">Taux handicap calculé sur {{ $benef_handicap['rapports_renseignes'] }} rapport(s) renseigné(s) / {{ $benef_couverture['allocations'] }} allocations</small><br>
+                            <small class="text-muted">Données handicap non renseignées : {{ $benef_handicap['rapports_non_renseignes'] }} rapport(s)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="pdf-row-11">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Bénéficiaires par branche</h5>
+                        </div>
+                        <div class="card-body flex-column align-items-stretch">
+                            <canvas id="benefBrancheChart" height="100"></canvas>
+                            <table class="table table-sm mt-3">
+                                <thead>
+                                    <tr><th>Branche</th><th>Allocations</th><th>Rapports</th><th>Hommes</th><th>Femmes</th><th>Total</th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($benef_branche as $ligne)
+                                    <tr>
+                                        <td>{{ $ligne['libelle'] }}</td>
+                                        <td>{{ $ligne['allocations'] }}</td>
+                                        <td>{{ $ligne['rapports'] }}</td>
+                                        <td>{{ $ligne['hommes'] }}</td>
+                                        <td>{{ $ligne['femmes'] }}</td>
+                                        <td><strong>{{ $ligne['total'] }}</strong></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="pdf-row-12">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Bénéficiaires par type d'activité</h5>
+                        </div>
+                        <div class="card-body flex-column align-items-stretch">
+                            <canvas id="benefServiceChart" height="100"></canvas>
+                            <table class="table table-sm mt-3">
+                                <thead>
+                                    <tr><th>Service</th><th>Allocations</th><th>Rapports</th><th>Hommes</th><th>Femmes</th><th>Total</th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($benef_service as $ligne)
+                                    <tr>
+                                        <td>{{ \App\Models\Demande::libelleService($ligne['libelle']) }}</td>
+                                        <td>{{ $ligne['allocations'] }}</td>
+                                        <td>{{ $ligne['rapports'] }}</td>
+                                        <td>{{ $ligne['hommes'] }}</td>
+                                        <td>{{ $ligne['femmes'] }}</td>
+                                        <td><strong>{{ $ligne['total'] }}</strong></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mt-4 mb-5 justify-content-center" id="buttons-row">
                 {{-- <div class="col-md-3 text-center">
                     <button class="btn btn-info btn-lg btn-block" onclick="downloadPDF()">
@@ -357,6 +465,7 @@
 
             'Assistance': 'Activités de Promotion',
             'Formation': 'Formation / Renforcement de capacités',
+            'Financier': 'Appui Financier',
             // 'SPEA': 'Service de Promotion et d\'Encadrement des Artisans',
             // 'SESE': 'Service d\'Encadrement et de Suivi des Entreprises',
             // 'DG': 'Direction Générale',
@@ -676,27 +785,17 @@
         }
     });
 
-    // G6 & G9: Mixte (Dossiers & Effectifs par Branche)
+    // G6: Dossiers approuvés par branche
     const d6 = getDataWithCustomLabels(@json($g6_branche_approuves), 'nom', 'count');
-    const d9 = getDataWithCustomLabels(@json($g9_effectif_branche_approuves), 'nom', 'effectif');
-    new Chart(document.getElementById('g6g9Chart'), {
+    new Chart(document.getElementById('g6Chart'), {
         type: 'bar',
         data: {
-            labels: d6.labels, // Suppose same order
+            labels: d6.labels,
             datasets: [{
-                    label: 'Nombre Dossiers',
-                    data: d6.data,
-                    backgroundColor: '#36A2EB',
-                    yAxisID: 'y'
-                },
-                {
-                    label: 'Effectif Artisans',
-                    type: 'line',
-                    data: d9.data,
-                    borderColor: '#FF6384',
-                    yAxisID: 'y1'
-                }
-            ]
+                label: 'Nombre Dossiers',
+                data: d6.data,
+                backgroundColor: '#36A2EB'
+            }]
         },
         options: {
             maintainAspectRatio: false,
@@ -709,19 +808,7 @@
                     ticks: axisTicksConfig
                 },
                 y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
                     ticks: axisTicksConfig
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    ticks: axisTicksConfig,
-                    grid: {
-                        drawOnChartArea: false
-                    }
                 }
             }
         }
@@ -1022,6 +1109,80 @@
         plugins: [ChartDataLabels]
     });
 
+    // Bénéficiaires (rapports post-appui)
+    const benefSexe = @json($benef_sexe);
+    new Chart(document.getElementById('benefSexeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Masculin', 'Féminin'],
+            datasets: [{
+                data: [benefSexe.hommes, benefSexe.femmes],
+                backgroundColor: ['#3498db', '#2ecc71']
+            }]
+        },
+        options: {
+            plugins: {
+                legend: legendConfig
+            }
+        }
+    });
+
+    const benefHandicap = @json($benef_handicap);
+    new Chart(document.getElementById('benefHandicapChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Handicapées', 'Non handicapées'],
+            datasets: [{
+                data: [benefHandicap.handicapes, benefHandicap.non_handicapes],
+                backgroundColor: ['#9b59b6', '#4BC0C0']
+            }]
+        },
+        options: {
+            plugins: {
+                legend: legendConfig
+            }
+        }
+    });
+
+    function benefRepartitionChart(canvasId, lignes, labelKey) {
+        const mapping = LABEL_MAPPINGS[labelKey] || {};
+        new Chart(document.getElementById(canvasId), {
+            type: 'bar',
+            data: {
+                labels: lignes.map(l => mapping[l.libelle] || l.libelle),
+                datasets: [{
+                    label: 'Masculin',
+                    data: lignes.map(l => l.hommes),
+                    backgroundColor: '#3498db'
+                }, {
+                    label: 'Féminin',
+                    data: lignes.map(l => l.femmes),
+                    backgroundColor: '#2ecc71'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: legendConfig
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: axisTicksConfig
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: axisTicksConfig
+                    }
+                }
+            }
+        });
+    }
+    benefRepartitionChart('benefBrancheChart', @json($benef_branche), 'nom');
+    benefRepartitionChart('benefServiceChart', @json($benef_service), 'service');
+
     // G17: Homme/Femme par Département (Bar Grouped)
     const g17Data = @json($g17_homme_femme);
     const g17Labels = g17Data.map(d => d.nom);
@@ -1147,7 +1308,7 @@
             },
             {
                 selector: '#pdf-row-5',
-                title: 'Branche - Dossiers & Effectifs (Dossiers Approuvés)'
+                title: 'Dossiers par Branche (Dossiers Approuvés)'
             },
             {
                 selector: '#pdf-row-6',
@@ -1169,6 +1330,23 @@
             {
                 selector: '#pdf-row-9',
                 title: 'Effectifs par Département (Prévu vs Touché et Homme vs Femme)'
+            },
+
+            {
+                title: '4. Bénéficiaires (rapports post-appui)',
+                type: 'section_title'
+            },
+            {
+                selector: '#pdf-row-10',
+                title: 'Bénéficiaires par sexe et par situation de handicap'
+            },
+            {
+                selector: '#pdf-row-11',
+                title: 'Bénéficiaires par branche'
+            },
+            {
+                selector: '#pdf-row-12',
+                title: "Bénéficiaires par type d'activité"
             }
         ];
 
