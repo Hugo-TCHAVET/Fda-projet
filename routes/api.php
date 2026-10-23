@@ -33,7 +33,6 @@ Route::get('/communes/{departement_id}', function ($departement_id) {
 });
 
 Route::get('/corps/{branche_id}', function ($branche_id) {
-    // Correction: la colonne est 'branche_id' (et non 'brache_id')
     $corps = \App\Models\Corp::where('branche_id', $branche_id)->get();
     return response()->json($corps);
 });

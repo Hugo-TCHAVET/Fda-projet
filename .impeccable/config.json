@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/design/pistes/index.html"
+        ],
+        "createdAt": "2026-10-21T22:26:43.694Z",
+        "reason": "Claude triage: .cadre/.ecran/.a-table wrap full-bleed mockup screens and a table whose cells carry 12-16px padding; text never touches a border (verified on piste-a-liste.png, piste-b.png)"
+      }
+    ]
+  }
+}

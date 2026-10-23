@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\EtatDemande;
 use App\Models\Demande;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -12,7 +13,7 @@ use InvalidArgumentException;
  */
 class StatistiquesBeneficiaires
 {
-    private const DIMENSIONS = ['branche', 'service'];
+    private const DIMENSIONS = ['branche' => 'branche_id', 'service' => 'service'];
 
     public function __construct(private Builder $base)
     {
@@ -34,11 +35,11 @@ class StatistiquesBeneficiaires
 
     public function repartition(string $dimension): Collection
     {
-        if (!in_array($dimension, self::DIMENSIONS, true)) {
+        if (!array_key_exists($dimension, self::DIMENSIONS)) {
             throw new InvalidArgumentException("Dimension inconnue : {$dimension}");
         }
 
-        $cle = $this->colonne($dimension);
+        $cle = $this->colonne(self::DIMENSIONS[$dimension]);
         $rapport = $this->colonne('rapport_depose') . ' = 1';
         $query = $this->allocations()
             ->selectRaw("{$cle} as cle, COUNT(*) as allocations, SUM({$rapport}) as rapports")
@@ -47,9 +48,9 @@ class StatistiquesBeneficiaires
             ->groupBy($cle);
 
         if ($dimension === 'branche') {
-            $query->leftJoin('braches', 'braches.id', '=', $cle)
-                ->addSelect('braches.nom as nom_branche')
-                ->groupBy('braches.nom');
+            $query->leftJoin('branches', 'branches.id', '=', $cle)
+                ->addSelect('branches.nom as nom_branche')
+                ->groupBy('branches.nom');
         }
 
         return $query->toBase()->get()
@@ -119,7 +120,9 @@ class StatistiquesBeneficiaires
 
     private function allocations(): Builder
     {
-        return (clone $this->base)->where($this->colonne('valide'), '2');
+        return (clone $this->base)
+            ->where($this->colonne('etat'), EtatDemande::Approuvee->value)
+            ->whereNull($this->colonne('cloturee_le'));
     }
 
     private function rapports(): Builder
@@ -139,7 +142,7 @@ class StatistiquesBeneficiaires
         }
 
         if ($dimension === 'branche') {
-            return $ligne->nom_branche ?? 'Branche inconnue';
+            return $ligne->nom_branche;
         }
 
         return $ligne->cle;

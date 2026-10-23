@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Demande;
+use App\Enums\EtatDemande;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
@@ -24,8 +25,8 @@ class RapportAllocationTest extends TestCase
         Storage::disk('local')->put('rapports/rapport.pdf', '%PDF-1.4 contenu');
         $this->creerDonneesReference();
         $this->demande = $this->creerDemande([
-            'valide' => '2',
-            'buget_prevu' => '500000',
+            'etat' => EtatDemande::Approuvee,
+            'budget_accorde' => '500000',
             'rapport_depose' => true,
             'effectif_homme_forme' => 10,
             'effectif_femme_forme' => 30,
@@ -114,16 +115,9 @@ class RapportAllocationTest extends TestCase
         $this->assertSame('Appui Financier', $this->donneesFiche()['libelleService']);
     }
 
-    public function test_fiche_branche_inconnue(): void
-    {
-        $this->demande->update(['branche' => '999']);
-
-        $this->assertSame('Branche inconnue', $this->donneesFiche()['libelleBranche']);
-    }
-
     public function test_fiche_branche_non_renseignee(): void
     {
-        $this->demande->update(['branche' => null]);
+        $this->demande->update(['branche_id' => null]);
 
         $this->assertSame('Non renseigné', $this->donneesFiche()['libelleBranche']);
     }

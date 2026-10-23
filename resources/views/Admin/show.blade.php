@@ -337,7 +337,7 @@
                             <div class="info-group">
                                 <span class="info-label">Objectifs</span>
                                 <div class="info-value" style="background: #fff; border: 1px solid #e9ecef; min-height: 80px;">
-                                    {{$demande->obejectif_activite}}
+                                    {{$demande->objectif_activite}}
                                 </div>
                             </div>
 
@@ -357,7 +357,7 @@
                                 <div class="col-md-4">
                                     <div class="info-group text-center">
                                         <span class="info-label">Durée</span>
-                                        <div class="badge bg-info p-2">{{$demande->dure_activite}} Jours</div>
+                                        <div class="badge bg-info p-2">{{$demande->duree_activite}} Jours</div>
                                     </div>
                                 </div>
                             </div>
@@ -370,11 +370,11 @@
                                         <div class="budget-value">{{ number_format((float)$demande->budget, 0, ',', ' ') }} CFA</div>
                                     </div>
                                 </div>
-                                @if ($demande->buget_prevu != 0)
+                                @if ($demande->budget_accorde != 0)
                                 <div class="col-md-6">
                                     <div class="budget-box" style="background: linear-gradient(135deg, #2c3e50 0%, #4a627a 100%);">
                                         <div class="info-label text-white opacity-75">Budget Prévu</div>
-                                        <div class="budget-value">{{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} CFA</div>
+                                        <div class="budget-value">{{ number_format((float)$demande->budget_accorde, 0, ',', ' ') }} CFA</div>
                                     </div>
                                 </div>
                                 @endif
@@ -439,12 +439,14 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-start gap-4">
-                        @if($demande->statuts !== 'Approuvé')
+                        @if(!$demande->cloturee_le && $demande->etat !== \App\Enums\EtatDemande::Approuvee)
+                        @if($demande->peut('approuver'))
                         @can('process-demandes')
                         <a href="{{route('demande.budget',$demande->id)}}" class="btn-action btn-view" title="Valider">
                             <i class="now-ui-icons ui-1_check"></i>
                         </a>
                         @endcan
+                        @endif
 
                         @can('view-liste-demandes')
                         <a href="{{route('demande.edit',$demande->id)}}" class="btn-action btn-edit" title="Modifier">
@@ -454,11 +456,14 @@
                         </a>
                         @endcan
 
+                        @if($demande->peut('transmettre'))
                         @can('transmit-demandes')
                         <button onclick="confirmerTransmission({{$demande->id}})" class="btn-action btn-send" title="Transmettre">
                             <i class="now-ui-icons ui-1_send"></i>
                         </button>
                         @endcan
+                        @endif
+                        @if($demande->peut('suspendre'))
                         @can('process-demandes')
                         <button onclick="confirmerRejet({{$demande->id}})" class="btn-action btn-pause" title="Rejeter">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -466,6 +471,7 @@
                             </svg>
                         </button>
                         @endcan
+                        @endif
                         @can('manage-demandes')
                         <button onclick="confirmerSuppression({{$demande->id}})" class="btn-action btn-delete" title="Supprimer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -498,8 +504,12 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const transmitUrl = "{{ url('/transmettre_demande') }}/" + demandeId;
-                    window.location.href = transmitUrl;
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = "{{ url('/demandes') }}/" + demandeId + "/transmission";
+                    form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}">';
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             });
         }
@@ -519,8 +529,12 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const deleteUrl = "{{ url('/delete') }}/" + demandeId;
-                    window.location.href = deleteUrl;
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = "{{ url('/demandes') }}/" + demandeId;
+                    form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}"><input type="hidden" name="_method" value="DELETE">';
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             });
         }

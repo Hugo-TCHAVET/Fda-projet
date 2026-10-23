@@ -25,6 +25,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // Same account as the former hard-coded check in the view; who may close a year is still to be decided.
+        Gate::define('cloturer-exercice', function ($user) {
+            return $user->email === 'sese@apps.fda.bj';
+        });
+
+        // Gate pour le tableau de bord (personnel uniquement)
+        Gate::define('view-dashboard', function ($user) {
+            return $user->hasAnyRole(['secretaire', 'verificateur', 'directeur']);
+        });
+
         // Gate pour accéder à la liste des demandes (secrétaire uniquement)
         Gate::define('view-liste-demandes', function ($user) {
             return $user->isSecretaire();

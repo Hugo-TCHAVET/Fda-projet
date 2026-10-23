@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -19,33 +20,33 @@ return new class extends Migration
             [
                 "name" => 'SESE FDA',
                 'email' => 'sese@gmail.com',
-                'password'=> Hash::make('fdan2024'),
+                'password'=> Hash::make(env('FDA_MOT_DE_PASSE_INITIAL') ?: Str::random(40)),
                 
             ],
 
             [
                 "name" => 'SPEA FDA',
                 'email' => 'spea@gmail.com',
-                'password'=> Hash::make('fdan2024'),
+                'password'=> Hash::make(env('FDA_MOT_DE_PASSE_INITIAL') ?: Str::random(40)),
                 
             ],
 
             [
                 "name" => 'DG FDA',
                 'email' => 'dg@gmail.com',
-                'password'=> Hash::make('fdan2024'),
+                'password'=> Hash::make(env('FDA_MOT_DE_PASSE_INITIAL') ?: Str::random(40)),
                 
             ],
             [
                 "name" => 'DAF FDA',
                 'email' => 'daf@gmail.com',
-                'password'=> Hash::make('fdan2024'),
+                'password'=> Hash::make(env('FDA_MOT_DE_PASSE_INITIAL') ?: Str::random(40)),
                 
             ],
             [
                 "name" => 'DO FDA',
                 'email' => 'do@gmail.com',
-                'password'=> Hash::make('fdan2024'),
+                'password'=> Hash::make(env('FDA_MOT_DE_PASSE_INITIAL') ?: Str::random(40)),
                 
             ],
 

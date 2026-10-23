@@ -106,8 +106,8 @@
                                                 {{ number_format((float)$demande->budget, 0, ',', ' ') }} FCFA
                                             </td>
                                             <td style="font-weight: bold; color: #009879;">
-                                                @if($demande->buget_prevu)
-                                                {{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA
+                                                @if($demande->budget_accorde)
+                                                {{ number_format((float)$demande->budget_accorde, 0, ',', ' ') }} FCFA
                                                 @else
                                                 <span class="text-muted">-</span>
                                                 @endif
@@ -131,13 +131,14 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                @if($demande->valide == 2 || $demande->statuts == 'Approuvé')
-                                                <span class="status-badge status-approved">Approuvé</span>
-                                                @elseif($demande->suspendre == 1)
-                                                <span class="status-badge badge-danger">Rejété</span>
-                                                @elseif($demande->valide == 1 && $demande->suspendre == 0)
-                                                <span class="status-badge badge-info">En cours</span>
-                                                @endif
+                                                @php
+                                                $classeEtat = match ($demande->etat) {
+                                                    \App\Enums\EtatDemande::Approuvee => 'status-approved',
+                                                    \App\Enums\EtatDemande::Suspendue => 'badge-danger',
+                                                    default => 'badge-info',
+                                                };
+                                                @endphp
+                                                <span class="status-badge {{ $classeEtat }}">{{ $demande->etat->libelle() }}</span>
                                             </td>
                                             <td>
                                                 @if($demande->rapport_depose)

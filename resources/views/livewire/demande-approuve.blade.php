@@ -81,12 +81,12 @@
                     <i class="now-ui-icons files_single-copy-04" style="margin-right: 5px;"></i>
                     Exporter en Excel
                   </button>
-                  @if(Auth::user()->email == 'sese@apps.fda.bj')
+                  @can('cloturer-exercice')
                   <button wire:click="openClotureModal" class="btn btn-danger" style="border-radius: 8px; padding: 8px 20px;">
                     <i class="now-ui-icons files_box" style="margin-right: 5px;"></i>
                     Clôturer exercice
                   </button>
-                  @endif
+                  @endcan
                 </div>
               </div>
             </div>
@@ -117,7 +117,7 @@
                         {{ number_format($demande->budget, 0, ',', ' ') }} FCFA
                       </td>
                       <td style="font-weight: bold; color: #009879;">
-                        {{ number_format($demande->buget_prevu, 0, ',', ' ') }} FCFA
+                        {{ number_format($demande->budget_accorde, 0, ',', ' ') }} FCFA
                       </td>
                       <td>
                         <span style="font-weight: 500; color: #666;">
@@ -126,7 +126,7 @@
                       </td>
                       <td>
                         <span class="status-badge status-approved">
-                          {{ $demande->statuts }}
+                          {{ $demande->etat->libelle() }}
                         </span>
                       </td>
                       <td class="text-center">
@@ -253,8 +253,8 @@
             <div class="alert alert-danger" style="border-radius: 8px; margin-bottom: 20px;">
               <strong><i class="now-ui-icons ui-1_bell-53"></i> Information importante</strong>
               <p style="margin: 10px 0 0 0;">
-                La clôture d'exercice permet d'archiver définitivement toutes les demandes de l'année sélectionnée dans les archives historiques.
-                Les données seront conservées pour consultation et statistiques, mais ne seront plus accessibles dans le système de gestion actif.
+                La clôture d'exercice ferme les allocations approuvées de l'année sélectionnée : elles restent consultables dans les exercices clôturés, mais ne sont plus modifiables.
+                Les demandes non approuvées de cette année sont reportées sur l'exercice suivant et restent dans le circuit de traitement.
                 Assurez-vous que toutes les opérations et validations de l'année sont complètes avant de procéder à cette action.
               </p>
             </div>
@@ -276,15 +276,18 @@
               @enderror
             </div>
 
-            @if($annee_cloture && $nbDemandesACloturer > 0)
+            @if($annee_cloture && $nbDemandesACloturer + $nbDemandesAReporter > 0)
             <div class="card" style="background-color: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
               <h6 style="color: #009879; font-weight: 600; margin-bottom: 15px;">
                 <i class="now-ui-icons business_chart-bar-32"></i> Résumé de la clôture
               </h6>
               <div class="row">
                 <div class="col-md-6">
-                  <p style="margin: 5px 0;"><strong>Nombre de demandes :</strong>
+                  <p style="margin: 5px 0;"><strong>Allocations clôturées :</strong>
                     <span style="color: #009879; font-weight: bold;">{{ $nbDemandesACloturer }}</span>
+                  </p>
+                  <p style="margin: 5px 0;"><strong>Demandes reportées sur {{ (int) $annee_cloture + 1 }} :</strong>
+                    <span style="color: #009879; font-weight: bold;">{{ $nbDemandesAReporter }}</span>
                   </p>
                 </div>
                 <div class="col-md-6">
@@ -296,10 +299,10 @@
                 </div>
               </div>
             </div>
-            @elseif($annee_cloture && $nbDemandesACloturer == 0)
+            @elseif($annee_cloture)
             <div class="alert alert-info" style="border-radius: 8px;">
               <i class="now-ui-icons ui-1_info"></i>
-              Aucune demande trouvée pour l'année {{ $annee_cloture }}.
+              Aucune demande en cours pour l'exercice {{ $annee_cloture }}.
             </div>
             @endif
 
@@ -312,7 +315,7 @@
               <button type="button" id="btnCloturerConfirm" wire:click="cloturerExercice" style="display: none;"></button>
               <button type="button" class="btn btn-danger btn-cloturer-exercice"
                 style="border: none; border-radius: 8px; padding: 8px 20px;"
-                @if($nbDemandesACloturer==0) disabled @else data-annee="{{ $annee_cloture }}" data-nb-demandes="{{ $nbDemandesACloturer }}" @endif>
+                @if($nbDemandesACloturer + $nbDemandesAReporter == 0) disabled @else data-annee="{{ $annee_cloture }}" data-nb-demandes="{{ $nbDemandesACloturer }}" data-nb-reportees="{{ $nbDemandesAReporter }}" @endif>
                 <i class="now-ui-icons files_box" style="margin-right: 5px;"></i>
                 Clôturer l'exercice
               </button>
@@ -501,6 +504,7 @@
         const btn = e.target.closest('.btn-cloturer-exercice');
         const annee = btn.getAttribute('data-annee');
         const nbDemandes = btn.getAttribute('data-nb-demandes');
+        const nbReportees = btn.getAttribute('data-nb-reportees');
 
         if (!annee || !nbDemandes) return;
 
@@ -509,10 +513,10 @@
           html: `
             <p>Êtes-vous sûr de vouloir clôturer l'exercice <strong>${annee}</strong> ?</p>
             <p style="margin-top: 10px; color: #dc3545;">
-              <strong>${nbDemandes} demande(s)</strong> seront archivées définitivement.
+              <strong>${nbDemandes} allocation(s)</strong> seront clôturées et <strong>${nbReportees} demande(s)</strong> reportées sur l'exercice suivant.
             </p>
             <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
-              Cette action est irréversible et les données ne seront plus accessibles dans le système actif.
+              Les allocations clôturées restent consultables dans « Dossiers d'appui clôturés » mais ne sont plus modifiables.
             </p>
           `,
           icon: 'warning',

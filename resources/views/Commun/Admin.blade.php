@@ -15,10 +15,9 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <!-- CSS Files -->
-  <link href="Admin/assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="Admin/assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="Admin/assets/demo/demo.css" rel="stylesheet" />
+  <link href="{{ asset('Admin/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('Admin/assets/css/now-ui-dashboard.css') }}?v=1.5.0" rel="stylesheet" />
+  <link href="{{ asset('Admin/assets/demo/demo.css') }}" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -174,27 +173,13 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
   </script>
-  <script src="Admin/assets/js/core/jquery.min.js"></script>
-  <script src="Admin/assets/js/core/popper.min.js"></script>
-  <script src="Admin/assets/js/core/bootstrap.min.js"></script>
-  <script src="Admin/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="Admin/assets/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="Admin/assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="Admin/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script>
-  <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-  <script src="Admin/assets/demo/demo.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-
-    });
-  </script>
+  <script src="{{ asset('Admin/assets/js/core/jquery.min.js') }}"></script>
+  <script src="{{ asset('Admin/assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ asset('Admin/assets/js/core/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('Admin/assets/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
+  <script src="{{ asset('Admin/assets/js/plugins/chartjs.min.js') }}"></script>
+  <script src="{{ asset('Admin/assets/js/plugins/bootstrap-notify.js') }}"></script>
+  <script src="{{ asset('Admin/assets/js/now-ui-dashboard.min.js') }}?v=1.5.0" type="text/javascript"></script>
 
   <script>
     $(document).ready(function() {

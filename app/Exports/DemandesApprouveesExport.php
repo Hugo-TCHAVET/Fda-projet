@@ -3,9 +3,6 @@
 namespace App\Exports;
 
 use App\Models\Demande;
-use App\Models\Brache;
-use App\Models\Corp;
-use App\Models\Metier;
 use App\Models\Departement;
 use App\Models\Commune;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -19,8 +16,7 @@ class DemandesApprouveesExport implements FromCollection, WithHeadings, WithMapp
 {
     public function collection()
     {
-        return Demande::where('valide', 2)
-            ->where('buget_prevu', '!=', null)
+        return Demande::allocations()->enCours()
             ->where('archivee', false)
             ->orderBy('date_approbation', 'desc')
             ->get();
@@ -59,23 +55,9 @@ class DemandesApprouveesExport implements FromCollection, WithHeadings, WithMapp
     public function map($demande): array
     {
         // Récupérer les noms des relations
-        $brancheNom = null;
-        if ($demande->branche) {
-            $branche = Brache::find($demande->branche);
-            $brancheNom = $branche ? $branche->nom : null;
-        }
-
-        $corpsNom = null;
-        if ($demande->corps) {
-            $corps = Corp::find($demande->corps);
-            $corpsNom = $corps ? $corps->nom : null;
-        }
-
-        $metierNom = null;
-        if ($demande->metier) {
-            $metier = Metier::find($demande->metier);
-            $metierNom = $metier ? $metier->nom : null;
-        }
+        $brancheNom = $demande->branche?->nom;
+        $corpsNom = $demande->corps?->nom;
+        $metierNom = $demande->metier?->nom;
 
         $departementNom = null;
         if ($demande->departement) {
@@ -117,18 +99,18 @@ class DemandesApprouveesExport implements FromCollection, WithHeadings, WithMapp
             $demande->ifu,
             $demande->contact ?? 'N/A',
             $demande->titre_activite,
-            $demande->obejectif_activite,
+            $demande->objectif_activite,
             $demande->debut_activite ?? 'N/A',
             $demande->fin_activite ?? 'N/A',
-            $demande->dure_activite ?? 'N/A',
+            $demande->duree_activite ?? 'N/A',
             $departementNom ?? 'N/A',
             $communeNom ?? 'N/A',
             $demande->lieux ?? 'N/A',
             $demande->homme_touche ?? '0',
-            number_format((float) str_replace(' ', '', $demande->budget ?? 0), 0, ',', ' '),
-            number_format((float) str_replace(' ', '', $demande->buget_prevu ?? 0), 0, ',', ' '),
+            number_format($demande->budget ?? 0, 0, ',', ' '),
+            number_format($demande->budget_accorde ?? 0, 0, ',', ' '),
             $demande->date_approbation ? $demande->date_approbation->format('d/m/Y') : 'N/A',
-            $demande->statuts ?? 'N/A',
+            $demande->etat->libelle(),
         ];
     }
 

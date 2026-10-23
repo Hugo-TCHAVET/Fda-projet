@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\DemandeCloture;
+use App\Models\Demande;
 use App\Exports\DemandesClotureesExport;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,7 +21,7 @@ class ExercicesClotures extends Component
     public function mount()
     {
         // Par défaut, afficher l'année la plus récente clôturée
-        $derniereAnnee = DemandeCloture::max('annee_exercice_cloture');
+        $derniereAnnee = Demande::cloturees()->max('exercice');
         $this->anneeFiltre = $derniereAnnee ?: null;
     }
 
@@ -57,71 +57,56 @@ class ExercicesClotures extends Component
         }
 
         // Calcul des statistiques pour l'année sélectionnée
-        $demandesStats = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)->get();
+        $demandesStats = Demande::cloturees()->where('exercice', $this->anneeFiltre)->get();
 
         $totalDemandes = $demandesStats->count();
 
-        // Calcul des montants en gérant les cas null/vides
-        $montantTotalDemande = 0;
-        $montantTotalAppuye = 0;
-
-        foreach ($demandesStats as $demande) {
-            // Budget demandé
-            if ($demande->budget) {
-                $budget = is_string($demande->budget) ? str_replace(' ', '', $demande->budget) : $demande->budget;
-                $montantTotalDemande += (float) $budget;
-            }
-
-            // Budget prévu
-            if ($demande->buget_prevu) {
-                $budgetPrevu = is_string($demande->buget_prevu) ? str_replace(' ', '', $demande->buget_prevu) : $demande->buget_prevu;
-                $montantTotalAppuye += (float) $budgetPrevu;
-            }
-        }
+        $montantTotalDemande = (int) $demandesStats->sum('budget');
+        $montantTotalAppuye = (int) $demandesStats->sum('budget_accorde');
 
         // Statistiques par type de service
-        $nbreformation = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $nbreformation = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Formation')
             ->count();
 
-        $nbrepromotion = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $nbrepromotion = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Assistance')
             ->count();
 
         // Formation par type
-        $proformation = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $proformation = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Formation')
             ->where('type_demande', 'professionnel')
             ->count();
 
-        $strformation = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $strformation = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Formation')
             ->where('type_demande', 'structure')
             ->count();
 
-        $ongformation = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $ongformation = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Formation')
             ->where('type_demande', 'ONG')
             ->count();
 
         // Assistance/Promotion par type
-        $propromotion = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $propromotion = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Assistance')
             ->where('type_demande', 'professionnel')
             ->count();
 
-        $strpromotion = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $strpromotion = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Assistance')
             ->where('type_demande', 'structure')
             ->count();
 
-        $ongpromotion = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre)
+        $ongpromotion = Demande::cloturees()->where('exercice', $this->anneeFiltre)
             ->where('service', 'Assistance')
             ->where('type_demande', 'ONG')
             ->count();
 
         // Requête pour les demandes
-        $query = DemandeCloture::where('annee_exercice_cloture', $this->anneeFiltre);
+        $query = Demande::cloturees()->where('exercice', $this->anneeFiltre);
 
         // Recherche
         if ($this->search) {
@@ -134,15 +119,15 @@ class ExercicesClotures extends Component
             });
         }
 
-        $demandes = $query->orderBy('date_cloture', 'desc')
+        $demandes = $query->orderBy('cloturee_le', 'desc')
             ->orderBy('date_approbation', 'desc')
             ->paginate(10);
 
         // Récupérer toutes les années disponibles pour le filtre
-        $anneesDisponibles = DemandeCloture::select('annee_exercice_cloture')
+        $anneesDisponibles = Demande::cloturees()->select('exercice')
             ->distinct()
-            ->orderBy('annee_exercice_cloture', 'desc')
-            ->pluck('annee_exercice_cloture')
+            ->orderBy('exercice', 'desc')
+            ->pluck('exercice')
             ->toArray();
 
         // Si aucune année disponible, créer un tableau vide pour éviter les erreurs
@@ -176,10 +161,10 @@ class ExercicesClotures extends Component
      */
     private function renderEmpty()
     {
-        $anneesDisponibles = DemandeCloture::select('annee_exercice_cloture')
+        $anneesDisponibles = Demande::cloturees()->select('exercice')
             ->distinct()
-            ->orderBy('annee_exercice_cloture', 'desc')
-            ->pluck('annee_exercice_cloture')
+            ->orderBy('exercice', 'desc')
+            ->pluck('exercice')
             ->toArray();
 
         return view('livewire.exercices-clotures', [

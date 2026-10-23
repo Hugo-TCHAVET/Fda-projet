@@ -140,7 +140,7 @@
                                                     <div class="form-group">
                                                         <label>Objectif de l'activité</label>
                                                         <textarea class="form-control" placeholder="Country"
-                                                            wire:model="obejectif_activite" readonly></textarea>
+                                                            wire:model="objectif_activite" readonly></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 pl-1">
@@ -163,7 +163,7 @@
                                                     <div class="form-group">
                                                         <label>Durée d'exécution</label>
                                                         <input type="text" class="form-control" placeholder="Country"
-                                                            wire:model="dure_activite" readonly>
+                                                            wire:model="duree_activite" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 pl-1">
@@ -199,13 +199,6 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4 pr-1">
-                                                    <div class="form-group">
-                                                        <label>Personne touchées ( Femmes )</label>
-                                                        <input type="text" class="form-control" placeholder="City"
-                                                            wire:model="femme_touche" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 px-1">
                                                     <div class="form-group">
                                                         <label>Budget</label>
                                                         <input type="text" class="form-control" placeholder="Country"
@@ -322,7 +315,7 @@
                                 <div class="form-group">
                                     <label> Le Montant</label>
                                     <input type="number" class="form-control" value="Creative Code Inc."
-                                        wire:model="buget_prevu">
+                                        wire:model="budget_accorde">
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Confirmer</button>

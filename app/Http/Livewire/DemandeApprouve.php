@@ -2,17 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Corp;
-use App\Models\Brache;
-use App\Models\Metier;
 use App\Models\Demande;
-use App\Models\DemandeCloture;
-use App\Models\DemandeLocalisationCloture;
+use App\Services\ClotureExercice;
+use Illuminate\Support\Facades\Gate;
 use App\Exports\DemandesApprouveesExport;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -34,6 +30,7 @@ class DemandeApprouve extends Component
     public $showModalCloture = false;
     public $annee_cloture;
     public $nbDemandesACloturer = 0;
+    public $nbDemandesAReporter = 0;
     public $budgetTotalACloturer = 0;
 
     public $demande;
@@ -47,29 +44,27 @@ class DemandeApprouve extends Component
     public $nom;
     public $prenom;
     public $sexe;
-    public $email;
     public $ifu;
     public $contact;
     public $titre_activite;
-    public $obejectif_activite;
+    public $objectif_activite;
     public $debut_activite;
     public $fin_activite;
-    public $dure_activite;
+    public $duree_activite;
     public $departement;
     public $commune;
     public $lieux;
     public $homme_touche;
-    public $femme_touche;
     public $budget;
     public $piece;
-    public $buget_prevu;
+    public $budget_accorde;
 
 
 
     protected function rules()
     {
         return [
-            'buget_prevu' => 'required',
+            'budget_accorde' => 'required',
 
         ];
     }
@@ -120,57 +115,29 @@ class DemandeApprouve extends Component
         if ($demande) {
             $this->demande = $demande->id;
             $this->nom = $demande->nom;
-            $this->email = $demande->email;
             $this->prenom = $demande->prenom;
             $this->structure = $demande->structure;
             $this->service = $demande->service;
             $this->type_demande = $demande->type_demande;
-            $this->metier = $demande->metier;
             $this->sexe = $demande->sexe;
             $this->ifu = $demande->ifu;
             $this->contact = $demande->contact;
             $this->titre_activite = $demande->titre_activite;
-            $this->obejectif_activite = $demande->obejectif_activite;
+            $this->objectif_activite = $demande->objectif_activite;
             $this->debut_activite = $demande->debut_activite;
             $this->fin_activite = $demande->fin_activite;
-            $this->dure_activite = $demande->dure_activite;
+            $this->duree_activite = $demande->duree_activite;
             $this->departement = $demande->departement;
             $this->commune = $demande->commune;
             $this->lieux = $demande->lieux;
             $this->homme_touche = $demande->homme_touche;
-            $this->femme_touche = $demande->femme_touche;
             $this->budget = $demande->budget;
             $this->piece = $demande->piece;
-            $this->buget_prevu = $demande->buget_prevu;
+            $this->budget_accorde = $demande->budget_accorde;
 
-            if ($demande->branche) {
-                $branche = Brache::where('id', $demande->branche)->first();
-                if ($branche) {
-                    $this->branche = $branche->nom;
-                } else {
-                    $this->branche = [];
-                }
-            }
-
-
-
-            if ($demande->corps) {
-                $corps = Corp::where('id', $demande->corps)->first();
-                if ($corps) {
-                    $this->corps = $corps->nom;
-                } else {
-                    $this->corps = [];
-                }
-            }
-
-            if ($demande->metier) {
-                $metier = Metier::where('id', $demande->metier)->first();
-                if ($metier) {
-                    $this->metier = $metier->nom;
-                } else {
-                    $this->metier = [];
-                }
-            }
+            $this->branche = $demande->branche?->nom;
+            $this->corps = $demande->corps?->nom;
+            $this->metier = $demande->metier?->nom;
         } else {
             return redirect()->back();
         }
@@ -211,7 +178,7 @@ class DemandeApprouve extends Component
         $this->validate($this->rulesArchive(), $this->messagesArchive());
 
         try {
-            $demande = Demande::find($this->demandeIdArchive);
+            $demande = Demande::allocations()->enCours()->find($this->demandeIdArchive);
 
             if ($demande) {
                 $demande->update([
@@ -263,12 +230,11 @@ class DemandeApprouve extends Component
             return;
         }
 
-        $demandes = Demande::whereYear('created_at', $this->annee_cloture)->get();
+        $apercu = ClotureExercice::apercu((int) $this->annee_cloture);
 
-        $this->nbDemandesACloturer = $demandes->count();
-        $this->budgetTotalACloturer = $demandes->sum(function ($demande) {
-            return (float) str_replace(' ', '', $demande->buget_prevu ?? 0);
-        });
+        $this->nbDemandesACloturer = $apercu['cloturees'];
+        $this->nbDemandesAReporter = $apercu['reportees'];
+        $this->budgetTotalACloturer = $apercu['montant_accorde'];
     }
 
     /**
@@ -285,7 +251,7 @@ class DemandeApprouve extends Component
     public function closeClotureModal()
     {
         $this->showModalCloture = false;
-        $this->reset(['annee_cloture', 'nbDemandesACloturer', 'budgetTotalACloturer']);
+        $this->reset(['annee_cloture', 'nbDemandesACloturer', 'nbDemandesAReporter', 'budgetTotalACloturer']);
         $this->resetValidation();
     }
 
@@ -304,13 +270,19 @@ class DemandeApprouve extends Component
      */
     public function cloturerExercice()
     {
+        if (Gate::denies('cloturer-exercice')) {
+            $this->alert('error', 'Vous n\'êtes pas autorisé à clôturer un exercice.');
+            return;
+        }
+
         $this->validate($this->rulesCloture(), $this->messagesCloture());
+        $annee = (int) $this->annee_cloture;
 
         try {
-            $demandesCount = Demande::whereYear('created_at', $this->annee_cloture)->count();
+            $resultat = ClotureExercice::cloturer($annee, auth()->user());
 
-            if ($demandesCount === 0) {
-                $this->alert('warning', 'Aucune demande trouvée pour l\'année ' . $this->annee_cloture . '.', [
+            if ($resultat['cloturees'] + $resultat['reportees'] === 0) {
+                $this->alert('warning', "Aucune demande en cours pour l'exercice {$annee}.", [
                     'position' => 'top-end',
                     'timer' => 3000,
                     'toast' => true,
@@ -318,80 +290,13 @@ class DemandeApprouve extends Component
                 return;
             }
 
-            DB::transaction(function () {
-                $userId = auth()->id();
-                $now = now();
-
-                // Insertion bulk des demandes clôturées
-                DB::statement("
-                INSERT INTO demandes_clotures (
-                    demande_id_original, code, structure, service, type_demande, 
-                    branche, corps, metier, nom, prenom, sexe, ifu, contact,
-                    titre_activite, obejectif_activite, debut_activite, fin_activite,
-                    dure_activite, departement, commune, lieux, homme_touche, budget,
-                    piece, buget_prevu, rapport_depose, effectif_homme_forme, 
-                    effectif_femme_forme, date_depot_rapport, effectif_handicape_homme,
-                    effectif_handicape_femme, observations_rapport, rapport_fichier,
-                    status, statut, statuts,
-                    valide, suspendre, rejeter, archivee, annee_exercice,
-                    date_archivage, message, date_transmission, date_approbation,
-                    annee_exercice_cloture, date_cloture, user_id_cloture,
-                    created_at, updated_at
-                )
-                SELECT 
-                    id, code, structure, service, type_demande, branche, corps, 
-                    metier, nom, prenom, sexe, ifu, contact, titre_activite, 
-                    obejectif_activite, debut_activite, fin_activite, dure_activite,
-                    departement, commune, lieux, homme_touche, budget, piece, 
-                    buget_prevu, COALESCE(rapport_depose, 0), effectif_homme_forme,
-                    effectif_femme_forme, date_depot_rapport, effectif_handicape_homme,
-                    effectif_handicape_femme, observations_rapport, rapport_fichier,
-                    status, statut, statuts,
-                    valide, suspendre, rejeter, COALESCE(archivee, 0), annee_exercice,
-                    date_archivage, message, date_transmission, date_approbation,
-                    ?, ?, ?, created_at, updated_at
-                FROM demandes
-                WHERE YEAR(created_at) = ?
-            ", [$this->annee_cloture, $now, $userId, $this->annee_cloture]);
-
-                // Insertion bulk des localisations clôturées
-                DB::statement("
-                INSERT INTO demande_localisations_clotures (
-                    demande_cloture_id, demande_id_original, departement_id, 
-                    commune_id, lieux, homme_touche, 
-                    created_at, updated_at
-                )
-                SELECT 
-                    dc.id, dl.demande_id, dl.departement_id, dl.commune_id,
-                    dl.lieux, dl.homme_touche,
-                    dl.created_at, dl.updated_at
-                FROM demande_localisations dl
-                INNER JOIN demandes d ON dl.demande_id = d.id
-                INNER JOIN demandes_clotures dc ON dc.demande_id_original = d.id
-                WHERE YEAR(d.created_at) = ?
-                AND dc.annee_exercice_cloture = ?
-            ", [$this->annee_cloture, $this->annee_cloture]);
-
-                // Suppression bulk des localisations
-                DB::statement("
-                DELETE dl FROM demande_localisations dl
-                INNER JOIN demandes d ON dl.demande_id = d.id
-                WHERE YEAR(d.created_at) = ?
-            ", [$this->annee_cloture]);
-
-                // Suppression bulk des demandes
-                DB::statement("
-                DELETE FROM demandes
-                WHERE YEAR(created_at) = ?
-            ", [$this->annee_cloture]);
-            });
-
             $this->showModalCloture = false;
-            $this->reset(['annee_cloture', 'nbDemandesACloturer', 'budgetTotalACloturer']);
+            $this->reset(['annee_cloture', 'nbDemandesACloturer', 'nbDemandesAReporter', 'budgetTotalACloturer']);
             $this->resetValidation();
             $this->resetPage();
 
-            $this->alert('success', "Exercice {$this->annee_cloture} clôturé avec succès ! {$demandesCount} demande(s) archivée(s).", [
+            $suivant = $annee + 1;
+            $this->alert('success', "Exercice {$annee} clôturé : {$resultat['cloturees']} allocation(s) clôturée(s), {$resultat['reportees']} demande(s) reportée(s) sur {$suivant}.", [
                 'position' => 'top-end',
                 'timer' => 5000,
                 'toast' => true,
@@ -413,10 +318,8 @@ class DemandeApprouve extends Component
     public function render()
     {
 
-        // Exclure les demandes archivées
-        $demandes = Demande::where('valide', 2)
-            ->where('buget_prevu', '!=', null)
-            ->where('archivee', false) // Exclure les archivées
+        $demandes = Demande::allocations()->enCours()
+            ->where('archivee', false)
             ->orderBy('date_approbation', 'desc')
             ->paginate(10);
 

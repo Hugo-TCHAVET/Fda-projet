@@ -313,10 +313,10 @@
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="branche">Branche</label>
-                                        <select name="branche" id="branche" class="form-control">
+                                        <select name="branche_id" id="branche" class="form-control">
                                             <option value="">Choisissez une branche</option>
                                             @forelse ($branches as $branche)
-                                            <option value="{{ $branche->id }}" {{ old('branche') == $branche->id ? 'selected' : '' }}>{{ $branche->nom }}</option>
+                                            <option value="{{ $branche->id }}" {{ old('branche_id') == $branche->id ? 'selected' : '' }}>{{ $branche->nom }}</option>
                                             @empty
                                             <option value="">Pas de branche</option>
                                             @endforelse
@@ -324,14 +324,14 @@
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="corps">Corps Métier</label>
-                                        <select name="corps" id="corps" class="form-control">
+                                        <select name="corps_id" id="corps" class="form-control">
                                             <option value="">Choisissez d'abord une branche</option>
                                         </select>
                                         <input type="hidden" name="corps_nom" id="corps_nom">
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="metier">Métier</label>
-                                        <select name="metier" id="metier" class="form-control">
+                                        <select name="metier_id" id="metier" class="form-control">
                                             <option value="">Choisissez d'abord un corps de métier</option>
                                         </select>
                                     </div>
@@ -395,9 +395,9 @@
                                         @error('titre_activite') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="obejectif_activite">Objectif de l'activité <span class="text-danger">*</span></label>
-                                        <textarea name="obejectif_activite" class="form-control" id="obejectif_activite" rows="1" placeholder="Objectifs..." required>{{ old('obejectif_activite') }}</textarea>
-                                        @error('obejectif_activite') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                                        <label for="objectif_activite">Objectif de l'activité <span class="text-danger">*</span></label>
+                                        <textarea name="objectif_activite" class="form-control" id="objectif_activite" rows="1" placeholder="Objectifs..." required>{{ old('objectif_activite') }}</textarea>
+                                        @error('objectif_activite') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="col-md-4 form-group">
                                         <label for="debut_activite">Date Début</label>
@@ -408,8 +408,8 @@
                                         <input type="date" name="fin_activite" class="form-control" id="fin_activite" value="{{ old('fin_activite') }}">
                                     </div>
                                     <div class="col-md-4 form-group">
-                                        <label for="dure_activite">Durée (jours)</label>
-                                        <input type="number" name="dure_activite" class="form-control bg-light" id="dure_activite" value="{{ old('dure_activite') }}" readonly>
+                                        <label for="duree_activite">Durée (jours)</label>
+                                        <input type="number" name="duree_activite" class="form-control bg-light" id="duree_activite" value="{{ old('duree_activite') }}" readonly>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="budget">Budget estimé (FCFA) <span class="text-danger">*</span></label>
@@ -760,7 +760,7 @@
             const finDate = new Date(fin);
             const diffTime = Math.abs(finDate - debutDate + 1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            document.getElementById('dure_activite').value = diffDays;
+            document.getElementById('duree_activite').value = diffDays;
         }
     }
 
@@ -781,15 +781,15 @@
         });
 
         // Restaurer anciennes valeurs si validation échouée
-        if ('{{ old("branche") }}') {
+        if ('{{ old("branche_id") }}') {
             loadCorps();
             setTimeout(() => {
-                if ('{{ old("corps") }}') {
-                    document.getElementById('corps').value = '{{ old("corps") }}';
+                if ('{{ old("corps_id") }}') {
+                    document.getElementById('corps').value = '{{ old("corps_id") }}';
                     loadMetiers();
                     setTimeout(() => {
-                        if ('{{ old("metier") }}') {
-                            document.getElementById('metier').value = '{{ old("metier") }}';
+                        if ('{{ old("metier_id") }}') {
+                            document.getElementById('metier').value = '{{ old("metier_id") }}';
                         }
                     }, 100);
                 }

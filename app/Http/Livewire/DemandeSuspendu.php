@@ -3,13 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Commune;
+use App\Enums\EtatDemande;
 use App\Models\Demande;
+use App\Exceptions\TransitionInterdite;
 use Livewire\Component;
 use App\Models\Departement;
 use Livewire\WithPagination;
-use App\Models\Brache;
-use App\Models\Corp;
-use App\Models\Metier;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DemandesRejeteesExport;
@@ -32,19 +31,17 @@ class DemandeSuspendu extends Component
     public $nom;
     public $prenom;
     public $sexe;
-    public $email;
     public $ifu;
     public $contact;
     public $titre_activite;
-    public $obejectif_activite;
+    public $objectif_activite;
     public $debut_activite;
     public $fin_activite;
-    public $dure_activite;
+    public $duree_activite;
     public $departement;
     public $commune;
     public $lieux;
     public $homme_touche;
-    public $femme_touche;
     public $budget;
     public $piece;
 
@@ -56,25 +53,22 @@ class DemandeSuspendu extends Component
         if ($demande) {
             $this->demande = $demande->id;
             $this->nom = $demande->nom;
-            $this->email = $demande->email;
             $this->prenom = $demande->prenom;
             $this->structure = $demande->structure;
             $this->service = $demande->service;
             $this->type_demande = $demande->type_demande;
 
 
-            $this->metier = $demande->metier;
             $this->sexe = $demande->sexe;
             $this->ifu = $demande->ifu;
             $this->contact = $demande->contact;
             $this->titre_activite = $demande->titre_activite;
-            $this->obejectif_activite = $demande->obejectif_activite;
+            $this->objectif_activite = $demande->objectif_activite;
             $this->debut_activite = $demande->debut_activite;
             $this->fin_activite = $demande->fin_activite;
-            $this->dure_activite = $demande->dure_activite;
+            $this->duree_activite = $demande->duree_activite;
             $this->lieux = $demande->lieux;
             $this->homme_touche = $demande->homme_touche;
-            $this->femme_touche = $demande->femme_touche;
             $this->budget = $demande->budget;
             $this->piece = $demande->piece;
 
@@ -91,34 +85,9 @@ class DemandeSuspendu extends Component
 
 
 
-            if ($demande->branche) {
-                $branche = Brache::where('id', $demande->branche)->first();
-                if ($branche) {
-                    $this->branche = $branche->nom;
-                } else {
-                    $this->branche = [];
-                }
-            }
-
-
-
-            if ($demande->corps) {
-                $corps = Corp::where('id', $demande->corps)->first();
-                if ($corps) {
-                    $this->corps = $corps->nom;
-                } else {
-                    $this->corps = [];
-                }
-            }
-
-            if ($demande->metier) {
-                $metier = Metier::where('id', $demande->metier)->first();
-                if ($metier) {
-                    $this->metier = $metier->nom;
-                } else {
-                    $this->metier = [];
-                }
-            }
+            $this->branche = $demande->branche?->nom;
+            $this->corps = $demande->corps?->nom;
+            $this->metier = $demande->metier?->nom;
         } else {
             return redirect()->back();
         }
@@ -128,30 +97,26 @@ class DemandeSuspendu extends Component
     {
 
 
-        $demandes = Demande::where('suspendre', 1)->paginate(10);
+        $demandes = Demande::etat(EtatDemande::Suspendue)->enCours()->paginate(10);
 
         return view('livewire.demande-suspendu', compact('demandes'));
     }
 
     public function Transmetre(int $demandeId)
     {
-        $demande = Demande::find($demandeId);
-        if ($demande) {
-            $demande->update([
-                'valide' => 1,
-                'statut' => 'En cours de traitement',
-                'date_transmission' => now(),
-                'suspendre' => 0
-            ]);
-            if (method_exists($this, 'alert')) {
-                $this->alert('success', 'Votre demande a été envoyée avec succès!', [
-                    'position' => 'top-end',
-                    'timer' => 5000,
-                    'toast' => true,
-                    'timerProgressBar' => true,
-                ]);
-            }
+        try {
+            Demande::findOrFail($demandeId)->transmettre();
+        } catch (TransitionInterdite $e) {
+            $this->alert('error', $e->getMessage());
+            return;
         }
+
+        $this->alert('success', 'Votre demande a été envoyée avec succès!', [
+            'position' => 'top-end',
+            'timer' => 5000,
+            'toast' => true,
+            'timerProgressBar' => true,
+        ]);
     }
 
     public function exportExcel()

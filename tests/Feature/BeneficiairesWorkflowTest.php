@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Livewire\PostAppui;
+use App\Enums\EtatDemande;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -27,16 +28,16 @@ class BeneficiairesWorkflowTest extends TestCase
         $secretaire = User::factory()->create(['role' => 'secretaire']);
         $verificateur = User::factory()->create(['role' => 'verificateur']);
         $directeur = User::factory()->create(['role' => 'directeur']);
-        $demande = $this->creerDemande(['budget' => '800000', 'branche' => '1', 'service' => 'Formation']);
+        $demande = $this->creerDemande(['budget' => '800000', 'branche_id' => 1, 'service' => 'Formation']);
         $etapes = [];
 
-        $etapes['transmission'] = $this->actingAs($secretaire)->get(route('demande.transmettre', $demande->id))->getStatusCode();
-        $this->assertSame('1', (string) $demande->fresh()->valide);
+        $etapes['transmission'] = $this->actingAs($secretaire)->post(route('demande.transmettre', $demande->id))->getStatusCode();
+        $this->assertSame(EtatDemande::Transmise, $demande->fresh()->etat);
 
         $etapes['approbation'] = $this->actingAs($verificateur)
-            ->post(route('demande.prixbudget', $demande->id), ['buget_prevu' => 600000, 'date_approbation' => '2026-10-01'])
+            ->post(route('demande.prixbudget', $demande->id), ['budget_accorde' => 600000, 'date_approbation' => '2026-10-01'])
             ->getStatusCode();
-        $this->assertSame('2', (string) $demande->fresh()->valide);
+        $this->assertSame(EtatDemande::Approuvee, $demande->fresh()->etat);
 
         $this->actingAs($verificateur);
         Livewire::test(PostAppui::class)

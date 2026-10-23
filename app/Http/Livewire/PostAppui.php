@@ -84,7 +84,7 @@ class PostAppui extends Component
      */
     public function edit(int $demandeId)
     {
-        $demande = Demande::find($demandeId);
+        $demande = $this->allocation($demandeId);
 
         if ($demande) {
             $this->demandeId = $demande->id;
@@ -119,14 +119,16 @@ class PostAppui extends Component
     public function store()
     {
         $this->validate();
+        $nouveauRapport = null;
 
         try {
-            $demande = Demande::find($this->demandeId);
+            $demande = $this->allocation($this->demandeId);
 
             if ($demande) {
-                $cheminRapport = $this->rapport_fichier
+                $nouveauRapport = $this->rapport_fichier
                     ? Storage::disk('local')->putFile('rapports', $this->rapport_fichier)
-                    : $demande->rapport_fichier;
+                    : null;
+                $cheminRapport = $nouveauRapport ?? $demande->rapport_fichier;
                 $ancienRapport = $demande->cheminRapportSur();
 
                 $demande->update([
@@ -152,35 +154,40 @@ class PostAppui extends Component
                 $this->alert('error', 'Demande introuvable.');
             }
         } catch (\Exception $e) {
+            // The error may come after the row was written: only delete a file nothing points to.
+            if ($nouveauRapport && !Demande::where('rapport_fichier', $nouveauRapport)->exists()) {
+                Storage::disk('local')->delete($nouveauRapport);
+            }
             $this->alert('error', 'Une erreur est survenue lors de l\'enregistrement.');
         }
     }
 
+    // Same scope as the list in render(): a tampered demandeId cannot reach other demandes.
+    private function allocation(mixed $id): ?Demande
+    {
+        if (! ctype_digit((string) $id)) {
+            return null;
+        }
+
+        return Demande::allocations()->enCours()->find((int) $id);
+    }
+
     private function estAncienRapportSansHandicap(?Demande $demande = null): bool
     {
-        $demande ??= Demande::find($this->demandeId);
+        $demande ??= $this->allocation($this->demandeId);
 
         return $demande && $demande->rapport_depose && $demande->effectif_handicape_homme === null;
     }
 
     public function render()
     {
-        // Récupérer les demandes approuvées (valide = 2 et buget_prevu != null)
-        $demandes = Demande::where('valide', 2)
-            ->where('buget_prevu', '!=', null)
+        $demandes = Demande::allocations()->enCours()
             ->orderBy('date_depot_rapport', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        // Calculer les statistiques
-        $this->totalStructures = Demande::where('valide', 2)
-            ->where('buget_prevu', '!=', null)
-            ->count();
-
-        $this->structuresAvecRapport = Demande::where('valide', 2)
-            ->where('buget_prevu', '!=', null)
-            ->where('rapport_depose', true)
-            ->count();
+        $this->totalStructures = Demande::allocations()->enCours()->count();
+        $this->structuresAvecRapport = Demande::allocations()->enCours()->where('rapport_depose', true)->count();
 
         $this->ratio = $this->totalStructures > 0
             ? round(($this->structuresAvecRapport / $this->totalStructures) * 100, 1)

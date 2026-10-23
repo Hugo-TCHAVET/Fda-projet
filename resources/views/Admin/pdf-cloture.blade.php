@@ -214,7 +214,7 @@
                 <td class="header-center">
                     <h2>République du Bénin</h2>
                     <p>Fonds de Développement de l'Artisanat</p>
-                    <span class="cloture-badge">Exercice {{ $demande->annee_exercice_cloture }} Clôturé</span>
+                    <span class="cloture-badge">Exercice {{ $demande->exercice }} Clôturé</span>
                 </td>
                 <td style="text-align: right; width: 20%;">
                     @if(!empty($logoBase64))
@@ -234,7 +234,7 @@
 
         <div class="meta-info">
             Soumis le : <strong>{{ \Carbon\Carbon::parse($demande->created_at)->format('d/m/Y à H:i') }}</strong><br>
-            Clôturé le : <strong>{{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y à H:i') : 'N/A' }}</strong>
+            Clôturé le : <strong>{{ $demande->cloturee_le ? \Carbon\Carbon::parse($demande->cloturee_le)->format('d/m/Y à H:i') : 'N/A' }}</strong>
         </div>
 
         <div class="section">
@@ -272,7 +272,7 @@
                     </tr>
                     <tr>
                         <td class="label">Année d'exercice clôturée</td>
-                        <td class="value"><strong>{{ $demande->annee_exercice_cloture }}</strong></td>
+                        <td class="value"><strong>{{ $demande->exercice }}</strong></td>
                     </tr>
                 </tbody>
             </table>
@@ -312,13 +312,13 @@
                     </tr>
                     <tr>
                         <td class="label">Objectif</td>
-                        <td class="value" style="text-align: justify;">{{ $demande->obejectif_activite }}</td>
+                        <td class="value" style="text-align: justify;">{{ $demande->objectif_activite }}</td>
                     </tr>
                     <tr>
                         <td class="label">Calendrier</td>
                         <td class="value">
                             Du {{ $demande->debut_activite }} au {{ $demande->fin_activite }} <br>
-                            <span style="color: #777; font-size: 11px;">(Durée : {{ $demande->dure_activite }})</span>
+                            <span style="color: #777; font-size: 11px;">(Durée : {{ $demande->duree_activite }})</span>
                         </td>
                     </tr>
                     <tr>
@@ -336,7 +336,7 @@
                     <tr>
                         <td class="label">Statut</td>
                         <td class="value ">
-                            <span class="{{ $demande->statuts === 'Approuvé' ? 'bg-success' : 'bg-danger' }}">{{ $demande->statuts === 'Approuvé' ? 'Approuvé' : 'Rejeté' }}</span>
+                            <span class="{{ $demande->etat === \App\Enums\EtatDemande::Approuvee ? 'bg-success' : 'bg-danger' }}">{{ $demande->etat->libelle() }}</span>
                         </td>
                     </tr>
                     <tr>
@@ -347,12 +347,12 @@
                             </span>
                         </td>
                     </tr>
-                    @if($demande->statuts === 'Approuvé')
+                    @if($demande->etat === \App\Enums\EtatDemande::Approuvee)
                     <tr>
                         <td class="label">Appui financier accordé</td>
                         <td class="value">
                             <span class="budget-highlight">
-                                {{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA
+                                {{ number_format((float)$demande->budget_accorde, 0, ',', ' ') }} FCFA
                             </span>
                         </td>
                     </tr>

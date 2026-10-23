@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Dompdf\Dompdf;
-use App\Models\Brache;
 use App\Models\Demande;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,10 +10,8 @@ class RapportAllocationController extends Controller
 {
     public function fiche($id)
     {
-        $demande = Demande::where('valide', '2')->where('rapport_depose', true)->findOrFail($id);
-        $libelleBranche = $demande->branche
-            ? (Brache::find($demande->branche)->nom ?? 'Branche inconnue')
-            : 'Non renseigné';
+        $demande = Demande::allocations()->where('rapport_depose', true)->findOrFail($id);
+        $libelleBranche = $demande->branche?->nom ?? 'Non renseigné';
         $libelleService = Demande::libelleService($demande->service);
 
         $logoPath = public_path('Client/assets/lofoFDA.png');

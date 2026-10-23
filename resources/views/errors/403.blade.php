@@ -94,6 +94,12 @@
             <a href="{{ route('home') }}" class="btn btn-dashboard">
                 Tableau de bord
             </a>
+            @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="btn btn-back">Se déconnecter</button>
+            </form>
+            @endauth
         </div>
     </div>
 </body>

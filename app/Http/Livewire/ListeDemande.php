@@ -3,13 +3,12 @@
 namespace App\Http\Livewire;
 
 use Dompdf\Dompdf;
-use App\Models\Corp;
-use App\Models\Brache;
-use App\Models\Metier;
 
 
 use App\Models\Commune;
+use App\Enums\EtatDemande;
 use App\Models\Demande;
+use App\Exceptions\TransitionInterdite;
 use Livewire\Component;
 use Barryvdh\DomPDF\PDF;
 use App\Models\Departement;
@@ -42,23 +41,20 @@ class ListeDemande extends Component
     public $nom;
     public $prenom;
     public $sexe;
-    public $email;
     public $ifu;
     public $contact;
     public $titre_activite;
-    public $obejectif_activite;
+    public $objectif_activite;
     public $debut_activite;
     public $fin_activite;
-    public $dure_activite;
+    public $duree_activite;
     public $departement;
     public $commune;
     public $lieux;
     public $homme_touche;
-    public $femme_touche;
     public $budget;
     public $piece;
     public $message;
-    public $suspendre;
 
 
     protected function rules()
@@ -79,27 +75,23 @@ class ListeDemande extends Component
             $this->demande = $demande->id;
             $this->nom = $demande->nom;
             $this->code = $demande->code;
-            $this->email = $demande->email;
             $this->prenom = $demande->prenom;
             $this->structure = $demande->structure;
             $this->service = $demande->service;
             $this->type_demande = $demande->type_demande;
-            $this->metier = $demande->metier;
             $this->sexe = $demande->sexe;
             $this->ifu = $demande->ifu;
             $this->contact = $demande->contact;
             $this->titre_activite = $demande->titre_activite;
-            $this->obejectif_activite = $demande->obejectif_activite;
+            $this->objectif_activite = $demande->objectif_activite;
             $this->debut_activite = $demande->debut_activite;
             $this->fin_activite = $demande->fin_activite;
-            $this->dure_activite = $demande->dure_activite;
+            $this->duree_activite = $demande->duree_activite;
             $this->lieux = $demande->lieux;
             $this->homme_touche = $demande->homme_touche;
-            $this->femme_touche = $demande->femme_touche;
             $this->budget = $demande->budget;
             $this->piece = $demande->piece;
             $this->message = $demande->message;
-            $this->suspendre = $demande->suspendre;
 
 
 
@@ -114,34 +106,9 @@ class ListeDemande extends Component
                 $this->commune = $commune->nom;
             }
 
-            if ($demande->branche) {
-                $branche = Brache::where('id', $demande->branche)->first();
-                if ($branche) {
-                    $this->branche = $branche->nom;
-                } else {
-                    $this->branche = [];
-                }
-            }
-
-
-
-            if ($demande->corps) {
-                $corps = Corp::where('id', $demande->corps)->first();
-                if ($corps) {
-                    $this->corps = $corps->nom;
-                } else {
-                    $this->corps = [];
-                }
-            }
-
-            if ($demande->metier) {
-                $metier = Metier::where('id', $demande->metier)->first();
-                if ($metier) {
-                    $this->metier = $metier->nom;
-                } else {
-                    $this->metier = [];
-                }
-            }
+            $this->branche = $demande->branche?->nom;
+            $this->corps = $demande->corps?->nom;
+            $this->metier = $demande->metier?->nom;
         } else {
             return redirect()->back();
         }
@@ -150,13 +117,13 @@ class ListeDemande extends Component
     ///////////////////////// Transmetre ///////////////////////////////////////
     public function Transmetre(int $demandeId)
     {
-        $demande = Demande::find($demandeId);
+        try {
+            Demande::findOrFail($demandeId)->transmettre();
+        } catch (TransitionInterdite $e) {
+            $this->alert('error', $e->getMessage());
+            return;
+        }
 
-        $demande->update([
-            'valide' => 1,
-            'statut' => "En cours de traitement",
-            'date_transmission' => now()
-        ]);
         $this->alert('success', 'Votre demande a été envoyé avec succes!', [
             'position' => 'top-end',
             'timer' => 5000,
@@ -165,69 +132,11 @@ class ListeDemande extends Component
         ]);
     }
 
-
-
-
-    //////////////////////////////Suspendre///////////////////////////////////////
-    protected function validateDemande()
-    {
-        return $this->validate([
-
-            'message' => ['required'],
-
-
-        ]);
-    }
-
-    public function Suspendre(int $demandeId)
-    {
-        $demande = Demande::find($demandeId);
-
-        if ($demande) {
-            $this->demande = $demande->id;
-            $this->code = $demande->code;
-            $this->nom = $demande->nom;
-            $this->email = $demande->email;
-            $this->prenom = $demande->prenom;
-            $this->structure = $demande->structure;
-            $this->service = $demande->service;
-            $this->type_demande = $demande->type_demande;
-            $this->metier = $demande->metier;
-            $this->sexe = $demande->sexe;
-            $this->ifu = $demande->ifu;
-            $this->contact = $demande->contact;
-            $this->titre_activite = $demande->titre_activite;
-            $this->obejectif_activite = $demande->obejectif_activite;
-            $this->debut_activite = $demande->debut_activite;
-            $this->fin_activite = $demande->fin_activite;
-            $this->dure_activite = $demande->dure_activite;
-            $this->departement = $demande->departement;
-            $this->commune = $demande->commune;
-            $this->lieux = $demande->lieux;
-            $this->homme_touche = $demande->homme_touche;
-            $this->femme_touche = $demande->femme_touche;
-            $this->budget = $demande->budget;
-            $this->piece = $demande->piece;
-            $this->message = $demande->message;
-            $this->suspendre = $demande->suspendre;
-        } else {
-            return redirect()->back();
-        }
-    }
-
-
-
-
-
-
-
-
     public function render()
     {
 
         // dd($anneeActive);
-        $demandes = Demande::where('valide', 0)
-            ->where('suspendre', 0)
+        $demandes = Demande::etat(EtatDemande::EnAttente)->enCours()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

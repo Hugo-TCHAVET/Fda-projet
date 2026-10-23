@@ -217,16 +217,16 @@
             </div>
             <div class="stat-list">
               <div class="stat-item">
-                <span class="stat-label"><i class='bx bx-time-five'></i> En attente</span>
-                <span class="stat-count">{{ $totaldemandes - $demandesapprouvees }}</span>
+                <span class="stat-label"><i class='bx bx-time-five'></i> En cours de traitement</span>
+                <span class="stat-count">{{ $demandesencours }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label"><i class='bx bx-pause'></i> Suspendues</span>
+                <span class="stat-count">{{ $demandessuspendues }}</span>
               </div>
               <div class="stat-item">
                 <span class="stat-label"><i class='bx bx-check'></i> Approuvées</span>
                 <span class="stat-count">{{ $demandesapprouvees }}</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label"><i class='bx bx-check'></i> Rejetées</span>
-                <span class="stat-count">{{ $demandesrejetees }}</span>
               </div>
             </div>
           </div>
@@ -333,128 +333,3 @@
 </div>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var ctx = document.getElementById('bigDashboardChart').getContext("2d");
-
-    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, '#80b6f4');
-    gradientStroke.addColorStop(1, '#FFFFFF');
-
-    var gradientFill = ctx.createLinearGradient(0, 200, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.24)");
-
-    var monthlyData = @json($monthlyData);
-
-    var myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-        datasets: [{
-          label: "Formation",
-          borderColor: '#80b6f4',
-          pointBorderColor: '#FFF',
-          pointBackgroundColor: '#80b6f4',
-          pointHoverBackgroundColor: '#80b6f4',
-          pointHoverBorderColor: '#80b6f4',
-          pointBorderWidth: 2,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 1,
-          pointRadius: 4,
-          fill: true,
-          backgroundColor: gradientFill,
-          borderWidth: 2,
-          data: monthlyData.formation
-        }, {
-          label: "Assistance",
-          borderColor: '#18ce0f',
-          pointBorderColor: '#FFF',
-          pointBackgroundColor: '#18ce0f',
-          pointHoverBackgroundColor: '#18ce0f',
-          pointHoverBorderColor: '#18ce0f',
-          pointBorderWidth: 2,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 1,
-          pointRadius: 4,
-          fill: true,
-          backgroundColor: gradientFill,
-          borderWidth: 2,
-          data: monthlyData.promotion
-        }, {
-          label: "Financier",
-          borderColor: '#f96332',
-          pointBorderColor: '#FFF',
-          pointBackgroundColor: '#f96332',
-          pointHoverBackgroundColor: '#f96332',
-          pointHoverBorderColor: '#f96332',
-          pointBorderWidth: 2,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 1,
-          pointRadius: 4,
-          fill: true,
-          backgroundColor: gradientFill,
-          borderWidth: 2,
-          data: monthlyData.financier
-        }]
-      },
-      options: {
-        layout: {
-          padding: {
-            left: 20,
-            right: 20,
-            top: 0,
-            bottom: 0
-          }
-        },
-        maintainAspectRatio: false,
-        tooltips: {
-          backgroundColor: '#fff',
-          titleFontColor: '#333',
-          bodyFontColor: '#666',
-          bodySpacing: 4,
-          xPadding: 12,
-          mode: "nearest",
-          intersect: 0,
-          position: "nearest"
-        },
-        legend: {
-          position: "bottom",
-          fillStyle: "#FFF",
-          display: true
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              fontColor: "rgba(255,255,255,0.4)",
-              fontStyle: "bold",
-              beginAtZero: true,
-              maxTicksLimit: 5,
-              padding: 10
-            },
-            gridLines: {
-              drawTicks: true,
-              drawBorder: false,
-              display: true,
-              color: "rgba(255,255,255,0.1)",
-              zeroLineColor: "transparent"
-            }
-
-          }],
-          xAxes: [{
-            gridLines: {
-              zeroLineColor: "transparent",
-              display: false,
-
-            },
-            ticks: {
-              padding: 10,
-              fontColor: "rgba(255,255,255,0.4)",
-              fontStyle: "bold"
-            }
-          }]
-        }
-      }
-    });
-  });
-</script>

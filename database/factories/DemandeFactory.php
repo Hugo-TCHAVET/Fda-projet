@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Demande;
-use App\Models\Brache;
+use App\Models\Branche;
 use App\Models\Corp;
 use App\Models\Metier;
 use App\Models\Departement;
@@ -31,7 +31,7 @@ class DemandeFactory extends Factory
         $duree = $debut->diff($fin)->days;
 
         // Récupérer des IDs existants ou utiliser null
-        $brancheId = Brache::inRandomOrder()->first()?->id;
+        $brancheId = Branche::inRandomOrder()->first()?->id;
         $corpId = $brancheId ? Corp::where('branche_id', $brancheId)->inRandomOrder()->first()?->id : null;
         $metierId = $brancheId ? Metier::where('branche_id', $brancheId)->inRandomOrder()->first()?->id : null;
 
@@ -49,36 +49,30 @@ class DemandeFactory extends Factory
             'structure' => $this->faker->company(),
             'service' => $this->faker->randomElement($services),
             'type_demande' => $this->faker->randomElement($types),
-            'branche' => $brancheId ? (string) $brancheId : null,
-            'corps' => $corpId ? (string) $corpId : null,
-            'metier' => $metierId ? (string) $metierId : null,
+            'branche_id' => $brancheId,
+            'corps_id' => $corpId,
+            'metier_id' => $metierId,
             'nom' => $this->faker->lastName(),
             'prenom' => $this->faker->firstName(),
             'sexe' => $this->faker->randomElement($sexes),
             'ifu' => $this->faker->numerify('##############'),
             'contact' => $this->faker->phoneNumber(),
             'titre_activite' => $this->faker->sentence(4),
-            'obejectif_activite' => $this->faker->paragraph(2),
+            'objectif_activite' => $this->faker->paragraph(2),
             'debut_activite' => $debut->format('Y-m-d'),
             'fin_activite' => $fin->format('Y-m-d'),
-            'dure_activite' => (string) $duree,
+            'duree_activite' => (string) $duree,
             'departement' => $departementId ? (string) $departementId : null,
             'commune' => $communeId ? (string) $communeId : null,
             'lieux' => $this->faker->streetAddress(),
             'homme_touche' => (string) $this->faker->numberBetween(10, 200),
             'budget' => (string) $budget,
             'piece' => null, // Pas de fichier pour les seeders
-            'buget_prevu' =>  null,
+            'budget_accorde' =>  null,
             'rapport_depose' => false,
             'effectif_homme_forme' => null,
             'effectif_femme_forme' => null,
             'date_depot_rapport' => null,
-            'status' => 'En attente',
-            'statut' => null,
-            'statuts' => null,
-            'valide' => '0',
-            'suspendre' => '0',
-            'rejeter' => '0',
             'archivee' => false,
             'annee_exercice' => null,
             'date_archivage' => null,

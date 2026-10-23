@@ -34,9 +34,7 @@ class DemandeArchivee extends Component
 
     public function render()
     {
-        $query = Demande::where('valide', 2)
-            ->where('buget_prevu', '!=', null)
-            ->where('archivee', true);
+        $query = Demande::allocations()->enCours()->where('archivee', true);
 
         // Filtrer par année si une année est sélectionnée
         if ($this->anneeFiltre) {

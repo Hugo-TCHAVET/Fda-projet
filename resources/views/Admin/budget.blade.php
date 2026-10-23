@@ -203,7 +203,7 @@
                 <label class="form-label-custom">Montant Accordé</label>
                 <div class="input-group input-group-lg">
                   <span class="input-group-text"><i class='bx bx-coin-stack'></i></span>
-                  <input type="number" name="buget_prevu" class="form-control form-control-lg" placeholder="Ex: 500000" required min="0" max="{{ $demande->budget }}">
+                  <input type="number" name="budget_accorde" class="form-control form-control-lg" placeholder="Ex: 500000" required min="0" max="{{ $demande->budget }}">
                   <span class="input-group-text">CFA</span>
                 </div>
                 <div class="d-flex justify-content-between mt-2">

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\PostAppui;
 use App\Models\Demande;
+use App\Enums\EtatDemande;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -24,7 +25,7 @@ class PostAppuiRapportTest extends TestCase
         parent::setUp();
         Storage::fake('local');
         $this->creerDonneesReference();
-        $this->demande = $this->creerDemande(['valide' => '2', 'buget_prevu' => '500000']);
+        $this->demande = $this->creerDemande(['etat' => EtatDemande::Approuvee, 'budget_accorde' => '500000']);
         $this->actingAs(User::factory()->create(['role' => 'verificateur']));
     }
 
@@ -154,7 +155,7 @@ class PostAppuiRapportTest extends TestCase
     public function test_remplacement_ne_supprime_pas_le_fichier_d_une_autre_demande(): void
     {
         Storage::disk('local')->put('rapports/autre.pdf', '%PDF-1.4');
-        $this->creerDemande(['valide' => '2', 'rapport_depose' => true, 'rapport_fichier' => 'rapports/autre.pdf']);
+        $this->creerDemande(['etat' => EtatDemande::Approuvee, 'rapport_depose' => true, 'rapport_fichier' => 'rapports/autre.pdf']);
         $this->demande->update(['rapport_depose' => true, 'rapport_fichier' => 'rapports/autre.pdf']);
 
         $this->formulaire($this->valeursValides() + [
@@ -174,5 +175,66 @@ class PostAppuiRapportTest extends TestCase
         ])->assertHasNoErrors();
 
         Storage::disk('local')->assertExists('secret.txt');
+    }
+
+    public function test_rapport_refuse_pour_demande_non_approuvee(): void
+    {
+        $nonApprouvee = $this->creerDemande(['etat' => EtatDemande::Transmise, 'budget_accorde' => null]);
+
+        $composant = Livewire::test(PostAppui::class)->set('demandeId', $nonApprouvee->id);
+        foreach ($this->valeursValides() as $champ => $valeur) {
+            $composant->set($champ, $valeur);
+        }
+        $composant->call('store');
+
+        $this->assertFalse((bool) $nonApprouvee->fresh()->rapport_depose);
+    }
+
+    public function test_identifiant_non_numerique_refuse_sans_erreur(): void
+    {
+        $composant = Livewire::test(PostAppui::class)->set('demandeId', 'abc');
+        foreach ($this->valeursValides() as $champ => $valeur) {
+            $composant->set($champ, $valeur);
+        }
+
+        $composant->call('store')->assertSet('showModal', false);
+        $this->assertSame(0, Demande::where('rapport_depose', true)->count());
+    }
+
+    public function test_edition_refusee_pour_demande_non_approuvee(): void
+    {
+        $nonApprouvee = $this->creerDemande(['etat' => EtatDemande::Transmise, 'budget_accorde' => null]);
+
+        Livewire::test(PostAppui::class)
+            ->call('edit', $nonApprouvee->id)
+            ->assertSet('showModal', false);
+    }
+
+    public function test_nouveau_fichier_supprime_si_enregistrement_echoue(): void
+    {
+        Demande::updating(function () {
+            throw new \RuntimeException('panne');
+        });
+
+        $this->formulaire($this->valeursValides() + [
+            'rapport_fichier' => UploadedFile::fake()->create('rapport.pdf', 100, 'application/pdf'),
+        ]);
+
+        $this->assertSame([], Storage::disk('local')->files('rapports'));
+    }
+
+    public function test_fichier_conserve_si_erreur_apres_enregistrement(): void
+    {
+        Demande::updated(function () {
+            throw new \RuntimeException('panne après écriture');
+        });
+
+        $this->formulaire($this->valeursValides() + [
+            'rapport_fichier' => UploadedFile::fake()->create('rapport.pdf', 100, 'application/pdf'),
+        ]);
+
+        $chemin = $this->demande->fresh()->rapport_fichier;
+        $this->assertNotNull($chemin);
+        Storage::disk('local')->assertExists($chemin);
     }
 }

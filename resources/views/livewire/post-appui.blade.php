@@ -239,7 +239,7 @@
                                         <tr>
                                             <td style="font-weight: 500; color: #333;">{{ $demande->structure }}</td>
                                             <td>{{ number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
-                                            <td style="font-weight: bold; color: #009879;">{{ number_format($demande->buget_prevu, 0, ',', ' ') }} FCFA</td>
+                                            <td style="font-weight: bold; color: #009879;">{{ number_format($demande->budget_accorde, 0, ',', ' ') }} FCFA</td>
                                             <td>
                                                 @if ($demande->rapport_depose)
                                                 <span class="status-badge status-success">Rapport déposé</span>

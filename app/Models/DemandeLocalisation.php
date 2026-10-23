@@ -15,7 +15,6 @@ class DemandeLocalisation extends Model
         'commune_id',
         'lieux',
         'homme_touche',
-        'femme_touche',
     ];
 
     public function demande()

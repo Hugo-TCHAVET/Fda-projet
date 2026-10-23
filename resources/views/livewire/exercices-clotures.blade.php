@@ -232,7 +232,7 @@
                                             <td>{{ $demande->nom }} {{ $demande->prenom }}</td>
                                             <td>{{ number_format((float)($demande->budget ?? 0), 0, ',', ' ') }} FCFA</td>
                                             <td style="font-weight: bold; color: #dc3545;">
-                                                {{ number_format((float)($demande->buget_prevu ?? 0), 0, ',', ' ') }} FCFA
+                                                {{ number_format((float)($demande->budget_accorde ?? 0), 0, ',', ' ') }} FCFA
                                             </td>
                                             <td>
                                                 <span style="font-weight: 500; color: #666;">
@@ -241,7 +241,7 @@
                                             </td>
                                             <td>
                                                 <span style="font-weight: 500; color: #dc3545;">
-                                                    {{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y') : 'N/A' }}
+                                                    {{ $demande->cloturee_le ? \Carbon\Carbon::parse($demande->cloturee_le)->format('d/m/Y') : 'N/A' }}
                                                 </span>
                                             </td>
                                             <td class="text-center">

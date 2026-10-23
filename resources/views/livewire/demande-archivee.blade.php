@@ -111,7 +111,7 @@
                                             <td style="font-weight: 500; color: #333;">{{ $demande->structure }}</td>
                                             <td>{{ $demande->contact }}</td>
                                             <td>{{ $demande->budget }} FCFA</td>
-                                            <td style="font-weight: bold; color: #009879;">{{ $demande->buget_prevu }} FCFA</td>
+                                            <td style="font-weight: bold; color: #009879;">{{ $demande->budget_accorde }} FCFA</td>
                                             <td>
                                                 <span style="font-weight: 500; color: #666;">
                                                     {{ $demande->date_approbation ? \Carbon\Carbon::parse($demande->date_approbation)->format('d/m/Y H:i') : 'N/A' }}

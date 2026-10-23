@@ -297,13 +297,13 @@
                     </tr>
                     <tr>
                         <td class="label">Objectif</td>
-                        <td class="value" style="text-align: justify;">{{ $demande->obejectif_activite }}</td>
+                        <td class="value" style="text-align: justify;">{{ $demande->objectif_activite }}</td>
                     </tr>
                     <tr>
                         <td class="label">Calendrier</td>
                         <td class="value">
                             Du {{ $demande->debut_activite }} au {{ $demande->fin_activite }} <br>
-                            <span style="color: #777; font-size: 11px;">(Durée : {{ $demande->dure_activite }} jours)</span>
+                            <span style="color: #777; font-size: 11px;">(Durée : {{ $demande->duree_activite }} jours)</span>
                         </td>
                     </tr>
                     <tr>
@@ -321,7 +321,7 @@
                     <tr>
                         <td class="label">Statut</td>
                         <td class="value ">
-                            <span class="{{ $demande->statuts === 'Approuvé' ? 'bg-success' : 'bg-danger' }}">{{ $demande->statuts === 'Approuvé' ? 'Approuvé' : 'Rejeté' }}</span>
+                            <span class="{{ $demande->etat === \App\Enums\EtatDemande::Approuvee ? 'bg-success' : 'bg-danger' }}">{{ $demande->etat->libelle() }}</span>
                         </td>
                     </tr>
                     <tr>
@@ -332,12 +332,12 @@
                             </span>
                         </td>
                     </tr>
-                    @if($demande->statuts === 'Approuvé')
+                    @if($demande->etat === \App\Enums\EtatDemande::Approuvee)
                     <tr>
                         <td class="label">Appui financier accordé</td>
                         <td class="value">
                             <span class="budget-highlight">
-                                {{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} FCFA
+                                {{ number_format((float)$demande->budget_accorde, 0, ',', ' ') }} FCFA
                             </span>
                         </td>
                     </tr>

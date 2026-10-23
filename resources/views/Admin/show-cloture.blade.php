@@ -146,7 +146,7 @@
                 <ul class="navbar-nav">
                     <li class="mr-3">
                         <span class="cloture-badge">
-                            <i class='bx bx-archive'></i> Exercice {{ $demande->annee_exercice_cloture }} Clôturé
+                            <i class='bx bx-archive'></i> Exercice {{ $demande->exercice }} Clôturé
                         </span>
                     </li>
                     <li class="mr-3">
@@ -245,7 +245,7 @@
                                     <div class="info-group">
                                         <span class="info-label">Date de clôture</span>
                                         <div class="info-value">
-                                            {{ $demande->date_cloture ? \Carbon\Carbon::parse($demande->date_cloture)->format('d/m/Y') : 'N/A' }}
+                                            {{ $demande->cloturee_le ? \Carbon\Carbon::parse($demande->cloturee_le)->format('d/m/Y') : 'N/A' }}
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +301,7 @@
                             <div class="info-group">
                                 <span class="info-label">Objectifs</span>
                                 <div class="info-value" style="background: #fff; border: 1px solid #e9ecef; min-height: 80px;">
-                                    {{$demande->obejectif_activite}}
+                                    {{$demande->objectif_activite}}
                                 </div>
                             </div>
 
@@ -321,7 +321,7 @@
                                 <div class="col-md-4">
                                     <div class="info-group text-center">
                                         <span class="info-label">Durée</span>
-                                        <div class="badge bg-info p-2">{{$demande->dure_activite}} Jours</div>
+                                        <div class="badge bg-info p-2">{{$demande->duree_activite}} Jours</div>
                                     </div>
                                 </div>
                             </div>
@@ -334,11 +334,11 @@
                                         <div class="budget-value">{{ number_format((float)$demande->budget, 0, ',', ' ') }} CFA</div>
                                     </div>
                                 </div>
-                                @if ($demande->buget_prevu != 0)
+                                @if ($demande->budget_accorde != 0)
                                 <div class="col-md-6">
                                     <div class="budget-box" style="background: linear-gradient(135deg, #2c3e50 0%, #4a627a 100%);">
                                         <div class="info-label text-white opacity-75">Budget Prévu</div>
-                                        <div class="budget-value">{{ number_format((float)$demande->buget_prevu, 0, ',', ' ') }} CFA</div>
+                                        <div class="budget-value">{{ number_format((float)$demande->budget_accorde, 0, ',', ' ') }} CFA</div>
                                     </div>
                                 </div>
                                 @endif

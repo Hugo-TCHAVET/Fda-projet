@@ -104,7 +104,7 @@
                       <td style="font-weight: bold;">{{ number_format($demande->budget, 0, ',', ' ') }} </td>
                       <td>
                         <span class="status-badge status-warning">
-                          {{$demande->statut}}
+                          {{ $demande->etat->libelle() }}
                         </span>
                       </td>
                       <td class="text-center">
@@ -380,8 +380,12 @@
         }
       }).then((result) => {
         if (result.isConfirmed) {
-          const deleteUrl = "{{ url('/delete') }}/" + demandeId;
-          window.location.href = deleteUrl;
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = "{{ url('/demandes') }}/" + demandeId;
+          form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}"><input type="hidden" name="_method" value="DELETE">';
+          document.body.appendChild(form);
+          form.submit();
         }
       });
     }

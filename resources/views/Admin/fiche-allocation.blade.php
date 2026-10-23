@@ -93,8 +93,8 @@
                 <tr><td class="label">Structure</td><td>{{ $demande->structure }}</td></tr>
                 <tr><td class="label">Branche</td><td>{{ $libelleBranche }}</td></tr>
                 <tr><td class="label">Service</td><td>{{ $libelleService }}</td></tr>
-                <tr><td class="label">Montant demandé</td><td>{{ number_format((float) str_replace(' ', '', $demande->budget), 0, ',', ' ') }} FCFA</td></tr>
-                <tr><td class="label">Appui financier accordé</td><td>{{ number_format((float) str_replace(' ', '', $demande->buget_prevu), 0, ',', ' ') }} FCFA</td></tr>
+                <tr><td class="label">Montant demandé</td><td>{{ number_format($demande->budget, 0, ',', ' ') }} FCFA</td></tr>
+                <tr><td class="label">Appui financier accordé</td><td>{{ number_format($demande->budget_accorde ?? 0, 0, ',', ' ') }} FCFA</td></tr>
                 <tr><td class="label">Date d'approbation</td><td>{{ optional($demande->date_approbation)->format('d/m/Y') ?? 'Non renseignée' }}</td></tr>
                 <tr><td class="label">Date de dépôt du rapport</td><td>{{ optional($demande->date_depot_rapport)->format('d/m/Y') ?? 'Non renseignée' }}</td></tr>
             </table>

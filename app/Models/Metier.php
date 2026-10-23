@@ -16,8 +16,8 @@ class Metier extends Model
                 return $this->belongsTo(Corp::class, 'corp_id');
         }
 
-        public function brache()
+        public function branche()
         {
-                return $this->belongsTo(Brache::class, 'branche_id');
+                return $this->belongsTo(Branche::class, 'branche_id');
         }
 }

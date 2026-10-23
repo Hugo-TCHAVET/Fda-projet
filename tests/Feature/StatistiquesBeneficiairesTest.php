@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Services\StatistiquesBeneficiaires;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Tests\Concerns\CreeDonneesReference;
 use Tests\TestCase;
@@ -88,20 +87,6 @@ class StatistiquesBeneficiairesTest extends TestCase
         $this->assertSame(66.7, $sexe['taux_femmes']);
     }
 
-    public function test_approuvee_puis_suspendue_reste_comptee(): void
-    {
-        $this->creerAllocation(['suspendre' => '1', 'effectif_homme_forme' => 2, 'effectif_femme_forme' => 0]);
-
-        $this->assertSame(2, StatistiquesBeneficiaires::pourDemandes()->parSexe()['hommes']);
-    }
-
-    public function test_approuvee_sans_statuts_comptee(): void
-    {
-        $this->creerAllocation(['statuts' => null, 'effectif_homme_forme' => 4, 'effectif_femme_forme' => 0]);
-
-        $this->assertSame(4, StatistiquesBeneficiaires::pourDemandes()->parSexe()['hommes']);
-    }
-
     public function test_dimension_inconnue_refusee(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -116,25 +101,19 @@ class StatistiquesBeneficiairesTest extends TestCase
         $this->assertSame(['allocations' => 3, 'rapports' => 2], StatistiquesBeneficiaires::pourDemandes()->couverture());
     }
 
-    public function test_branche_inconnue_et_nulle(): void
+    public function test_branche_nulle(): void
     {
-        $this->creerAllocation(['branche' => '999', 'effectif_homme_forme' => 1, 'effectif_femme_forme' => 0]);
-        $this->creerAllocation(['branche' => null, 'effectif_homme_forme' => 0, 'effectif_femme_forme' => 1]);
+        $this->creerAllocation(['branche_id' => 1, 'effectif_homme_forme' => 1, 'effectif_femme_forme' => 0]);
+        $this->creerAllocation(['branche_id' => null, 'effectif_homme_forme' => 0, 'effectif_femme_forme' => 1]);
 
         $libelles = StatistiquesBeneficiaires::pourDemandes()->repartition('branche')->pluck('libelle')->sort()->values()->all();
 
-        $this->assertSame(['Branche inconnue', 'Non renseigné'], $libelles);
+        $this->assertSame(['Bois', 'Non renseigné'], $libelles);
     }
 
     public function test_ignore_demandes_cloturees(): void
     {
-        DB::table('demandes_clotures')->insert([
-            'demande_id_original' => 1, 'annee_exercice_cloture' => 2025, 'date_cloture' => now(),
-            'code' => 'X', 'structure' => 'S', 'service' => 'Formation', 'type_demande' => 'ONG',
-            'nom' => 'N', 'prenom' => 'P', 'sexe' => 'Masculin', 'ifu' => '1', 'titre_activite' => 'T',
-            'obejectif_activite' => 'O', 'budget' => '1', 'valide' => '2', 'rapport_depose' => true,
-            'effectif_homme_forme' => 50, 'effectif_femme_forme' => 0,
-        ]);
+        $this->creerAllocation(['cloturee_le' => now(), 'effectif_homme_forme' => 50, 'effectif_femme_forme' => 0]);
 
         $this->assertSame(0, StatistiquesBeneficiaires::pourDemandes()->parSexe()['hommes']);
     }

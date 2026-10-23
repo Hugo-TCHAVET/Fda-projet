@@ -103,7 +103,7 @@
                       <td style="font-weight: bold; color: #2c3e50;">{{ number_format($demande->budget, 0, ',', ' ') }} FCFA</td>
                       <td>
                         <span class="status-badge status-primary">
-                          {{$demande->status}}
+                          {{ $demande->etat->libelle() }}
                         </span>
                       </td>
                       @if (!in_array(Auth::user()->email, ['dg@apps.fda.bj', 'daf@apps.fda.bj', 'do@apps.fda.bj']))
@@ -396,8 +396,12 @@
         }
       }).then((result) => {
         if (result.isConfirmed) {
-          const deleteUrl = "{{ url('/delete') }}/" + demandeId;
-          window.location.href = deleteUrl;
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = "{{ url('/demandes') }}/" + demandeId;
+          form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}"><input type="hidden" name="_method" value="DELETE">';
+          document.body.appendChild(form);
+          form.submit();
         }
       });
     }

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FDA : pistes de design du back-office</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --foret: #10280F;
+    --foret-2: #1B3A19;
+    --olive: #355B18;
+    --olive-fonce: #2A4813;
+    --sauge: #DFE5D7;
+    --sauge-clair: #EEF2EA;
+    --encre: #172015;
+    --texte-2: #5B6458;
+    --ligne: #E1E5DC;
+    --fond: #F6F7F4;
+    --blanc: #FFFFFF;
+    --ocre: #8A5A00;
+    --ocre-fond: #FBF1DC;
+    --ardoise: #2E4A66;
+    --ardoise-fond: #E8EEF4;
+    --rayon: 4px;
+    --focus: 0 0 0 2px var(--blanc), 0 0 0 4px var(--olive);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: Manrope, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--encre);
+    background: var(--blanc);
+  }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* Document de présentation */
+  .doc { max-width: 1200px; margin: 0 auto; padding: 56px 32px 96px; }
+  .doc h1 { font-size: 28px; line-height: 1.2; margin: 0 0 12px; font-weight: 700; text-wrap: balance; }
+  .doc h2 { font-size: 20px; margin: 64px 0 8px; font-weight: 700; text-wrap: balance; }
+  .doc h3 { font-size: 16px; margin: 32px 0 8px; font-weight: 700; }
+  .doc p, .doc li { max-width: 72ch; color: var(--encre); }
+  .doc .chapeau { font-size: 16px; color: var(--texte-2); margin: 0 0 32px; }
+  .doc ul { padding-left: 20px; }
+  .doc li { margin: 6px 0; }
+  .note { font-size: 13px; color: var(--texte-2); }
+
+  .constats { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 40px; margin: 24px 0 0; padding: 0; list-style: none; }
+  .constats li { border-top: 1px solid var(--ligne); padding: 14px 0; margin: 0; }
+  .constats strong { display: block; }
+
+  .jetons { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0 8px; }
+  .jeton { width: 150px; }
+  .jeton i { display: block; height: 56px; border-radius: var(--rayon); border: 1px solid var(--ligne); }
+  .jeton b { display: block; margin-top: 8px; font-size: 13px; }
+  .jeton span { font-size: 12px; color: var(--texte-2); }
+  .echelle .num { white-space: normal; }
+  .echelle { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 6px 16px; align-items: baseline; margin-top: 16px; }
+  .echelle span:nth-child(odd) { color: var(--texte-2); font-size: 12px; }
+
+  .cadre { margin: 24px 0 0; overflow-x: auto; border: 1px solid var(--ligne); border-radius: 6px; }
+  .legende { font-size: 13px; color: var(--texte-2); margin-top: 10px; }
+
+  /* Écran applicatif, commun aux deux pistes */
+  .ecran { min-width: 1120px; background: var(--fond); font-size: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px;
+    border-radius: var(--rayon); border: 1px solid var(--ligne);
+    background: var(--blanc); color: var(--encre);
+    font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
+    transition: background-color 150ms ease-out, border-color 150ms ease-out;
+  }
+  .btn:hover { border-color: #C9D0C1; background: var(--sauge-clair); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--focus); }
+  .btn-principal { background: var(--olive); border-color: var(--olive); color: var(--blanc); }
+  .btn-principal:hover { background: var(--olive-fonce); border-color: var(--olive-fonce); }
+  .btn svg { width: 16px; height: 16px; }
+
+  .etat { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .etat::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .etat-attente { color: var(--texte-2); }
+  .etat-transmise { color: var(--ardoise); }
+  .etat-suspendue { color: var(--ocre); }
+  .etat-approuvee { color: var(--olive); }
+
+  table.liste { width: 100%; border-collapse: collapse; background: var(--blanc); }
+  .liste th {
+    text-align: left; font-weight: 600; font-size: 12px; color: var(--texte-2);
+    padding: 10px 16px; border-bottom: 1px solid var(--ligne); background: var(--blanc);
+  }
+  .liste td { padding: 12px 16px; border-bottom: 1px solid var(--ligne); vertical-align: top; }
+  .liste tbody tr { transition: background-color 120ms ease-out; }
+  .liste tbody tr:hover { background: var(--sauge-clair); }
+  .liste .droite { text-align: right; }
+  .liste .sous { display: block; font-size: 13px; color: var(--texte-2); }
+  .liste a { color: var(--encre); font-weight: 600; text-decoration: none; }
+  .liste a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Piste A : Registre */
+  .a { display: grid; grid-template-columns: 232px 1fr; min-height: 720px; }
+  .a-nav { background: var(--foret); color: #D8E0D2; padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .a-marque { display: flex; align-items: center; gap: 10px; padding: 0 8px 20px; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.12); color: var(--blanc); font-weight: 700; font-size: 13px; line-height: 1.3; }
+  .logo { width: 36px; height: 36px; border-radius: 50%; background: var(--blanc); display: grid; place-items: center; color: var(--foret); font-weight: 700; font-size: 11px; flex: none; }
+  .a-groupe { font-size: 12px; color: #9DB096; padding: 14px 10px 6px; }
+  .a-lien { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: var(--rayon); color: #E4EADF; text-decoration: none; font-weight: 500; }
+  .a-lien:hover { background: var(--foret-2); }
+  .a-lien.actif { background: var(--sauge); color: var(--foret); font-weight: 700; }
+  .a-lien .num { font-size: 12px; color: inherit; opacity: 0.85; }
+  .a-pied { margin-top: auto; padding: 12px 10px 0; border-top: 1px solid rgba(255,255,255,0.12); font-size: 13px; }
+  .a-pied b { display: block; color: var(--blanc); }
+  .a-main { padding: 0 32px 40px; }
+  .a-entete { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 28px 0 20px; }
+  .a-entete h3 { font-size: 22px; line-height: 1.25; margin: 0; font-weight: 700; }
+  .a-entete p { margin: 4px 0 0; color: var(--texte-2); }
+  .a-outils { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+  .champ { height: 36px; border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 0 12px; font: inherit; background: var(--blanc); color: var(--encre); min-width: 280px; }
+  .champ::placeholder { color: #6B7467; }
+  .a-table { border: 1px solid var(--ligne); border-radius: 6px; overflow: hidden; }
+  .a-table tr:last-child td { border-bottom: 0; }
+  .a-total { display: flex; justify-content: space-between; color: var(--texte-2); font-size: 13px; padding: 12px 2px; }
+
+  .fiche { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
+  .fiche-entete { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 28px 0 24px; border-bottom: 1px solid var(--ligne); margin-bottom: 24px; }
+  .fil { font-size: 13px; color: var(--texte-2); margin-bottom: 8px; }
+  .fil a { color: var(--texte-2); }
+  .fiche-entete h3 { font-size: 22px; margin: 0 0 6px; }
+  .meta { display: flex; gap: 16px; flex-wrap: wrap; color: var(--texte-2); font-size: 13px; align-items: center; }
+  .actions { display: flex; gap: 8px; flex: none; }
+  .bloc { background: var(--blanc); border: 1px solid var(--ligne); border-radius: 6px; padding: 20px 24px; margin-bottom: 20px; }
+  .bloc h4 { margin: 0 0 14px; font-size: 15px; }
+  dl.def { display: grid; grid-template-columns: 180px 1fr; gap: 10px 20px; margin: 0; }
+  dl.def dt { color: var(--texte-2); }
+  dl.def dd { margin: 0; }
+  .montant { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .montant small { font-size: 14px; font-weight: 600; color: var(--texte-2); margin-left: 4px; }
+  .resume dl { margin: 0; }
+  .resume dt { color: var(--texte-2); font-size: 13px; margin-top: 16px; }
+  .resume dt:first-child { margin-top: 0; }
+  .resume dd { margin: 2px 0 0; }
+  .histo { list-style: none; margin: 0; padding: 0; }
+  .histo li { display: grid; grid-template-columns: 14px 1fr; gap: 10px; padding-bottom: 14px; position: relative; }
+  .histo li::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--olive); background: var(--blanc); margin-top: 6px; }
+  .histo li:not(:last-child)::after { content: ""; position: absolute; left: 6px; top: 20px; bottom: 0; width: 1px; background: var(--ligne); }
+  .histo .quand { display: block; font-size: 12px; color: var(--texte-2); }
+  .piece { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 10px 12px; }
+
+  /* Piste B : Parcours */
+  .b-barre { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 24px; background: var(--foret); color: var(--blanc); }
+  .b-barre .marque { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 13px; }
+  .b-barre nav { display: flex; gap: 4px; }
+  .b-barre nav a { color: #D8E0D2; text-decoration: none; padding: 6px 12px; border-radius: var(--rayon); font-weight: 500; }
+  .b-barre nav a.actif, .b-barre nav a:hover { background: var(--foret-2); color: var(--blanc); }
+  .b-user { font-size: 13px; color: #D8E0D2; }
+  .parcours { display: flex; background: var(--blanc); border-bottom: 1px solid var(--ligne); padding: 0 24px; }
+  .etape { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 14px 28px 12px 18px; text-decoration: none; color: var(--texte-2); border-bottom: 3px solid transparent; }
+  .etape b { font-size: 20px; color: var(--encre); font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .etape span { font-size: 13px; font-weight: 600; }
+  .etape:not(:last-child):not(:has(+ .fin))::after { content: ""; position: absolute; right: 6px; top: 50%; width: 8px; height: 8px; border-top: 1.5px solid #B9C2B1; border-right: 1.5px solid #B9C2B1; transform: translateY(-50%) rotate(45deg); }
+  .etape.actif { border-bottom-color: var(--olive); }
+  .etape.actif span { color: var(--olive); }
+  .etape:hover b { color: var(--olive); }
+  .etape.fin { margin-left: auto; border-left: 1px solid var(--ligne); padding-left: 24px; }
+  .b-corps { display: grid; grid-template-columns: 400px 1fr; min-height: 640px; }
+  .b-liste { border-right: 1px solid var(--ligne); background: var(--blanc); }
+  .b-liste .outils { padding: 14px 16px; border-bottom: 1px solid var(--ligne); }
+  .b-liste .champ { width: 100%; min-width: 0; }
+  .ligne { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 16px; border-bottom: 1px solid var(--ligne); text-decoration: none; color: var(--encre); }
+  .ligne:hover { background: var(--sauge-clair); }
+  .ligne.selection { background: var(--sauge); }
+  .ligne .t { font-weight: 600; }
+  .ligne .s { font-size: 13px; color: var(--texte-2); }
+  .ligne .m { text-align: right; font-weight: 600; }
+  .b-detail { padding: 24px 32px; }
+  .b-detail .fiche-entete { padding-top: 4px; }
+  .b-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .decision { background: var(--blanc); border: 1px solid var(--olive); border-radius: 6px; padding: 20px 24px; margin-bottom: 20px; }
+  .decision h4 { margin: 0 0 4px; font-size: 15px; }
+  .decision p { margin: 0 0 16px; color: var(--texte-2); }
+  .form-ligne { display: grid; grid-template-columns: 1fr 180px auto; gap: 12px; align-items: end; }
+  .form-ligne label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 13px; }
+  .form-ligne .champ { min-width: 0; width: 100%; }
+  .aide { font-size: 12px; color: var(--texte-2); font-weight: 500; }
+  .lien-sec { color: var(--ocre); font-weight: 600; background: none; border: 0; font: inherit; cursor: pointer; padding: 0; margin-top: 14px; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="doc">
+  <h1>Back-office du FDA : deux pistes de design</h1>
+  <p class="chapeau">Propositions à discuter avant tout plan d'implémentation. Les écrans ci-dessous sont des maquettes statiques ; noms, montants et dates sont des données d'illustration.</p>
+
+  <h2>Ce qui ne va pas aujourd'hui</h2>
+  <p>Relevé sur les 22 écrans de l'application, en secrétaire, vérificateur et directeur, sur ordinateur et sur téléphone. Les captures sont dans <code>docs/design/etat-actuel/</code>.</p>
+  <ul class="constats">
+    <li><strong>Pas d'identité commune</strong>5 polices selon l'écran, 3 verts différents, un bouton bleu Bootstrap, des en-têtes de tableau rouges sur les exercices clôturés.</li>
+    <li><strong>Un modèle de tableau de bord générique</strong>Cartes à icônes pastel, gros chiffres, un bandeau vert de 150 px vide en haut de chaque page, menu en capitales.</li>
+    <li><strong>Le parcours d'une demande est invisible</strong>Le menu liste des pages (« Demande analysée », « Demande rejetée »), pas les étapes du traitement ni combien de dossiers attendent à chacune.</li>
+    <li><strong>Des mots qui se contredisent</strong>« Rejet » pour une suspension, « Budget prévu » et « accordé » pour la même chose, « CFA » et « FCFA », dates 2025-12-12 et 12/12/2025 sur la même fiche.</li>
+    <li><strong>Une page de statistiques de 6 500 px</strong>Une quinzaine de graphiques en six couleurs aléatoires, dont des camemberts à deux valeurs.</li>
+    <li><strong>Lourd</strong>Deux Bootstrap, jQuery, Font Awesome, Chart.js chargés deux fois, le thème Now UI, ombres et dégradés partout. Six écrans débordent sur téléphone, le formulaire de la secrétaire s'ouvre sans menu.</li>
+  </ul>
+
+  <h2>Le socle commun : l'identité de fda.bj</h2>
+  <p>Les deux pistes reprennent les couleurs et la police du site officiel, avec la retenue d'un outil de travail : une seule couleur d'action, pas d'ombre, des bordures d'un pixel, des coins à peine arrondis. Le serif du site public (Cormorant Garamond) reste réservé à la page de connexion et aux documents imprimés.</p>
+  <div class="jetons">
+    <div class="jeton"><i style="background:var(--foret)"></i><b>Forêt</b><span>#10280F · navigation</span></div>
+    <div class="jeton"><i style="background:var(--olive)"></i><b>Olive</b><span>#355B18 · action principale</span></div>
+    <div class="jeton"><i style="background:var(--sauge)"></i><b>Sauge</b><span>#DFE5D7 · sélection</span></div>
+    <div class="jeton"><i style="background:var(--encre)"></i><b>Encre</b><span>#172015 · texte</span></div>
+    <div class="jeton"><i style="background:var(--texte-2)"></i><b>Texte secondaire</b><span>#5B6458 · 6,2:1 sur blanc</span></div>
+    <div class="jeton"><i style="background:var(--fond)"></i><b>Fond</b><span>#F6F7F4 · surfaces de travail</span></div>
+  </div>
+  <p class="note">États : en attente en gris, transmise en ardoise, suspendue en ocre, approuvée en olive. Toujours un point et un mot, jamais la couleur seule.</p>
+  <div class="echelle">
+    <span>22 / 700</span><span style="font-size:22px;font-weight:700">Demandes à vérifier</span>
+    <span>15 / 700</span><span style="font-size:15px;font-weight:700">Activité financée</span>
+    <span>14 / 400</span><span>Texte courant, libellés, cellules de tableau, en Manrope partout.</span>
+    <span>13 / 400</span><span style="font-size:13px;color:var(--texte-2)">Informations secondaires et métadonnées.</span>
+    <span>Chiffres</span><span class="num">1 842 976 FCFA · 12 déc. 2025 · 66 jours</span>
+  </div>
+
+  <h2>Piste A : Registre</h2>
+  <p>La forme familière d'un logiciel de gestion, mise au propre. Le menu suit les étapes du traitement et affiche le nombre de dossiers à chacune : on voit d'un coup d'œil où le travail attend. Les listes sont de vrais tableaux pleine largeur ; la fiche s'ouvre sur sa propre page, avec l'historique de la demande et une seule action principale.</p>
+
+  <div class="cadre">
+    <div class="ecran a">
+      <aside class="a-nav" aria-label="Navigation">
+        <div class="a-marque"><span class="logo">fda</span>Fonds de Développement de l'Artisanat</div>
+        <a class="a-lien" href="#">Tableau de bord</a>
+        <div class="a-groupe">Traitement des demandes</div>
+        <a class="a-lien" href="#">En attente <span class="num">4</span></a>
+        <a class="a-lien actif" href="#" aria-current="page">À vérifier <span class="num">6</span></a>
+        <a class="a-lien" href="#">Suspendues <span class="num">1</span></a>
+        <a class="a-lien" href="#">Approuvées <span class="num">2</span></a>
+        <a class="a-lien" href="#">Rapports post-appui <span class="num">2</span></a>
+        <div class="a-groupe">Pilotage</div>
+        <a class="a-lien" href="#">Statistiques</a>
+        <a class="a-lien" href="#">Exercices clôturés</a>
+        <div class="a-pied"><b>Rodrigue Sèwanou</b>Vérificateur</div>
+      </aside>
+      <section class="a-main">
+        <div class="a-entete">
+          <div>
+            <h3>Demandes à vérifier</h3>
+            <p>Transmises par le secrétariat, en attente d'une décision.</p>
+          </div>
+          <button class="btn" type="button">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10"/></svg>
+            Exporter en Excel
+          </button>
+        </div>
+        <div class="a-outils">
+          <input class="champ" type="search" placeholder="Structure ou représentant" aria-label="Rechercher">
+          <select class="champ" style="min-width:180px" aria-label="Service"><option>Tous les services</option></select>
+          <select class="champ" style="min-width:140px" aria-label="Exercice"><option>Exercice 2026</option></select>
+        </div>
+        <div class="a-table">
+          <table class="liste">
+            <thead><tr><th>Demande</th><th>Service</th><th>Branche</th><th class="droite">Montant demandé</th><th>Transmise le</th><th>État</th></tr></thead>
+            <tbody>
+              <tr><td><a href="#">Coopérative des tisserandes de Djougou</a><span class="sous">Rachida Alassane · Donga</span></td><td>Formation</td><td>Textile, habillement, cuirs</td><td class="droite num">1 842 976 FCFA</td><td class="num">12 déc. 2025</td><td><span class="etat etat-transmise">Transmise</span></td></tr>
+              <tr><td><a href="#">Association des forgerons de Savalou</a><span class="sous">Codjo Hounkpè · Collines</span></td><td>Activités de promotion</td><td>Métaux et mécanique</td><td class="droite num">3 120 000 FCFA</td><td class="num">10 déc. 2025</td><td><span class="etat etat-transmise">Transmise</span></td></tr>
+              <tr><td><a href="#">Aigle royal et négoce internationale</a><span class="sous">Fanzaëlle Ganlaky · Littoral</span></td><td>Activités de promotion</td><td>Non renseignée</td><td class="droite num">2 000 000 FCFA</td><td class="num">8 déc. 2025</td><td><span class="etat etat-transmise">Transmise</span></td></tr>
+              <tr><td><a href="#">Groupement des potières de Sè</a><span class="sous">Afiavi Dossou · Mono</span></td><td>Formation</td><td>Artisanat d'art et décoration</td><td class="droite num">768 892 FCFA</td><td class="num">3 déc. 2025</td><td><span class="etat etat-transmise">Transmise</span></td></tr>
+              <tr><td><a href="#">ONG Mains d'or du Borgou</a><span class="sous">Bio Sanni Orou · Borgou</span></td><td>Formation</td><td>Bois et ameublement</td><td class="droite num">4 858 332 FCFA</td><td class="num">27 nov. 2025</td><td><span class="etat etat-transmise">Transmise</span></td></tr>
+              <tr><td><a href="#">BOOBA AND CO</a><span class="sous">Elie Yaffah · Atlantique</span></td><td>Activités de promotion</td><td>Agro-alimentaire</td><td class="droite num">3 000 000 FCFA</td><td class="num">27 nov. 2025</td><td><span class="etat etat-transmise">Transmise</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="a-total"><span>6 demandes</span><span class="num">Total demandé : 15 590 200 FCFA</span></div>
+      </section>
+    </div>
+  </div>
+  <p class="legende">Piste A, liste. Le compteur du menu remplace les cartes du tableau de bord pour le travail courant.</p>
+
+  <div class="cadre">
+    <div class="ecran a">
+      <aside class="a-nav" aria-label="Navigation">
+        <div class="a-marque"><span class="logo">fda</span>Fonds de Développement de l'Artisanat</div>
+        <a class="a-lien" href="#">Tableau de bord</a>
+        <div class="a-groupe">Traitement des demandes</div>
+        <a class="a-lien" href="#">En attente <span class="num">4</span></a>
+        <a class="a-lien actif" href="#" aria-current="page">À vérifier <span class="num">6</span></a>
+        <a class="a-lien" href="#">Suspendues <span class="num">1</span></a>
+        <a class="a-lien" href="#">Approuvées <span class="num">2</span></a>
+        <a class="a-lien" href="#">Rapports post-appui <span class="num">2</span></a>
+        <div class="a-groupe">Pilotage</div>
+        <a class="a-lien" href="#">Statistiques</a>
+        <a class="a-lien" href="#">Exercices clôturés</a>
+        <div class="a-pied"><b>Rodrigue Sèwanou</b>Vérificateur</div>
+      </aside>
+      <section class="a-main">
+        <div class="fiche-entete">
+          <div>
+            <div class="fil"><a href="#">À vérifier</a> / Demande n° 115</div>
+            <h3>Coopérative des tisserandes de Djougou</h3>
+            <div class="meta"><span class="etat etat-transmise">Transmise</span><span>Formation</span><span>Exercice 2025</span><span class="num">Transmise le 12 déc. 2025</span></div>
+          </div>
+          <div class="actions">
+            <button class="btn" type="button">Suspendre</button>
+            <button class="btn btn-principal" type="button">Approuver</button>
+          </div>
+        </div>
+        <div class="fiche">
+          <div>
+            <div class="bloc">
+              <h4>Demandeur</h4>
+              <dl class="def">
+                <dt>Structure</dt><dd>Coopérative des tisserandes de Djougou</dd>
+                <dt>Type</dt><dd>Association ou organisation professionnelle</dd>
+                <dt>Représentant</dt><dd>Rachida Alassane, Féminin</dd>
+                <dt>IFU</dt><dd class="num">3 2019 4417 0058</dd>
+                <dt>Contact</dt><dd class="num">+229 01 97 48 26 13</dd>
+              </dl>
+            </div>
+            <div class="bloc">
+              <h4>Activité</h4>
+              <dl class="def">
+                <dt>Intitulé</dt><dd>Formation au tissage du pagne traditionnel sur métier à pédales</dd>
+                <dt>Objectif</dt><dd>Former 24 artisanes au métier à pédales pour doubler la production de pagnes destinés aux foires régionales.</dd>
+                <dt>Métier</dt><dd>Textile, habillement, cuirs et peaux › Tissage › Tisserande</dd>
+                <dt>Période</dt><dd class="num">12 déc. 2025 au 16 févr. 2026, 66 jours</dd>
+              </dl>
+            </div>
+            <div class="bloc">
+              <h4>Lieux et effectifs prévus</h4>
+              <table class="liste">
+                <thead><tr><th>Département</th><th>Commune</th><th>Lieu</th><th class="droite">Personnes</th></tr></thead>
+                <tbody>
+                  <tr><td>Donga</td><td>Djougou</td><td>Atelier de Kilir</td><td class="droite num">16</td></tr>
+                  <tr><td>Donga</td><td>Copargo</td><td>Maison des artisans</td><td class="droite num">8</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <aside>
+            <div class="bloc resume">
+              <dl>
+                <dt>Montant demandé</dt><dd class="montant num">1 842 976<small>FCFA</small></dd>
+                <dt>Montant accordé</dt><dd>Pas encore décidé</dd>
+                <dt>Pièce jointe</dt>
+                <dd><div class="piece"><span>Dossier de demande.pdf</span><a href="#" class="btn" style="height:30px">Ouvrir</a></div></dd>
+              </dl>
+            </div>
+            <div class="bloc">
+              <h4>Historique</h4>
+              <ol class="histo">
+                <li><div>Enregistrée par le secrétariat<span class="quand num">20 nov. 2025 · Sika Agbo</span></div></li>
+                <li><div>Transmise à la vérification<span class="quand num">12 déc. 2025 · Sika Agbo</span></div></li>
+              </ol>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </div>
+  <p class="legende">Piste A, fiche. Une seule action principale (Approuver), la suspension à côté ; montants et dates au même format partout. L'historique demanderait d'enregistrer qui a fait quoi : c'est un ajout, à valider.</p>
+
+  <h2>Piste B : Parcours</h2>
+  <p>Le circuit d'une demande devient la navigation principale : une barre d'étapes en haut, avec le nombre de dossiers à chacune. En dessous, la liste et la fiche sont côte à côte : le vérificateur passe d'un dossier au suivant sans changer de page, et approuve directement dans la fiche, sans la page « Attribution du budget » ni fenêtre modale.</p>
+
+  <div class="cadre">
+    <div class="ecran">
+      <header class="b-barre">
+        <div class="marque"><span class="logo">fda</span>FDA, back-office</div>
+        <nav aria-label="Navigation"><a href="#" class="actif">Demandes</a><a href="#">Statistiques</a><a href="#">Exercices clôturés</a></nav>
+        <span class="b-user">Rodrigue Sèwanou, vérificateur</span>
+      </header>
+      <nav class="parcours" aria-label="Étapes du traitement">
+        <a class="etape" href="#"><b>4</b><span>En attente</span></a>
+        <a class="etape actif" href="#" aria-current="page"><b>6</b><span>À vérifier</span></a>
+        <a class="etape" href="#"><b>1</b><span>Suspendues</span></a>
+        <a class="etape" href="#"><b>2</b><span>Approuvées</span></a>
+        <a class="etape" href="#"><b>2</b><span>Rapport déposé</span></a>
+        <a class="etape fin" href="#"><b>81</b><span>Clôturées</span></a>
+      </nav>
+      <div class="b-corps">
+        <div class="b-liste">
+          <div class="outils"><input class="champ" type="search" placeholder="Rechercher une structure" aria-label="Rechercher"></div>
+          <a class="ligne selection" href="#" aria-current="true"><span class="t">Coopérative des tisserandes de Djougou</span><span class="m num">1 842 976</span><span class="s">Formation · Donga</span><span class="s num">12 déc.</span></a>
+          <a class="ligne" href="#"><span class="t">Association des forgerons de Savalou</span><span class="m num">3 120 000</span><span class="s">Promotion · Collines</span><span class="s num">10 déc.</span></a>
+          <a class="ligne" href="#"><span class="t">Aigle royal et négoce internationale</span><span class="m num">2 000 000</span><span class="s">Promotion · Littoral</span><span class="s num">8 déc.</span></a>
+          <a class="ligne" href="#"><span class="t">Groupement des potières de Sè</span><span class="m num">768 892</span><span class="s">Formation · Mono</span><span class="s num">3 déc.</span></a>
+          <a class="ligne" href="#"><span class="t">ONG Mains d'or du Borgou</span><span class="m num">4 858 332</span><span class="s">Formation · Borgou</span><span class="s num">27 nov.</span></a>
+          <a class="ligne" href="#"><span class="t">BOOBA AND CO</span><span class="m num">3 000 000</span><span class="s">Promotion · Atlantique</span><span class="s num">27 nov.</span></a>
+        </div>
+        <section class="b-detail">
+          <div class="fiche-entete">
+            <div>
+              <h3>Coopérative des tisserandes de Djougou</h3>
+              <div class="meta"><span class="etat etat-transmise">Transmise</span><span>Formation</span><span class="num">Demande n° 115 · transmise le 12 déc. 2025</span></div>
+            </div>
+            <div class="actions"><a class="btn" href="#">Fiche PDF</a></div>
+          </div>
+          <form class="decision" onsubmit="return false">
+            <h4>Décision</h4>
+            <p class="num">Montant demandé : 1 842 976 FCFA. Le montant accordé ne peut pas le dépasser.</p>
+            <div class="form-ligne">
+              <label>Montant accordé (FCFA)<input class="champ num" inputmode="numeric" value="1 500 000"><span class="aide">Maximum 1 842 976</span></label>
+              <label>Date d'approbation<input class="champ num" value="21/10/2026"><span class="aide">&nbsp;</span></label>
+              <div><button class="btn btn-principal" type="submit">Approuver</button><span class="aide">&nbsp;</span></div>
+            </div>
+            <button class="lien-sec" type="button">Suspendre la demande avec un motif</button>
+          </form>
+          <div class="b-grille">
+            <div class="bloc">
+              <h4>Demandeur</h4>
+              <dl class="def" style="grid-template-columns:110px 1fr">
+                <dt>Type</dt><dd>Association professionnelle</dd>
+                <dt>Représentant</dt><dd>Rachida Alassane</dd>
+                <dt>Contact</dt><dd class="num">+229 01 97 48 26 13</dd>
+              </dl>
+            </div>
+            <div class="bloc">
+              <h4>Activité</h4>
+              <dl class="def" style="grid-template-columns:110px 1fr">
+                <dt>Intitulé</dt><dd>Formation au tissage sur métier à pédales</dd>
+                <dt>Période</dt><dd class="num">12 déc. 2025 au 16 févr. 2026</dd>
+                <dt>Lieux</dt><dd class="num">Djougou 16 · Copargo 8</dd>
+              </dl>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <p class="legende">Piste B. La barre d'étapes est le seul élément marquant ; tout le reste est neutre. Le tableau de bord devient la vue d'ensemble de cette même barre.</p>
+
+  <h2>Idées valables quelle que soit la piste</h2>
+  <ul>
+    <li><strong>Un seul vocabulaire.</strong> En attente, transmise, suspendue, approuvée, rapport déposé, clôturée ; « montant demandé » et « montant accordé » ; jamais « rejet » pour une suspension.</li>
+    <li><strong>Formats uniques.</strong> Montants alignés à droite en chiffres tabulaires, suivis de « FCFA » ; dates « 12 déc. 2025 » à l'écran et « 12/12/2025 » dans les exports.</li>
+    <li><strong>Statistiques organisées par question.</strong> Trois onglets (demandes reçues, allocations, bénéficiaires), un tableau chiffré sous chaque graphique, des barres plutôt que des camemberts, une seule couleur par série et l'olive pour la mise en avant.</li>
+    <li><strong>Tableau de bord utile.</strong> Ce qui attend une action, par étape, et les montants de l'exercice en cours en une ligne ; plus de cartes à icônes.</li>
+    <li><strong>Formulaire de la secrétaire dans l'application.</strong> Avec le menu, les étapes numérotées gardées (c'est une vraie séquence), la saisie conservée en cas d'erreur.</li>
+    <li><strong>Plus léger.</strong> Une seule feuille de style construite par Vite (Tailwind, déjà installé) au lieu de deux Bootstrap, Now UI, jQuery et Font Awesome ; une seule copie de Chart.js ; aucune ombre décorative. Pages plus rapides et plus économes en mémoire.</li>
+    <li><strong>États prévus.</strong> Liste vide qui dit quoi faire, chargement, erreur de saisie sous le champ, focus clavier visible partout.</li>
+  </ul>
+
+  <h2>Ma recommandation</h2>
+  <p><strong>La piste A, avec l'approbation dans la fiche reprise de la piste B.</strong> La piste A garde la forme d'un logiciel de gestion que l'équipe reconnaît : le changement porte sur la lisibilité, pas sur les habitudes. La piste B est plus rapide pour le vérificateur, mais elle change la façon de travailler et demande une page de fiche différente pour chaque rôle. On peut y venir plus tard sur la seule page « À vérifier » si le volume de dossiers le justifie.</p>
+  <p class="note">La refonte gagnerait à se faire après la montée de version (Livewire 3), qui change la manière dont les composants s'affichent.</p>
+</main>
+</body>
+</html>

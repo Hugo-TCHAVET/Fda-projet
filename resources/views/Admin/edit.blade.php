@@ -185,10 +185,10 @@
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <label class="form-label-custom">Branche</label>
-                                            <select name="branche" id="branche" class="form-control">
+                                            <select name="branche_id" id="branche" class="form-control">
                                                 <option value="">Selectionner</option>
                                                 @foreach($branches as $branche)
-                                                <option value="{{ $branche->id }}" {{ $demande->branche == $branche->id ? 'selected' : '' }}>{{ $branche->nom }}</option>
+                                                <option value="{{ $branche->id }}" {{ $demande->branche_id == $branche->id ? 'selected' : '' }}>{{ $branche->nom }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -196,10 +196,10 @@
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <label class="form-label-custom">Corps</label>
-                                            <select name="corps" id="corps" class="form-control">
+                                            <select name="corps_id" id="corps" class="form-control">
                                                 <option value="">Selectionner</option>
                                                 @foreach($corp as $c)
-                                                <option value="{{ $c->id }}" {{ $demande->corps == $c->id ? 'selected' : '' }}>{{ $c->nom }}</option>
+                                                <option value="{{ $c->id }}" {{ $demande->corps_id == $c->id ? 'selected' : '' }}>{{ $c->nom }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -207,10 +207,10 @@
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <label class="form-label-custom">Métier</label>
-                                            <select name="metier" id="metier" class="form-control">
+                                            <select name="metier_id" id="metier" class="form-control">
                                                 <option value="">Selectionner</option>
                                                 @foreach($metiers as $m)
-                                                <option value="{{ $m->id }}" {{ $demande->metier == $m->id ? 'selected' : '' }}>{{ $m->nom }}</option>
+                                                <option value="{{ $m->id }}" {{ $demande->metier_id == $m->id ? 'selected' : '' }}>{{ $m->nom }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -281,7 +281,7 @@
 
                                 <div class="form-group mb-3">
                                     <label class="form-label-custom">Objectifs</label>
-                                    <textarea name="obejectif_activite" class="form-control" rows="3" required>{{ old('obejectif_activite', $demande->obejectif_activite) }}</textarea>
+                                    <textarea name="objectif_activite" class="form-control" rows="3" required>{{ old('objectif_activite', $demande->objectif_activite) }}</textarea>
                                 </div>
 
                                 <div class="row">
@@ -300,7 +300,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label class="form-label-custom">Durée (jours)</label>
-                                            <input type="number" name="dure_activite" class="form-control" value="{{ old('dure_activite', $demande->dure_activite) }}">
+                                            <input type="number" name="duree_activite" class="form-control" value="{{ old('duree_activite', $demande->duree_activite) }}">
                                         </div>
                                     </div>
                                 </div>

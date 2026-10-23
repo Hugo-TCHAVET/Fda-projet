@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\RapportAllocationController;
@@ -26,7 +25,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('Admin.index');
-    })->name('home');
+    })->name('home')->middleware('can:view-dashboard');
 
     // Routes protégées par Gates
     Route::get('/liste_demande', [AdminController::class, 'ListeDemande'])
@@ -65,7 +64,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/detail_demande/{id}', [AdminController::class, 'show'])
         ->name('demande.show')
         ->middleware('can:view-demande-details');
-    Route::get('/transmettre_demande/{id}', [AdminController::class, 'transmettre'])
+    Route::post('/demandes/{id}/transmission', [AdminController::class, 'transmettre'])
         ->name('demande.transmettre')
         ->middleware('can:transmit-demandes');
     Route::get('/suspendre_demande/{id}', [AdminController::class, 'Suspendre'])
@@ -74,7 +73,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/suspendre/{id}', [AdminController::class, 'updateMessage'])
         ->name('demande.suspendre')
         ->middleware('can:process-demandes');
-    Route::get('/delete/{id}', [AdminController::class, 'delete'])
+
+    Route::delete('/demandes/{id}', [AdminController::class, 'supprimer'])
         ->name('demande.delete')
         ->middleware('can:manage-demandes');
 
@@ -117,22 +117,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         ->middleware('can:view-post-appui');
 
     Route::get('/formulaire', [ClientController::class, 'Formulaire'])->name('client.formulaire')->middleware('can:view-formulaire');
+    Route::post('/demande/store', [ClientController::class, 'store'])->name('demande.store')->middleware('can:view-formulaire');
     // Route::get('/demande_archivee', [AdminController::class, 'DemandeArchivee'])->name('demande.archivee');
 });
 
 
 Route::get('/service', [ClientController::class, 'index'])->name('client.service');
 
-// Route::get('/suivre_demande', [ClientController::class, 'SuivreDemande'])->name('client.demande');
-Route::post('/demande/store', [ClientController::class, 'store'])->name('demande.store');
-Route::get('/demande/modifier/{id}', [ClientController::class, 'modifier'])->name('demande.modifier');
-Route::put('/demande/update/{id}', [ClientController::class, 'update'])->name('demande.update');
 Route::get('/contact', [ClientController::class, 'Contact'])->name('client.contact');
 Route::get('/A_propos', [ClientController::class, 'About'])->name('client.about');
-// Route::post('/recherche_demande', [ClientController::class, 'RechercheDemande'])->name('recherche-demande');
 // Route::post('/nous_contacter', [ClientController::class, 'nousContacter'])->name('contact.submit');
 
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
